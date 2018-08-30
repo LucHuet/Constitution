@@ -21,6 +21,11 @@ class Acteur
      */
     private $type;
 
+    public function __construct($type)
+    {
+        $this->type = $type;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
