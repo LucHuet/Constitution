@@ -28,8 +28,9 @@ class ValeurPrincipe
      */
     private $partie;
 
-    public function __construct()
+    public function __construct($nom)
     {
+        $this->nom = $nom;
         $this->partie = new ArrayCollection();
     }
 
