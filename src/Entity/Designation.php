@@ -21,6 +21,11 @@ class Designation
      */
     private $description;
 
+    public function __construct($description)
+    {
+        $this->description = $description;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
