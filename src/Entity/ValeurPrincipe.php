@@ -31,6 +31,7 @@ class ValeurPrincipe
     public function __construct($nom)
     {
         $this->nom = $nom;
+
         $this->partie = new ArrayCollection();
     }
 
