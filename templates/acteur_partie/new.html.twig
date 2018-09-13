@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ActeurPartie{% endblock %}
+
+{% block body %}
+    <h1>Create new ActeurPartie</h1>
+
+    {{ include('acteur_partie/_form.html.twig') }}
+
+    <a href="{{ path('acteur_partie_index') }}">back to list</a>
+{% endblock %}

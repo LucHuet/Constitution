@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit ConditionDesignationPartie{% endblock %}
+
+{% block body %}
+    <h1>Edit ConditionDesignationPartie</h1>
+
+    {{ include('condition_designation_partie/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('condition_designation_partie_index') }}">back to list</a>
+
+    {{ include('condition_designation_partie/_delete_form.html.twig') }}
+{% endblock %}

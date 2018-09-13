@@ -26,6 +26,11 @@ class Acteur
         $this->type = $type;
     }
 
+    public function __toString()
+    {
+      return $this->type;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
