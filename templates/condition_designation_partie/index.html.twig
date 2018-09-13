@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ConditionDesignationPartie index{% endblock %}
+
+{% block body %}
+    <h1>ConditionDesignationPartie index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Duree</th>
+                <th>Renouvelabilite</th>
+                <th>IsCumulable</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for condition_designation_partie in condition_designation_parties %}
+            <tr>
+                <td>{{ condition_designation_partie.id }}</td>
+                <td>{{ condition_designation_partie.duree }}</td>
+                <td>{{ condition_designation_partie.renouvelabilite }}</td>
+                <td>{{ condition_designation_partie.isCumulable ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('condition_designation_partie_show', {'id': condition_designation_partie.id}) }}">show</a>
+                    <a href="{{ path('condition_designation_partie_edit', {'id': condition_designation_partie.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('condition_designation_partie_new') }}">Create new</a>
+{% endblock %}
