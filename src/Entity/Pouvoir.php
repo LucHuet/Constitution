@@ -36,6 +36,15 @@ class Pouvoir
      */
     private $isControle;
 
+    public function __construct($description, $type, $importance, $isControle)
+    {
+      $this->setDescription($description)
+      ->setType($type)
+      ->setImportance($importance)
+      ->setIsControle($isControle);
+
+    }
+
     public function getId(): ?int
     {
         return $this->id;
