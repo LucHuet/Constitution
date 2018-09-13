@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ConditionPouvoirPartie{% endblock %}
+
+{% block body %}
+    <h1>Create new ConditionPouvoirPartie</h1>
+
+    {{ include('condition_pouvoir_partie/_form.html.twig') }}
+
+    <a href="{{ path('condition_pouvoir_partie_index') }}">back to list</a>
+{% endblock %}
