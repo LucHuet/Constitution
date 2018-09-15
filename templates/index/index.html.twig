@@ -23,6 +23,7 @@
     </p>
 
     <h3> Utilisateur : </h3>
+    {% if app.user %}
     <p>
       Nom : {{ app.user.username }}
     </p>
@@ -36,5 +37,6 @@
       {% endfor %}
       parties en cours
     </p>
+    {% endif %}
 
 {% endblock %}
