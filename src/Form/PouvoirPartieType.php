@@ -7,6 +7,7 @@ use App\Entity\Partie;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\Common\Collections\ArrayCollection;
 
 // 1. Include Required Namespaces
 use Symfony\Component\Form\FormEvent;
@@ -35,37 +36,23 @@ class PouvoirPartieType extends AbstractType
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
+      //  $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
     }
 
     protected function addElements(FormInterface $form, Partie $partie = null) {
 
-        $acteursPartie = array();
-
-        // If there is a city stored in the Person entity, load the neighborhoods of it
-        if ($partie) {
-            // Fetch Neighborhoods of the City if there's a selected city
-            $repoActeurPartie = $this->em->getRepository('App:ActeurPartie');
-
-            $acteursPartie = $repoActeurPartie->createQueryBuilder("q")
-                ->where("q.partie = :partieid")
-                ->setParameter("partieid", $partie->getId())
-                ->getQuery()
-                ->getResult();
-        }
-
-        dump($acteursPartie);
-
         // Add the Neighborhoods field with the properly data
-      /*  $form->add('acteurPossedant', EntityType::class, array(
+        $form->add('acteurPossedant', EntityType::class, array(
             'required' => true,
+            'multiple' => true,
+            'expanded' => true,
             'placeholder' => 'Selectionnez l\'acteur du pouvoir ...',
             'class' => 'App:ActeurPartie',
-            //'choices' => $acteursPartie
-        ));*/
+            'choices' => $partie->getActeurParties()
+        ));
     }
 
-    function onPreSubmit(FormEvent $event) {
+    /*function onPreSubmit(FormEvent $event) {
         $form = $event->getForm();
         $data = $event->getData();
 
@@ -73,7 +60,7 @@ class PouvoirPartieType extends AbstractType
         $partie = $this->em->getRepository('App:Partie')->find($data['partie']);
 
         $this->addElements($form, $partie);
-    }
+    }*/
 
     function onPreSetData(FormEvent $event) {
         $pouvoirPartie = $event->getData();
