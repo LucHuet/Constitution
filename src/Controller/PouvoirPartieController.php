@@ -9,9 +9,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
+use App\Entity\Partie;
+
 
 /**
- * @Route("/pouvoir/partie")
+ * @Route("/pouvoir")
  */
 class PouvoirPartieController extends AbstractController
 {
@@ -28,12 +31,29 @@ class PouvoirPartieController extends AbstractController
      */
     public function new(Request $request): Response
     {
+      //si l'utilisateur n'est pas loggé, on retourne au login
+      if($this->getUser() == null){
+        return $this->redirectToRoute('login');
+      }
+      $session = new Session();
+      //si aucune partie n'est choisie, on retourne à l'index
+      if($session->get('partie_courante') == null){
+        return $this->redirectToRoute('index');
+      }
+
+      $partie = $this->getDoctrine()
+          ->getRepository(Partie::class)
+          ->find($session->get('partie_courante'));
+
+
         $pouvoirPartie = new PouvoirPartie();
+        $pouvoirPartie->setPartie($partie);
         $form = $this->createForm(PouvoirPartieType::class, $pouvoirPartie);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $pouvoirPartie->setPartie($partie);
             $em->persist($pouvoirPartie);
             $em->flush();
 

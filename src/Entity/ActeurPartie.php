@@ -29,7 +29,7 @@ class ActeurPartie
     private $nombreIndividus;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Partie", inversedBy="acteurParties")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Partie", inversedBy="acteurParties", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $partie;
@@ -63,6 +63,11 @@ class ActeurPartie
         $this->designationParties = new ArrayCollection();
         $this->acteursDesignes = new ArrayCollection();
         $this->acteursDesignants = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+      return $this->getNom();
     }
 
     public function getId(): ?int
