@@ -4,4 +4,9 @@
 
 {% block body %}
     <h1>Index</h1>
+    <ul>
+    {% for partie in parties %}
+      <li><a href="{{ path('partie_show', {'id': partie.id}) }}">{{partie.nom}}</a> </li>
+    {% endfor %}
+    </ul>
 {% endblock %}

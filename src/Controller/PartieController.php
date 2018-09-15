@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * @Route("/partie")
@@ -55,6 +56,9 @@ class PartieController extends AbstractController
      */
     public function show(Partie $partie): Response
     {
+        $session = new Session();
+        $session->set('partie_courante', $partie->getId());
+
         return $this->render('partie/show.html.twig', ['partie' => $partie]);
     }
 

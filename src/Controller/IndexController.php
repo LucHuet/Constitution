@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Partie;
 
 class IndexController extends AbstractController
 {
@@ -12,6 +13,10 @@ class IndexController extends AbstractController
      */
      public function index()
      {
-         return $this->render('index/index.html.twig');
+       $parties = $this->getDoctrine()
+           ->getRepository(Partie::class)
+           ->findBy(['user' => $this->getUser()]);
+       $this->getUser();
+         return $this->render('index/index.html.twig', ['parties'=>$parties]);
      }
 }

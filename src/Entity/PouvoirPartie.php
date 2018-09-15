@@ -38,7 +38,7 @@ class PouvoirPartie
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\ActeurPartie", inversedBy="pouvoirParties")
      */
-    private $acteurDestinataire;
+    private $acteurPossedant;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\PouvoirPartie", cascade={"persist", "remove"})
@@ -52,7 +52,12 @@ class PouvoirPartie
 
     public function __construct()
     {
-        $this->acteurDestinataire = new ArrayCollection();
+        $this->acteurPossedant = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+      return $this->getNom();
     }
 
     public function getId(): ?int
@@ -99,24 +104,24 @@ class PouvoirPartie
     /**
      * @return Collection|ActeurPartie[]
      */
-    public function getActeurDestinataire(): Collection
+    public function getActeurPossedant(): Collection
     {
-        return $this->acteurDestinataire;
+        return $this->acteurPossedant;
     }
 
-    public function addActeurDestinataire(ActeurPartie $acteurDestinataire): self
+    public function addActeurPossedant(ActeurPartie $acteurPossedant): self
     {
-        if (!$this->acteurDestinataire->contains($acteurDestinataire)) {
-            $this->acteurDestinataire[] = $acteurDestinataire;
+        if (!$this->acteurPossedant->contains($acteurPossedant)) {
+            $this->acteurPossedant[] = $acteurPossedant;
         }
 
         return $this;
     }
 
-    public function removeActeurDestinataire(ActeurPartie $acteurDestinataire): self
+    public function removeActeurPossedant(ActeurPartie $acteurPossedant): self
     {
-        if ($this->acteurDestinataire->contains($acteurDestinataire)) {
-            $this->acteurDestinataire->removeElement($acteurDestinataire);
+        if ($this->acteurPossedant->contains($acteurPossedant)) {
+            $this->acteurPossedant->removeElement($acteurPossedant);
         }
 
         return $this;

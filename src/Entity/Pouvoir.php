@@ -45,6 +45,11 @@ class Pouvoir
 
     }
 
+    public function __toString()
+    {
+      return $this->getDescription();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
