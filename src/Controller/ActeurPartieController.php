@@ -39,7 +39,6 @@ class ActeurPartieController extends AbstractController
         if($session->get('partie_courante') == null){
           return $this->redirectToRoute('index');
         }
-        dump($session->get('partie_courante'));
 
         $partie = $this->getDoctrine()
             ->getRepository(Partie::class)
@@ -55,7 +54,7 @@ class ActeurPartieController extends AbstractController
             $em->persist($acteurPartie);
             $em->flush();
 
-            return $this->redirectToRoute('acteur_partie_index');
+            return $this->redirectToRoute('pouvoir_partie_new');
         }
 
         return $this->render('acteur_partie/new.html.twig', [

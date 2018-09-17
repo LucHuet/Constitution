@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Partie;
 use App\Form\PartieType;
 use App\Repository\PartieRepository;
+use App\Repository\ActeurPartieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,9 +20,18 @@ class PartieController extends AbstractController
     /**
      * @Route("/", name="partie_index", methods="GET")
      */
-    public function index(PartieRepository $partieRepository): Response
+    public function index(PartieRepository $partieRepository, ActeurPartieRepository $acteurPartieRepository): Response
     {
-        return $this->render('partie/index.html.twig', ['parties' => $partieRepository->findAll()]);
+      $session = new Session();
+      //si aucune partie n'est choisie, on retourne à l'index
+      if($session->get('partie_courante') == null){
+        return $this->redirectToRoute('index');
+      }
+
+      $partie = $this->getDoctrine()
+          ->getRepository(Partie::class)
+          ->find($session->get('partie_courante'));
+        return $this->render('partie/index.html.twig', ['parties' => $partieRepository->findAll(), 'acteurs' => $acteurPartieRepository->findBy(['partie' => $partie])]);
     }
 
     /**

@@ -37,7 +37,7 @@ class ConditionPouvoirPartieController extends AbstractController
             $em->persist($conditionPouvoirPartie);
             $em->flush();
 
-            return $this->redirectToRoute('condition_pouvoir_partie_index');
+            return $this->redirectToRoute('partie_index');
         }
 
         return $this->render('condition_pouvoir_partie/new.html.twig', [
