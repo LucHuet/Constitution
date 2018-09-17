@@ -16,7 +16,7 @@ class DesignationPartieType extends AbstractType
             ->add('designation')
             ->add('ActeurDestinataire')
             ->add('acteurRecepteur')
-            ->add('conditionDesignation')
+            //->add('conditionDesignation')
         ;
     }
 

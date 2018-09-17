@@ -3,8 +3,8 @@
 {% block title %}Partie index{% endblock %}
 
 {% block body %}
-    <h1>Partie index</h1>
-
+    <h1>Page principale de la partie</h1>
+    <h2>Parties</h2>
     <table class="table">
         <thead>
             <tr>
@@ -31,5 +31,45 @@
         </tbody>
     </table>
 
-    <a href="{{ path('partie_new') }}">Create new</a>
+  <!--  <a href="{{ path('partie_new') }}">Create new</a> -->
+    <br>
+    <h2>Acteurs de la partie en cours</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>NombreIndividus</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for acteur_partie in acteurs %}
+            <tr>
+                <td>{{ acteur_partie.id }}</td>
+                <td>{{ acteur_partie.nom }}</td>
+                <td>{{ acteur_partie.nombreIndividus }}</td>
+                <td>
+                    <a href="{{ path('acteur_partie_show', {'id': acteur_partie.id}) }}">show</a>
+                    <a href="{{ path('acteur_partie_edit', {'id': acteur_partie.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">pas d'acteur</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('acteur_partie_new') }}">Create new acteur</a>
+    <br>
+    <h2>Pouvoirs d'acteurs de la partie en cours</h2>
+    {% if acteurs|length > 0 %}
+    <a href="{{ path('pouvoir_partie_new') }}">Create new pouvoir</a>
+    {% endif %}
+    <br>
+    <h2>Désignations d'acteurs de la partie en cours</h2>
+    {% if acteurs|length > 1 %}
+    <a href="{{ path('designation_partie_new') }}">Create new désignation</a>
+    {% endif %}
 {% endblock %}

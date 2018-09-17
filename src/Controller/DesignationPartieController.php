@@ -37,7 +37,7 @@ class DesignationPartieController extends AbstractController
             $em->persist($designationPartie);
             $em->flush();
 
-            return $this->redirectToRoute('designation_partie_index');
+            return $this->redirectToRoute('condition_designation_partie_new');
         }
 
         return $this->render('designation_partie/new.html.twig', [
