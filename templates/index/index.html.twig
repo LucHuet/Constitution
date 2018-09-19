@@ -9,34 +9,36 @@
       <li><a href="{{ path('partie_show', {'id': partie.id}) }}">{{partie.nom}}</a> </li>
     {% endfor %}
     </ul>
-    <p>
-      <a href="{{ path('user_registration') }}"> <class="button">S'enregistrer</a>
-    </p>
-    <p>
-      <a href="{{ path('login') }}"> <class="button">Login</a>
-    </p>
-    <p>
-      <a href="{{ path('logout') }}"> <class="button">Logout</a>
-    </p>
-    <p>
-      <a href="{{ path('partie_new') }}"> <class="button">Créer une partie</a>
-    </p>
+    {% if not app.user %}
+      <p>
+        <a href="{{ path('user_registration') }}"> <class="button">S'enregistrer</a>
+      </p>
+      <p>
+        <a href="{{ path('login') }}"> <class="button">Login</a>
+      </p>
+    {% endif %}
 
-    <h3> Utilisateur : </h3>
     {% if app.user %}
-    <p>
-      Nom : {{ app.user.username }}
-    </p>
-    <p>
-      Nom : {{ app.user.email }}
-    </p>
-    <p>
-      Vous avez
-      {% for partie in parties %}
-            {{ parties|length }}
-      {% endfor %}
-      parties en cours
-    </p>
+      <p>
+        <a href="{{ path('logout') }}"> <class="button">Logout</a>
+      </p>
+      <p>
+        <a href="{{ path('partie_new') }}"> <class="button">Créer une partie</a>
+      </p>
+      <h3> Utilisateur : </h3>
+      <p>
+        Nom : {{ app.user.username }}
+      </p>
+      <p>
+        Nom : {{ app.user.email }}
+      </p>
+      <p>
+        Vous avez
+        {% for partie in parties %}
+              {{ parties|length }}
+        {% endfor %}
+        parties en cours
+      </p>
     {% endif %}
 
 {% endblock %}
