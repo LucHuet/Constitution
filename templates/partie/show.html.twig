@@ -22,21 +22,35 @@
       <table class="table">
           <thead>
               <tr>
-                  <th>Id</th>
                   <th>Nom</th>
-                  <th>NombreIndividus</th>
-                  <th>actions</th>
+                  <th>Nb Individus</th>
+                  <th>Actions</th>
+                  <th>Pouvoirs de l'acteur</th>
+                  <th>Désigné par</th>
               </tr>
           </thead>
           <tbody>
           {% for acteur_partie in acteurs %}
               <tr>
-                  <td>{{ acteur_partie.id }}</td>
                   <td>{{ acteur_partie.nom }}</td>
                   <td>{{ acteur_partie.nombreIndividus }}</td>
                   <td>
                       <a href="{{ path('acteur_partie_show', {'id': acteur_partie.id}) }}">show</a>
                       <a href="{{ path('acteur_partie_edit', {'id': acteur_partie.id}) }}">edit</a>
+                  </td>
+                  <td>
+                    <ul>
+                      {% for pouvoirs_acteur in acteur_partie.pouvoirParties %}
+                      <li>{{ pouvoirs_acteur }}</li>
+                      {% endfor %}
+                    </ul>
+                  </td>
+                  <td>
+                    <ul>
+                      {% for acteur_designe in acteur_partie.acteursDesignes %}
+                      <li>{{ acteur_designe.designation }} par {{ acteur_designe.acteurRecepteur }}</li>
+                      {% endfor %}
+                    </ul>
                   </td>
               </tr>
           {% else %}
@@ -47,13 +61,15 @@
           </tbody>
       </table>
       <a href="{{ path('acteur_partie_new') }}">Create new acteur</a>
+
       <br>
-      <h2>Pouvoirs d'acteurs de la partie en cours</h2>
+
       {% if acteurs|length > 0 %}
       <a href="{{ path('pouvoir_partie_new') }}">Create new pouvoir</a>
       {% endif %}
+
       <br>
-      <h2>Désignations d'acteurs de la partie en cours</h2>
+
       {% if acteurs|length > 1 %}
       <a href="{{ path('designation_partie_new') }}">Create new désignation</a>
       {% endif %}

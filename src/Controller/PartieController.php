@@ -6,6 +6,7 @@ use App\Entity\Partie;
 use App\Form\PartieType;
 use App\Repository\PartieRepository;
 use App\Repository\ActeurPartieRepository;
+use App\Repository\PouvoirPartieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,14 +69,17 @@ class PartieController extends AbstractController
     /**
      * @Route("/{id}", name="partie_show", methods="GET")
      */
-    public function show(Partie $partie_courante, ActeurPartieRepository $acteurPartieRepository): Response
+    public function show(Partie $partie_courante,
+    ActeurPartieRepository $acteurPartieRepository,
+    PouvoirPartieRepository $pouvoirPartieRepository): Response
     {
         $session = new Session();
         $session->set('partie_courante', $partie_courante->getId());
 
         return $this->render('partie/show.html.twig', [
           'partie_courante' => $partie_courante,
-          'acteurs' => $acteurPartieRepository->findBy(['partie' => $partie_courante])
+          'acteurs' => $acteurPartieRepository->findBy(['partie' => $partie_courante]),
+          'pouvoir_parties' => $pouvoirPartieRepository->findBy(['partie' => $partie_courante])
         ]);
     }
 
