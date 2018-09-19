@@ -28,10 +28,19 @@ class PartieController extends AbstractController
         return $this->redirectToRoute('index');
       }
 
+
       $partie = $this->getDoctrine()
           ->getRepository(Partie::class)
           ->find($session->get('partie_courante'));
-        return $this->render('partie/index.html.twig', ['parties' => $partieRepository->findAll(), 'acteurs' => $acteurPartieRepository->findBy(['partie' => $partie])]);
+
+                  dump($partie);
+
+        return $this->render('partie/index.html.twig', [
+          'parties' => $partieRepository->findAll(),
+          'acteurs' => $acteurPartieRepository->findBy(['partie' => $partie]),
+          'partie_courante' => $partie
+        ]);
+
     }
 
     /**

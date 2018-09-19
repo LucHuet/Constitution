@@ -6,6 +6,27 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+        {% block header %}
+          <div class="header">
+            <div class="header-right">
+            {% if app.user %}
+               <a href="{{ path('logout') }}"> <class="button">Logout</a>
+               <a href="{{ path('partie_new') }}"> <class="button">Créer une partie</a>
+               <a>Utilisateur : {{ app.user.username }}</a>
+               {% if partie_courante is defined %}
+                   <a href="{{ path('partie_index') }}">Partie en cours : {{partie_courante.nom}}</a>
+
+                   {% if parties|length > 1 %}
+                   <a href="{{ path('index') }}">Changer de partie</a>
+                   {% endif %}
+                {% endif %}
+            {% endif %}
+            {% if not app.user %}
+               <a href="{{ path('login') }}"> <class="button">Login</a>
+            {% endif %}
+            </div>
+          </div>
+        {% endblock %}
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
