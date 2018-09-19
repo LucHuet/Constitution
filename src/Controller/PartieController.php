@@ -18,9 +18,18 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class PartieController extends AbstractController
 {
     /**
-     * @Route("/liste", name="partie_index", methods="GET")
+     * @Route("/", name="partie_index", methods="GET")
      */
     public function index(PartieRepository $partieRepository): Response
+    {
+        return $this->redirectToRoute('partie_liste');
+    }
+
+
+    /**
+     * @Route("/liste", name="partie_liste", methods="GET")
+     */
+    public function liste(PartieRepository $partieRepository): Response
     {
         return $this->render('partie/index.html.twig', [
           'parties' => $partieRepository->findAll()
@@ -47,7 +56,7 @@ class PartieController extends AbstractController
             $em->persist($partie);
             $em->flush();
 
-            return $this->redirectToRoute('partie_index');
+            return $this->redirectToRoute('partie_liste');
         }
 
         return $this->render('partie/new.html.twig', [
@@ -59,20 +68,17 @@ class PartieController extends AbstractController
     /**
      * @Route("/{id}", name="partie_show", methods="GET")
      */
-    public function show(Partie $partie, ActeurPartieRepository $acteurPartieRepository): Response
+    public function show(Partie $partie_courante, ActeurPartieRepository $acteurPartieRepository): Response
     {
         $session = new Session();
-        $session->set('partie_courante', $partie->getId());
-
-        $partie_courante = $this->getDoctrine()
-            ->getRepository(Partie::class)
-            ->find($partie);
+        $session->set('partie_courante', $partie_courante->getId());
 
         return $this->render('partie/show.html.twig', [
           'partie_courante' => $partie_courante,
           'acteurs' => $acteurPartieRepository->findBy(['partie' => $partie_courante])
         ]);
     }
+
 
     /**
      * @Route("/{id}/edit", name="partie_edit", methods="GET|POST")
@@ -105,6 +111,6 @@ class PartieController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('partie_index');
+        return $this->redirectToRoute('partie_liste');
     }
 }

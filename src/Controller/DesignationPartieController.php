@@ -9,6 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
+use App\Entity\Partie;
 
 /**
  * @Route("/designation/partie")
@@ -28,6 +30,13 @@ class DesignationPartieController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $session = new Session();
+        $partie_id = $session->get('partie_courante');
+
+        $partie_courante = $this->getDoctrine()
+            ->getRepository(Partie::class)
+            ->find($partie_id);
+
         $designationPartie = new DesignationPartie();
         $form = $this->createForm(DesignationPartieType::class, $designationPartie);
         $form->handleRequest($request);
@@ -37,11 +46,12 @@ class DesignationPartieController extends AbstractController
             $em->persist($designationPartie);
             $em->flush();
 
-            return $this->redirectToRoute('condition_designation_partie_new');
+            return $this->redirectToRoute('partie_show', ['id' => $partie_id]);
         }
 
         return $this->render('designation_partie/new.html.twig', [
             'designation_partie' => $designationPartie,
+            'partie_courante' => $partie_courante,
             'form' => $form->createView(),
         ]);
     }

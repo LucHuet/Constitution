@@ -7,5 +7,5 @@
 
     {{ include('condition_pouvoir_partie/_form.html.twig') }}
 
-    <a href="{{ path('partie_index') }}">Pas de condition pour ce pouvoir</a>
+    <a href="{{ path('partie_show', {'id': partie_courante.id}) }}">Pas de condition pour ce pouvoir</a>
 {% endblock %}
