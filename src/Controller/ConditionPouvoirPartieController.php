@@ -9,6 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
+use App\Entity\Partie;
+use App\Repository\ActeurPartieRepository;
 
 /**
  * @Route("/condition/pouvoir/partie")
@@ -28,6 +31,14 @@ class ConditionPouvoirPartieController extends AbstractController
      */
     public function new(Request $request): Response
     {
+
+        $session = new Session();
+        $partie_id = $session->get('partie_courante');
+
+        $partie_courante = $this->getDoctrine()
+            ->getRepository(Partie::class)
+            ->find($partie_id);
+
         $conditionPouvoirPartie = new ConditionPouvoirPartie();
         $form = $this->createForm(ConditionPouvoirPartieType::class, $conditionPouvoirPartie);
         $form->handleRequest($request);
@@ -37,11 +48,12 @@ class ConditionPouvoirPartieController extends AbstractController
             $em->persist($conditionPouvoirPartie);
             $em->flush();
 
-            return $this->redirectToRoute('partie_index');
+            return $this->redirectToRoute('partie_show', ['id'=>$partie_id]);
         }
 
         return $this->render('condition_pouvoir_partie/new.html.twig', [
             'condition_pouvoir_partie' => $conditionPouvoirPartie,
+            'partie_courante' => $partie_courante,
             'form' => $form->createView(),
         ]);
     }

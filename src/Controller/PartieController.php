@@ -6,6 +6,7 @@ use App\Entity\Partie;
 use App\Form\PartieType;
 use App\Repository\PartieRepository;
 use App\Repository\ActeurPartieRepository;
+use App\Repository\PouvoirPartieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,28 +21,23 @@ class PartieController extends AbstractController
     /**
      * @Route("/", name="partie_index", methods="GET")
      */
-    public function index(PartieRepository $partieRepository, ActeurPartieRepository $acteurPartieRepository): Response
+    public function index(PartieRepository $partieRepository): Response
     {
-      $session = new Session();
-      //si aucune partie n'est choisie, on retourne à l'index
-      if($session->get('partie_courante') == null){
-        return $this->redirectToRoute('index');
-      }
+        return $this->redirectToRoute('partie_liste');
+    }
 
 
-      $partie = $this->getDoctrine()
-          ->getRepository(Partie::class)
-          ->find($session->get('partie_courante'));
-
-                  dump($partie);
-
+    /**
+     * @Route("/liste", name="partie_liste", methods="GET")
+     */
+    public function liste(PartieRepository $partieRepository): Response
+    {
         return $this->render('partie/index.html.twig', [
-          'parties' => $partieRepository->findAll(),
-          'acteurs' => $acteurPartieRepository->findBy(['partie' => $partie]),
-          'partie_courante' => $partie
+          'parties' => $partieRepository->findAll()
         ]);
 
     }
+
 
     /**
      * @Route("/new", name="partie_new", methods="GET|POST")
@@ -61,7 +57,7 @@ class PartieController extends AbstractController
             $em->persist($partie);
             $em->flush();
 
-            return $this->redirectToRoute('partie_index');
+            return $this->redirectToRoute('partie_liste');
         }
 
         return $this->render('partie/new.html.twig', [
@@ -73,13 +69,20 @@ class PartieController extends AbstractController
     /**
      * @Route("/{id}", name="partie_show", methods="GET")
      */
-    public function show(Partie $partie): Response
+    public function show(Partie $partie_courante,
+    ActeurPartieRepository $acteurPartieRepository,
+    PouvoirPartieRepository $pouvoirPartieRepository): Response
     {
         $session = new Session();
-        $session->set('partie_courante', $partie->getId());
+        $session->set('partie_courante', $partie_courante->getId());
 
-        return $this->render('partie/show.html.twig', ['partie' => $partie]);
+        return $this->render('partie/show.html.twig', [
+          'partie_courante' => $partie_courante,
+          'acteurs' => $acteurPartieRepository->findBy(['partie' => $partie_courante]),
+          'pouvoir_parties' => $pouvoirPartieRepository->findBy(['partie' => $partie_courante])
+        ]);
     }
+
 
     /**
      * @Route("/{id}/edit", name="partie_edit", methods="GET|POST")
@@ -112,6 +115,6 @@ class PartieController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('partie_index');
+        return $this->redirectToRoute('partie_liste');
     }
 }

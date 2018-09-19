@@ -4,23 +4,74 @@
 
 {% block body %}
     <h1>Partie</h1>
-
+    <h2>Partie en cours</h2>
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ partie.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ partie.nom }}</td>
+                <td>{{ partie_courante.nom }}</td>
+                <td><a href="{{ path('partie_index') }}">Liste des parties</a></td>
+                <td><a href="{{ path('partie_edit', {'id': partie_courante.id}) }}">Editer la partie en cours</a></td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('partie_index') }}">back to list</a>
 
-    <a href="{{ path('partie_edit', {'id': partie.id}) }}">edit</a>
+    <!--  <a href="{{ path('partie_new') }}">Create new</a> -->
+      <br>
+      <h2>Acteurs de la partie en cours</h2>
+      <table class="table">
+          <thead>
+              <tr>
+                  <th>Nom</th>
+                  <th>Nb Individus</th>
+                  <th>Actions</th>
+                  <th>Pouvoirs de l'acteur</th>
+                  <th>Désigné par</th>
+              </tr>
+          </thead>
+          <tbody>
+          {% for acteur_partie in acteurs %}
+              <tr>
+                  <td>{{ acteur_partie.nom }}</td>
+                  <td>{{ acteur_partie.nombreIndividus }}</td>
+                  <td>
+                      <a href="{{ path('acteur_partie_show', {'id': acteur_partie.id}) }}">show</a>
+                      <a href="{{ path('acteur_partie_edit', {'id': acteur_partie.id}) }}">edit</a>
+                  </td>
+                  <td>
+                    <ul>
+                      {% for pouvoirs_acteur in acteur_partie.pouvoirParties %}
+                      <li>{{ pouvoirs_acteur }}</li>
+                      {% endfor %}
+                    </ul>
+                  </td>
+                  <td>
+                    <ul>
+                      {% for acteur_designe in acteur_partie.acteursDesignes %}
+                      <li>{{ acteur_designe.designation }} par {{ acteur_designe.acteurRecepteur }}</li>
+                      {% endfor %}
+                    </ul>
+                  </td>
+              </tr>
+          {% else %}
+              <tr>
+                  <td colspan="4">pas d'acteur</td>
+              </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+      <a href="{{ path('acteur_partie_new') }}">Create new acteur</a>
 
-    {{ include('partie/_delete_form.html.twig') }}
+      <br>
+
+      {% if acteurs|length > 0 %}
+      <a href="{{ path('pouvoir_partie_new') }}">Create new pouvoir</a>
+      {% endif %}
+
+      <br>
+
+      {% if acteurs|length > 1 %}
+      <a href="{{ path('designation_partie_new') }}">Create new désignation</a>
+      {% endif %}
+
 {% endblock %}

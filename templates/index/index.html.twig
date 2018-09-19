@@ -4,11 +4,7 @@
 
 {% block body %}
     <h1>Index</h1>
-    <ul>
-    {% for partie in parties %}
-      <li><a href="{{ path('partie_show', {'id': partie.id}) }}">{{partie.nom}}</a> </li>
-    {% endfor %}
-    </ul>
+
     {% if not app.user %}
       <p>
         <a href="{{ path('user_registration') }}"> <class="button">S'enregistrer</a>
@@ -30,7 +26,7 @@
         Nom : {{ app.user.username }}
       </p>
       <p>
-        Nom : {{ app.user.email }}
+        Mail : {{ app.user.email }}
       </p>
       <p>
         Vous avez
