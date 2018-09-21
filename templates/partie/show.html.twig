@@ -48,7 +48,7 @@
                   <td>
                     <ul>
                       {% for acteur_designe in acteur_partie.acteursDesignes %}
-                      <a href="{{ path('designation_partie_show', {'id':  acteur_designe.id}) }}"<li>{{ acteur_designe.designation }} par {{ acteur_designe.acteurRecepteur }}</li>
+                      <a href="{{ path('designation_partie_show', {'id':  acteur_designe.id}) }}"<li>{{ acteur_designe.designation }} par {{ acteur_designe.acteurDesignant }}</li>
                       {% endfor %}
                     </ul>
                   </td>
