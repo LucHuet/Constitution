@@ -41,14 +41,15 @@
                   <td>
                     <ul>
                       {% for pouvoirs_acteur in acteur_partie.pouvoirParties %}
-                      <li>{{ pouvoirs_acteur }}</li>
+                      <a href="{{ path('pouvoir_partie_show', {'id': pouvoirs_acteur.id}) }}"><li>{{ pouvoirs_acteur }}</li></a>
                       {% endfor %}
                     </ul>
                   </td>
                   <td>
                     <ul>
                       {% for acteur_designe in acteur_partie.acteursDesignes %}
-                      <li>{{ acteur_designe.designation }} par {{ acteur_designe.acteurRecepteur }}</li>
+                      {{dump(acteur_designe)}}
+                      <a href="{{ path('designation_partie_show', {'id':  acteur_designe.id}) }}"<li>{{ acteur_designe.designation }} par {{ acteur_designe.acteurRecepteur }}</li>
                       {% endfor %}
                     </ul>
                   </td>
