@@ -35,17 +35,17 @@ class ActeurPartie
     private $partie;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\PouvoirPartie", mappedBy="acteurPossedant")
+     * @ORM\ManyToMany(targetEntity="App\Entity\PouvoirPartie", mappedBy="acteurPossedant", cascade={"remove"})
      */
     private $pouvoirParties;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\DesignationPartie", mappedBy="acteurDesigne")
+     * @ORM\OneToMany(targetEntity="App\Entity\DesignationPartie", mappedBy="acteurDesigne", cascade={"remove"})
      */
     private $acteursDesignes;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\DesignationPartie", mappedBy="acteurDesignant")
+     * @ORM\OneToMany(targetEntity="App\Entity\DesignationPartie", mappedBy="acteurDesignant", cascade={"remove"})
      */
     private $acteursDesignants;
 
