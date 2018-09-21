@@ -40,12 +40,12 @@ class ActeurPartie
     private $pouvoirParties;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\DesignationPartie", mappedBy="ActeurDestinataire")
+     * @ORM\OneToMany(targetEntity="App\Entity\DesignationPartie", mappedBy="acteurDesigne")
      */
     private $acteursDesignes;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\DesignationPartie", mappedBy="acteurRecepteur")
+     * @ORM\OneToMany(targetEntity="App\Entity\DesignationPartie", mappedBy="acteurDesignant")
      */
     private $acteursDesignants;
 
@@ -151,7 +151,7 @@ class ActeurPartie
     {
         if (!$this->acteursDesignes->contains($acteursDesigne)) {
             $this->acteursDesignes[] = $acteursDesigne;
-            $acteursDesigne->setActeurDestinataire($this);
+            $acteursDesigne->setActeurDesigne($this);
         }
 
         return $this;
@@ -162,8 +162,8 @@ class ActeurPartie
         if ($this->acteursDesignes->contains($acteursDesigne)) {
             $this->acteursDesignes->removeElement($acteursDesigne);
             // set the owning side to null (unless already changed)
-            if ($acteursDesigne->getActeurDestinataire() === $this) {
-                $acteursDesigne->setActeurDestinataire(null);
+            if ($acteursDesigne->getActeurDesigne() === $this) {
+                $acteursDesigne->setActeurDesigne(null);
             }
         }
 
