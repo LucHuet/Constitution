@@ -22,7 +22,9 @@ class ActeurPartieController extends AbstractController
      */
     public function index(ActeurPartieRepository $acteurPartieRepository): Response
     {
-        return $this->render('acteur_partie/index.html.twig', ['acteur_parties' => $acteurPartieRepository->findAll()]);
+
+        return $this->render('acteur_partie/index.html.twig',
+                            ['acteur_parties' => $acteurPartieRepository->findAll()]);
     }
 
     /**
@@ -40,7 +42,7 @@ class ActeurPartieController extends AbstractController
           return $this->redirectToRoute('index');
         }
 
-        $partie = $this->getDoctrine()
+        $partie_courante = $this->getDoctrine()
             ->getRepository(Partie::class)
             ->find($session->get('partie_courante'));
 
@@ -50,7 +52,7 @@ class ActeurPartieController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $acteurPartie->setPartie($partie);
+            $acteurPartie->setPartie($partie_courante);
             $em->persist($acteurPartie);
             $em->flush();
 
@@ -59,6 +61,7 @@ class ActeurPartieController extends AbstractController
 
         return $this->render('acteur_partie/new.html.twig', [
             'acteur_partie' => $acteurPartie,
+            'partie_courante' => $partie_courante,
             'form' => $form->createView(),
         ]);
     }
