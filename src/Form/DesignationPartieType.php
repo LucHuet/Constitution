@@ -14,9 +14,8 @@ class DesignationPartieType extends AbstractType
         $builder
             ->add('nom')
             ->add('designation')
-            ->add('ActeurDestinataire')
-            ->add('acteurRecepteur')
-            //->add('conditionDesignation')
+            ->add('acteurDesigne')
+            ->add('acteurDesignant')
         ;
     }
 

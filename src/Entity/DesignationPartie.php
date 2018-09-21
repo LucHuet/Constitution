@@ -31,18 +31,13 @@ class DesignationPartie
      * @ORM\ManyToOne(targetEntity="App\Entity\ActeurPartie", inversedBy="acteursDesignes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $ActeurDestinataire;
+    private $acteurDesigne;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ActeurPartie", inversedBy="acteursDesignants")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $acteurRecepteur;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ConditionDesignationPartie", cascade={"persist", "remove"})
-     */
-    private $conditionDesignation;
+    private $acteurDesignant;
 
     public function getId(): ?int
     {
@@ -73,38 +68,26 @@ class DesignationPartie
         return $this;
     }
 
-    public function getActeurDestinataire(): ?ActeurPartie
+    public function getActeurDesigne(): ?ActeurPartie
     {
-        return $this->ActeurDestinataire;
+        return $this->acteurDesigne;
     }
 
-    public function setActeurDestinataire(?ActeurPartie $ActeurDestinataire): self
+    public function setActeurDesigne(?ActeurPartie $acteurDesigne): self
     {
-        $this->ActeurDestinataire = $ActeurDestinataire;
+        $this->acteurDesigne = $acteurDesigne;
 
         return $this;
     }
 
-    public function getActeurRecepteur(): ?ActeurPartie
+    public function getActeurDesignant(): ?ActeurPartie
     {
-        return $this->acteurRecepteur;
+        return $this->acteurDesignant;
     }
 
-    public function setActeurRecepteur(?ActeurPartie $acteurRecepteur): self
+    public function setActeurDesignant(?ActeurPartie $acteurDesignant): self
     {
-        $this->acteurRecepteur = $acteurRecepteur;
-
-        return $this;
-    }
-
-    public function getConditionDesignation(): ?ConditionDesignationPartie
-    {
-        return $this->conditionDesignation;
-    }
-
-    public function setConditionDesignation(?ConditionDesignationPartie $conditionDesignation): self
-    {
-        $this->conditionDesignation = $conditionDesignation;
+        $this->acteurDesignant = $acteurDesignant;
 
         return $this;
     }
