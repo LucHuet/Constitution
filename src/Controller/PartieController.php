@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
+use App\Service\CheckStepService;
 
 /**
  * @Route("/partie")
@@ -42,10 +43,10 @@ class PartieController extends AbstractController
     /**
      * @Route("/new", name="partie_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, CheckStepService $checkStep): Response
     {
-        if($this->getUser() == null){
-          return $this->redirectToRoute('index');
+        if($checkStep->checkLogin() != null){
+          return $this->redirectToRoute($checkStep->checkLogin());
         }
         $partie = new Partie();
         $form = $this->createForm(PartieType::class, $partie);
@@ -74,7 +75,7 @@ class PartieController extends AbstractController
     PouvoirPartieRepository $pouvoirPartieRepository): Response
     {
         $session = new Session();
-        $session->set('partie_courante', $partie_courante->getId());
+        $session->set('partie_courante_id', $partie_courante->getId());
 
         return $this->render('partie/show.html.twig', [
           'partie_courante' => $partie_courante,

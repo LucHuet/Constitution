@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Entity\Partie;
+use App\Service\CheckStepService;
 
 /**
  * @Route("/designation/partie")
@@ -28,14 +29,18 @@ class DesignationPartieController extends AbstractController
     /**
      * @Route("/new", name="designation_partie_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, CheckStepService $checkStep): Response
     {
+        if($checkStep->ckeck2Acteurs() != null){
+          return $this->redirectToRoute($checkStep->ckeck2Acteurs());
+        }
+
         $session = new Session();
-        $partie_id = $session->get('partie_courante');
+        $partie_courante_id = $session->get('partie_courante_id');
 
         $partie_courante = $this->getDoctrine()
             ->getRepository(Partie::class)
-            ->find($partie_id);
+            ->find($partie_courante_id);
 
         $designationPartie = new DesignationPartie();
         $form = $this->createForm(DesignationPartieType::class, $designationPartie);
@@ -46,7 +51,7 @@ class DesignationPartieController extends AbstractController
             $em->persist($designationPartie);
             $em->flush();
 
-            return $this->redirectToRoute('partie_show', ['id' => $partie_id]);
+            return $this->redirectToRoute('partie_show', ['id' => $partie_courante_id]);
         }
 
         return $this->render('designation_partie/new.html.twig', [
