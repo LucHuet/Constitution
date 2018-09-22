@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Entity\Partie;
+use App\Service\CheckStepService;
 
 /**
  * @Route("/acteur")
@@ -30,21 +31,16 @@ class ActeurPartieController extends AbstractController
     /**
      * @Route("/new", name="acteur_partie_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, CheckStepService $checkStep): Response
     {
-        //si l'utilisateur n'est pas loggé, on retourne au login
-        if($this->getUser() == null){
-          return $this->redirectToRoute('login');
-        }
-        $session = new Session();
-        //si aucune partie n'est choisie, on retourne à l'index
-        if($session->get('partie_courante') == null){
-          return $this->redirectToRoute('index');
+        if($checkStep->checkPartie() != null){
+          return $this->redirectToRoute($checkStep->checkPartie());
         }
 
+        $session = new Session();
         $partie_courante = $this->getDoctrine()
             ->getRepository(Partie::class)
-            ->find($session->get('partie_courante'));
+            ->find($session->get('partie_courante_id'));
 
         $acteurPartie = new ActeurPartie();
         $form = $this->createForm(ActeurPartieType::class, $acteurPartie);

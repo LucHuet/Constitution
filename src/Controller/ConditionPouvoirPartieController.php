@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Entity\Partie;
 use App\Repository\ActeurPartieRepository;
+use App\Service\CheckStepService;
 
 /**
  * @Route("/condition/pouvoir/partie")
@@ -29,15 +30,18 @@ class ConditionPouvoirPartieController extends AbstractController
     /**
      * @Route("/new", name="condition_pouvoir_partie_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, CheckStepService $checkStep): Response
     {
+        if($checkStep->checkPouvoir() != null){
+          return $this->redirectToRoute($checkStep->checkPouvoir());
+        }
 
         $session = new Session();
-        $partie_id = $session->get('partie_courante');
+        $partie_courante_id = $session->get('partie_courante_id');
 
         $partie_courante = $this->getDoctrine()
             ->getRepository(Partie::class)
-            ->find($partie_id);
+            ->find($partie_courante_id);
 
         $conditionPouvoirPartie = new ConditionPouvoirPartie();
         $form = $this->createForm(ConditionPouvoirPartieType::class, $conditionPouvoirPartie);
