@@ -14,9 +14,8 @@
             </tr>
         </thead>
         <tbody>
-        {% for partie in parties %}
+        {% for partie in app.user.parties %}
             <tr>
-                <td>{{ partie.id }}</td>
                 <td><a href="{{ path('partie_show', {'id': partie.id}) }}">{{ partie.nom }}</a></td>
                 <td>
                     <a href="{{ path('partie_show', {'id': partie.id}) }}">show</a>
