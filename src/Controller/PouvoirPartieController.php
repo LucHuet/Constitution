@@ -57,6 +57,7 @@ class PouvoirPartieController extends AbstractController
         return $this->render('pouvoir_partie/new.html.twig', [
             'pouvoir_partie' => $pouvoirPartie,
             'form' => $form->createView(),
+            'partie_courante_id' => $partie->getId(),
         ]);
     }
 
