@@ -70,17 +70,17 @@ class PartieController extends AbstractController
     /**
      * @Route("/{id}", name="partie_show", methods="GET")
      */
-    public function show(Partie $partie_courante,
+    public function show(Partie $partieCourante,
     ActeurPartieRepository $acteurPartieRepository,
     PouvoirPartieRepository $pouvoirPartieRepository): Response
     {
         $session = new Session();
-        $session->set('partie_courante_id', $partie_courante->getId());
+        $session->set('partieCourante', $partieCourante);
 
         return $this->render('partie/show.html.twig', [
-          'partie_courante' => $partie_courante,
-          'acteurs' => $acteurPartieRepository->findBy(['partie' => $partie_courante]),
-          'pouvoir_parties' => $pouvoirPartieRepository->findBy(['partie' => $partie_courante])
+          'partieCourante' => $partieCourante,
+          'acteurs' => $acteurPartieRepository->findBy(['partie' => $partieCourante]),
+          'pouvoir_parties' => $pouvoirPartieRepository->findBy(['partie' => $partieCourante])
         ]);
     }
 

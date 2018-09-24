@@ -38,9 +38,7 @@ class ActeurPartieController extends AbstractController
         }
 
         $session = new Session();
-        $partie_courante = $this->getDoctrine()
-            ->getRepository(Partie::class)
-            ->find($session->get('partie_courante_id'));
+        $partieCourante = $session->get('partieCourante');
 
         $acteurPartie = new ActeurPartie();
         $form = $this->createForm(ActeurPartieType::class, $acteurPartie);
@@ -48,7 +46,8 @@ class ActeurPartieController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $acteurPartie->setPartie($partie_courante);
+            $partieCourante = $em->merge($partieCourante);
+            $acteurPartie->setPartie($partieCourante);
             $em->persist($acteurPartie);
             $em->flush();
 
@@ -57,7 +56,7 @@ class ActeurPartieController extends AbstractController
 
         return $this->render('acteur_partie/new.html.twig', [
             'acteur_partie' => $acteurPartie,
-            'partie_courante' => $partie_courante,
+            'partieCourante' => $partieCourante,
             'form' => $form->createView(),
         ]);
     }
