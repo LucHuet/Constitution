@@ -48,21 +48,22 @@ class PartieController extends AbstractController
         if($checkStep->checkLogin() != null){
           return $this->redirectToRoute($checkStep->checkLogin());
         }
-        $partie = new Partie();
-        $form = $this->createForm(PartieType::class, $partie);
+        $partieCourante = new Partie();
+        $form = $this->createForm(PartieType::class, $partieCourante);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $partie->setUser($this->getUser());
+            $partieCourante->setUser($this->getUser());
             $em = $this->getDoctrine()->getManager();
-            $em->persist($partie);
+            $em->persist($partieCourante);
             $em->flush();
-
-            return $this->redirectToRoute('partie_liste');
+            $session = new Session();
+            $session->set('partieCourante', $partieCourante);
+            return $this->redirectToRoute('partie_show', ['id' =>$partieCourante->getId()]);
         }
 
         return $this->render('partie/new.html.twig', [
-            'partie' => $partie,
+            'partie' => $partieCourante,
             'form' => $form->createView(),
         ]);
     }
