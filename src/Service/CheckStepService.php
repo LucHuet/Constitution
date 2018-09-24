@@ -58,13 +58,13 @@ class CheckStepService
 
       $session = new Session();
       //on verifie qu'il y a une partie en cours
-      if(null == $session->get('partie_courante')){
+      if(null == $session->get('partieCourante')){
         return 'partie_liste';
       }
 
       //on verifie que la partie en cours est bien à l'utilisateur courant
-      $partie_courante = $session->get('partie_courante');
-      if($partie_courante->getUser()->getId() != $this->token_storage->getToken()->getUser()->getId())
+      $partieCourante = $session->get('partieCourante');
+      if($partieCourante->getUser()->getId() != $this->token_storage->getToken()->getUser()->getId())
       {
         return 'index';
       }
@@ -87,8 +87,8 @@ class CheckStepService
       }
 
       $session = new Session();
-      $partie_courante = $session->get('partie_courante');
-      $acteurs = $this->acteurPartieRepository->findBy(['partie' => $partie_courante]);
+      $partieCourante = $session->get('partieCourante');
+      $acteurs = $this->acteurPartieRepository->findBy(['partie' => $partieCourante]);
       if(count($acteurs) < 2)
       {
         return 'acteur_partie_new';
@@ -113,9 +113,9 @@ class CheckStepService
       }
 
       $session = new Session();
-      $partie_courante = $session->get('partie_courante');
+      $partieCourante = $session->get('partieCourante');
       //merge à faire ?
-      $acteurs = $this->acteurPartieRepository->findBy(['partie' => $partie_courante]);
+      $acteurs = $this->acteurPartieRepository->findBy(['partie' => $partieCourante]);
       if(count($acteurs) < 1)
       {
         return 'acteur_partie_new';
@@ -136,8 +136,8 @@ class CheckStepService
     public function checkPouvoir()
     {
       $session = new Session();
-      $partie_courante = $session->get('partie_courante');
-      $pouvoirsPartie = $this->pouvoirPartieRepository->findBy(['partie' => $partie_courante]);
+      $partieCourante = $session->get('partieCourante');
+      $pouvoirsPartie = $this->pouvoirPartieRepository->findBy(['partie' => $partieCourante]);
       if(count($pouvoirsPartie) < 1)
       {
         return 'pouvoir_partie_new';

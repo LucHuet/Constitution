@@ -37,17 +37,17 @@ class PouvoirPartieController extends AbstractController
         }
 
         $session = new Session();
-        $partie_courante = $session->get('partie_courante');
+        $partieCourante = $session->get('partieCourante');
 
         $pouvoirPartie = new PouvoirPartie();
-        $pouvoirPartie->setPartie($partie_courante); //util ?
+        $pouvoirPartie->setPartie($partieCourante); //util ?
         $form = $this->createForm(PouvoirPartieType::class, $pouvoirPartie);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $partie_courante = $em->merge($partie_courante);
-            $pouvoirPartie->setPartie($partie_courante);
+            $partieCourante = $em->merge($partieCourante);
+            $pouvoirPartie->setPartie($partieCourante);
             $em->persist($pouvoirPartie);
             $em->flush();
 

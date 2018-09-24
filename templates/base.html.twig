@@ -13,8 +13,8 @@
                <a href="{{ path('logout') }}"> <class="button">Logout</a>
                <a href="{{ path('partie_new') }}"> <class="button">Créer une partie</a>
                <a>Utilisateur : {{ app.user.username }}</a>
-               {% if partie_courante is defined %}
-                   <a href="{{ path('partie_show', {'id':partie_courante.id}) }}">Partie en cours : {{partie_courante.nom}}</a>
+               {% if partieCourante is defined %}
+                   <a href="{{ path('partie_show', {'id':partieCourante.id}) }}">Partie en cours : {{partieCourante.nom}}</a>
                    <a href="{{ path('partie_index') }}">Changer de partie</a>
                {% endif %}
             {% endif %}
