@@ -18,15 +18,17 @@
             <tr>
                 <td><a href="{{ path('partie_show', {'id': partie.id}) }}">{{ partie.nom }}</a></td>
                 <td>
-                    <a href="{{ path('partie_show', {'id': partie.id}) }}">show</a>
                     <a href="{{ path('partie_edit', {'id': partie.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="3">Pas de partie en cours</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    <p>
+      <a href="{{ path('partie_new') }}"> <class="button">Créer une partie</a>
+    </p>
 {% endblock %}
