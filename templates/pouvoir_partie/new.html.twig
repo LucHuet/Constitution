@@ -7,6 +7,6 @@
 
     {{ include('pouvoir_partie/_form.html.twig') }}
 
-    <a href="{{ path('partie_show', {'id':partie_courante_id}) }}">Cet acteur n'a pas de pouvoir</a>
+    <a href="{{ path('partie_show', {'id':partieCouranteId}) }}">Cet acteur n'a pas de pouvoir</a>
     <a href="{{ path('pouvoir_partie_index') }}">back to list</a>
 {% endblock %}

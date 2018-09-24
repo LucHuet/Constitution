@@ -95,9 +95,7 @@ class ActeurPartieController extends AbstractController
     public function delete(Request $request, ActeurPartie $acteurPartie): Response
     {
       $session = new Session();
-      $partie = $this->getDoctrine()
-          ->getRepository(Partie::class)
-          ->find($session->get('partie_courante_id'));
+      $partieCourante = $session->get('partieCourante');
 
         if ($this->isCsrfTokenValid('delete'.$acteurPartie->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
@@ -105,6 +103,6 @@ class ActeurPartieController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('partie_show', ['id' => $partie->getId()]);
+        return $this->redirectToRoute('partie_show', ['id' => $partieCourante->getId()]);
     }
 }
