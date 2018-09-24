@@ -37,11 +37,7 @@ class ConditionPouvoirPartieController extends AbstractController
         }
 
         $session = new Session();
-        $partie_courante_id = $session->get('partie_courante_id');
-
-        $partie_courante = $this->getDoctrine()
-            ->getRepository(Partie::class)
-            ->find($partie_courante_id);
+        $partie_courante = $session->get('partie_courante');
 
         $conditionPouvoirPartie = new ConditionPouvoirPartie();
         $form = $this->createForm(ConditionPouvoirPartieType::class, $conditionPouvoirPartie);
@@ -52,7 +48,7 @@ class ConditionPouvoirPartieController extends AbstractController
             $em->persist($conditionPouvoirPartie);
             $em->flush();
 
-            return $this->redirectToRoute('partie_show', ['id'=>$partie_id]);
+            return $this->redirectToRoute('partie_show', ['id'=>$partie_courante->getId()]);
         }
 
         return $this->render('condition_pouvoir_partie/new.html.twig', [

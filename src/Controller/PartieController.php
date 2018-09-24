@@ -75,7 +75,7 @@ class PartieController extends AbstractController
     PouvoirPartieRepository $pouvoirPartieRepository): Response
     {
         $session = new Session();
-        $session->set('partie_courante_id', $partie_courante->getId());
+        $session->set('partie_courante', $partie_courante);
 
         return $this->render('partie/show.html.twig', [
           'partie_courante' => $partie_courante,

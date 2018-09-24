@@ -5,25 +5,22 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Repository\ActeurPartieRepository;
 use App\Repository\PouvoirPartieRepository;
-use App\Repository\PartieRepository;
 
 class CheckStepService
 {
     private $token_storage;
     private $acteurPartieRepository;
-    private $partieRepository;
     private $pouvoirPartieRepository;
 
-    function __construct(TokenStorageInterface $token_storage,
-    ActeurPartieRepository $acteurPartieRepository,
-    PartieRepository $partieRepository,
-    PouvoirPartieRepository $pouvoirPartieRepository)
+    function __construct(
+      TokenStorageInterface $token_storage,
+      ActeurPartieRepository $acteurPartieRepository,
+      PouvoirPartieRepository $pouvoirPartieRepository
+    )
     {
       $this->token_storage = $token_storage;
       $this->acteurPartieRepository = $acteurPartieRepository;
-      $this->partieRepository = $partieRepository;
       $this->pouvoirPartieRepository = $pouvoirPartieRepository;
-
     }
 
     /**
@@ -38,6 +35,7 @@ class CheckStepService
     {
       if('anon.' == $this->token_storage->getToken()->getUser())
       {
+        dump("retour à l'index depuis checkLogin");
         return 'index';
       }
         return null;
@@ -60,16 +58,13 @@ class CheckStepService
 
       $session = new Session();
       //on verifie qu'il y a une partie en cours
-      if(null == $session->get('partie_courante_id')){
+      if(null == $session->get('partie_courante')){
         return 'partie_liste';
       }
 
       //on verifie que la partie en cours est bien à l'utilisateur courant
-      $partie_courante_id = $session->get('partie_courante_id');
-      $partie_courante = $this->partieRepository->find($partie_courante_id);
-      dump($partie_courante->getUser());
-      dump($this->token_storage->getToken()->getUser());
-      if($partie_courante->getUser() != $this->token_storage->getToken()->getUser())
+      $partie_courante = $session->get('partie_courante');
+      if($partie_courante->getUser()->getId() != $this->token_storage->getToken()->getUser()->getId())
       {
         return 'index';
       }
@@ -92,14 +87,12 @@ class CheckStepService
       }
 
       $session = new Session();
-      $partie_courante_id = $session->get('partie_courante_id');
-      $partie_courante = $this->partieRepository->find($partie_courante_id);
+      $partie_courante = $session->get('partie_courante');
       $acteurs = $this->acteurPartieRepository->findBy(['partie' => $partie_courante]);
       if(count($acteurs) < 2)
       {
         return 'acteur_partie_new';
       }
-
       return null;
 
     }
@@ -120,8 +113,8 @@ class CheckStepService
       }
 
       $session = new Session();
-      $partie_courante_id = $session->get('partie_courante_id');
-      $partie_courante = $this->partieRepository->find($partie_courante_id);
+      $partie_courante = $session->get('partie_courante');
+      //merge à faire ?
       $acteurs = $this->acteurPartieRepository->findBy(['partie' => $partie_courante]);
       if(count($acteurs) < 1)
       {
@@ -143,8 +136,7 @@ class CheckStepService
     public function checkPouvoir()
     {
       $session = new Session();
-      $partie_courante_id = $session->get('partie_courante_id');
-      $partie_courante = $this->partieRepository->find($partie_courante_id);
+      $partie_courante = $session->get('partie_courante');
       $pouvoirsPartie = $this->pouvoirPartieRepository->findBy(['partie' => $partie_courante]);
       if(count($pouvoirsPartie) < 1)
       {

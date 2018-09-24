@@ -32,24 +32,22 @@ class PouvoirPartieController extends AbstractController
      */
     public function new(Request $request, CheckStepService $checkStep): Response
     {
-      if($checkStep->ckeckActeur() != null){
-        return $this->redirectToRoute($checkStep->ckeckActeur());
-      }
+        if($checkStep->ckeckActeur() != null){
+          return $this->redirectToRoute($checkStep->ckeckActeur());
+        }
 
-      $session = new Session();
-      $partie = $this->getDoctrine()
-          ->getRepository(Partie::class)
-          ->find($session->get('partie_courante_id'));
-
+        $session = new Session();
+        $partie_courante = $session->get('partie_courante');
 
         $pouvoirPartie = new PouvoirPartie();
-        $pouvoirPartie->setPartie($partie);
+        $pouvoirPartie->setPartie($partie_courante); //util ?
         $form = $this->createForm(PouvoirPartieType::class, $pouvoirPartie);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $pouvoirPartie->setPartie($partie);
+            $partie_courante = $em->merge($partie_courante);
+            $pouvoirPartie->setPartie($partie_courante);
             $em->persist($pouvoirPartie);
             $em->flush();
 

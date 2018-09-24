@@ -36,11 +36,7 @@ class DesignationPartieController extends AbstractController
         }
 
         $session = new Session();
-        $partie_courante_id = $session->get('partie_courante_id');
-
-        $partie_courante = $this->getDoctrine()
-            ->getRepository(Partie::class)
-            ->find($partie_courante_id);
+        $partie_courante = $session->get('partie_courante');
 
         $designationPartie = new DesignationPartie();
         $form = $this->createForm(DesignationPartieType::class, $designationPartie);
@@ -51,7 +47,7 @@ class DesignationPartieController extends AbstractController
             $em->persist($designationPartie);
             $em->flush();
 
-            return $this->redirectToRoute('partie_show', ['id' => $partie_courante_id]);
+            return $this->redirectToRoute('partie_show', ['id' => $partie_courante->getId()]);
         }
 
         return $this->render('designation_partie/new.html.twig', [
