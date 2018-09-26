@@ -5,6 +5,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Repository\ActeurPartieRepository;
 use App\Repository\PouvoirPartieRepository;
+use App\Entity\Partie;
+use App\Entity\ActeurPartie;
 
 class CheckStepService
 {
@@ -36,7 +38,7 @@ class CheckStepService
       if('anon.' == $this->token_storage->getToken()->getUser())
       {
         $session = new Session();
-        $errorMessage = 'Redirection car il n\'y a pas d\'utilisateur';
+        $errorMessage = 'Il n\'y a pas d\'utilisateur connecté';
         if(!in_array($errorMessage,$session->getFlashBag()->peek('notice')))
         {
           $session->getFlashBag()->add('notice', $errorMessage);
@@ -54,47 +56,51 @@ class CheckStepService
      *
      * @return null ou la route appropriée
      */
-    public function checkPartie()
+    public function checkPartie(Partie $partieCourante = null)
     {
-      if(null != $this->checkLogin())
-      {
-        return $this->checkLogin();
-      }
-
-      $session = new Session();
-      //on verifie qu'il y a une partie en cours
-      if(null == $session->get('partieCourante')){
-        $errorMessage = 'Redirection car il n\'y a pas de partie';
-        if(!in_array($errorMessage,$session->getFlashBag()->peek('notice')))
+        // verification que l'utilisateur est loggé
+        if(null != $this->checkLogin())
         {
-          $session->getFlashBag()->add('notice', $errorMessage);
+          return $this->checkLogin();
         }
-        return 'partie_liste';
-      }
 
-      //on verifie que la partie en cours est bien à l'utilisateur courant
-      $partieCourante = $session->get('partieCourante');
-      if($partieCourante->getUser()->getId() != $this->token_storage->getToken()->getUser()->getId())
-      {
-        $errorMessage = 'Redirection car la partie séléctionnée n\'est pas votre partie';
-        if(!in_array($errorMessage,$session->getFlashBag()->peek('notice')))
-        {
-          $session->getFlashBag()->add('notice', $errorMessage);
+        $session = new Session();
+        //on verifie qu'il y a une partie en cours
+        if(null == $session->get('partieCourante')){
+          $errorMessage = 'Veuillez créer une partie pour continuer';
+          if(!in_array($errorMessage,$session->getFlashBag()->peek('notice')))
+          {
+            $session->getFlashBag()->add('notice', $errorMessage);
+          }
+          return 'partie_liste';
         }
-        return 'index';
-      }
-      return null;
+
+        //on verifie que la partie en cours est bien à l'utilisateur courant
+        if(null == $partieCourante)
+        {
+          $partieCourante = $session->get('partieCourante');
+        }
+        if($partieCourante->getUser()->getId() != $this->token_storage->getToken()->getUser()->getId())
+        {
+          $errorMessage = 'Redirection car la partie séléctionnée n\'est pas votre partie';
+          if(!in_array($errorMessage,$session->getFlashBag()->peek('notice')))
+          {
+            $session->getFlashBag()->add('notice', $errorMessage);
+          }
+          return 'partie_liste';
+        }
+        return null;
     }
 
     /**
-     * function ckeck2Acteurs
+     * function check2Acteurs
      *
      * verification qu'une partie a aux moins 2 acteurs
      * si moins de 2 acteurs ont été crées, on doit créer un acteur
      *
      * @return null ou la route appropriée
      */
-    public function ckeck2Acteurs()
+    public function check2Acteurs()
     {
       if(null != $this->checkPartie())
       {
@@ -126,7 +132,7 @@ class CheckStepService
      *
      * @return null ou la route appropriée
      */
-    public function ckeckActeur()
+    public function checkActeur(ActeurPartie $acteur = null)
     {
       if(null != $this->checkPartie())
       {
@@ -135,11 +141,11 @@ class CheckStepService
 
       $session = new Session();
       $partieCourante = $session->get('partieCourante');
-      //merge à faire ?
+
       $acteurs = $this->acteurPartieRepository->findBy(['partie' => $partieCourante]);
+      // on verifie qu'il y a au moins 1 acteur
       if(count($acteurs) < 1)
       {
-        $session = new Session();
         $errorMessage = 'Redirection car il n\'y a pas d\'acteur';
         if(!in_array($errorMessage,$session->getFlashBag()->peek('notice')))
         {
@@ -147,6 +153,19 @@ class CheckStepService
         }
         return 'acteur_partie_new';
       }
+
+      // verification que l'acteur est bien de la partie
+      if(null != $acteur && !in_array($acteur, $acteurs))
+      {
+        $errorMessage = 'Cette acteur n\'est pas de la partie courante';
+        if(!in_array($errorMessage,$session->getFlashBag()->peek('notice')))
+        {
+          $session->getFlashBag()->add('notice', $errorMessage);
+        }
+        return 'acteur_partie_new';
+      }
+
+
 
       return null;
 

@@ -31,8 +31,8 @@ class DesignationPartieController extends AbstractController
      */
     public function new(Request $request, CheckStepService $checkStep): Response
     {
-        if($checkStep->ckeck2Acteurs() != null){
-          return $this->redirectToRoute($checkStep->ckeck2Acteurs());
+        if($checkStep->check2Acteurs() != null){
+          return $this->redirectToRoute($checkStep->check2Acteurs());
         }
 
         $session = new Session();

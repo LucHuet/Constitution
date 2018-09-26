@@ -15,7 +15,7 @@
                <a>Utilisateur : {{ app.user.username }}</a>
                {% if partieCourante is defined %}
                    <a href="{{ path('partie_show', {'id':app.session.get('partieCourante').id}) }}">Partie en cours : {{app.session.get('partieCourante').nom}}</a>
-                   <a href="{{ path('partie_index') }}">Changer de partie</a>
+                   <a href="{{ path('partie_liste') }}">Changer de partie</a>
                {% endif %}
             {% endif %}
             {% if not app.user %}

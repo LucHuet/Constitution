@@ -18,23 +18,40 @@ use App\Service\CheckStepService;
  */
 class ActeurPartieController extends AbstractController
 {
+
+    private $checkStep;
+
+    public function __construct(CheckStepService $checkStep)
+    {
+        $this->checkStep = $checkStep;
+    }
+
     /**
      * @Route("/", name="acteur_partie_index", methods="GET")
      */
     public function index(ActeurPartieRepository $acteurPartieRepository): Response
     {
+        //on verifie la partie actuelle
+        if($this->checkStep->checkPartie() != null){
+          return $this->redirectToRoute($this->checkStep->checkPartie());
+        }
+
+        //on récupere la partie courante afin de n'afficher que les acteurs de la partie courante
+        $session = new Session();
+        $partiCourante = $session->get('partieCourante');
 
         return $this->render('acteur_partie/index.html.twig',
-                            ['acteur_parties' => $acteurPartieRepository->findAll()]);
+                            ['acteur_parties' => $acteurPartieRepository->findBy(['partie' => $partiCourante])]);
     }
 
     /**
      * @Route("/new", name="acteur_partie_new", methods="GET|POST")
      */
-    public function new(Request $request, CheckStepService $checkStep): Response
+    public function new(Request $request): Response
     {
-        if($checkStep->checkPartie() != null){
-          return $this->redirectToRoute($checkStep->checkPartie());
+        //on verifie la partie actuelle
+        if($this->checkStep->checkPartie() != null){
+          return $this->redirectToRoute($this->checkStep->checkPartie());
         }
 
         $session = new Session();
@@ -56,7 +73,6 @@ class ActeurPartieController extends AbstractController
 
         return $this->render('acteur_partie/new.html.twig', [
             'acteur_partie' => $acteurPartie,
-            'partieCourante' => $partieCourante,
             'form' => $form->createView(),
         ]);
     }
@@ -66,6 +82,11 @@ class ActeurPartieController extends AbstractController
      */
     public function show(ActeurPartie $acteurPartie): Response
     {
+        //on verifie que l'acteur est bien de la partie actuelle
+        if($this->checkStep->checkActeur($acteurPartie) != null){
+          return $this->redirectToRoute($this->checkStep->checkActeur($acteurPartie));
+        }
+
         return $this->render('acteur_partie/show.html.twig', ['acteur_partie' => $acteurPartie]);
     }
 
@@ -74,6 +95,11 @@ class ActeurPartieController extends AbstractController
      */
     public function edit(Request $request, ActeurPartie $acteurPartie): Response
     {
+        //on verifie que l'acteur est bien de la partie actuelle
+        if($this->checkStep->checkActeur($acteurPartie) != null){
+          return $this->redirectToRoute($this->checkStep->checkActeur($acteurPartie));
+        }
+            
         $form = $this->createForm(ActeurPartieType::class, $acteurPartie);
         $form->handleRequest($request);
 
