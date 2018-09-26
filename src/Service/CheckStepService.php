@@ -35,7 +35,12 @@ class CheckStepService
     {
       if('anon.' == $this->token_storage->getToken()->getUser())
       {
-        dump("retour à l'index depuis checkLogin");
+        $session = new Session();
+        $errorMessage = 'Redirection car il n\'y a pas d\'utilisateur';
+        if(!in_array($errorMessage,$session->getFlashBag()->peek('notice')))
+        {
+          $session->getFlashBag()->add('notice', $errorMessage);
+        }
         return 'index';
       }
         return null;
@@ -59,6 +64,11 @@ class CheckStepService
       $session = new Session();
       //on verifie qu'il y a une partie en cours
       if(null == $session->get('partieCourante')){
+        $errorMessage = 'Redirection car il n\'y a pas de partie';
+        if(!in_array($errorMessage,$session->getFlashBag()->peek('notice')))
+        {
+          $session->getFlashBag()->add('notice', $errorMessage);
+        }
         return 'partie_liste';
       }
 
@@ -66,6 +76,11 @@ class CheckStepService
       $partieCourante = $session->get('partieCourante');
       if($partieCourante->getUser()->getId() != $this->token_storage->getToken()->getUser()->getId())
       {
+        $errorMessage = 'Redirection car la partie séléctionnée n\'est pas votre partie';
+        if(!in_array($errorMessage,$session->getFlashBag()->peek('notice')))
+        {
+          $session->getFlashBag()->add('notice', $errorMessage);
+        }
         return 'index';
       }
       return null;
@@ -91,6 +106,12 @@ class CheckStepService
       $acteurs = $this->acteurPartieRepository->findBy(['partie' => $partieCourante]);
       if(count($acteurs) < 2)
       {
+        $session = new Session();
+        $errorMessage = 'Redirection car il faut 2 acteurs';
+        if(!in_array($errorMessage,$session->getFlashBag()->peek('notice')))
+        {
+          $session->getFlashBag()->add('notice', $errorMessage);
+        }
         return 'acteur_partie_new';
       }
       return null;
@@ -118,6 +139,12 @@ class CheckStepService
       $acteurs = $this->acteurPartieRepository->findBy(['partie' => $partieCourante]);
       if(count($acteurs) < 1)
       {
+        $session = new Session();
+        $errorMessage = 'Redirection car il n\'y a pas d\'acteur';
+        if(!in_array($errorMessage,$session->getFlashBag()->peek('notice')))
+        {
+          $session->getFlashBag()->add('notice', $errorMessage);
+        }
         return 'acteur_partie_new';
       }
 
