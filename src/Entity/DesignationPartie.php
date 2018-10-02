@@ -35,7 +35,7 @@ class DesignationPartie
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ActeurPartie", inversedBy="acteursDesignants")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $acteurDesignant;
 

@@ -43,7 +43,7 @@ class DesignationPartieType extends AbstractType
         ));
 
         $form->add('acteurDesignant', EntityType::class, array(
-            'required' => true,
+            'required' => false,
             'multiple' => false,
             'placeholder' => 'Selectionnez l\'acteur du pouvoir ...',
             'class' => 'App:ActeurPartie',

@@ -184,6 +184,7 @@ class CheckStepService
       $session = new Session();
       $partieCourante = $session->get('partieCourante');
       $pouvoirsPartie = $this->pouvoirPartieRepository->findBy(['partie' => $partieCourante]);
+      dump($pouvoirsPartie);
       if(count($pouvoirsPartie) < 1)
       {
         return 'pouvoir_partie_new';

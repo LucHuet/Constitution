@@ -84,8 +84,8 @@ class PartieController extends AbstractController
     ): Response
     {
         // verification de la partie courante
-        if($this->checkStep->checkPartie($partieCourante) != null){
-          return $this->redirectToRoute($this->checkStep->checkPartie($partieCourante));
+        if($this->checkStep->checkLogin($partieCourante) != null){
+          return $this->redirectToRoute($this->checkStep->checkLogin($partieCourante));
         }
 
         $session = new Session();
@@ -105,8 +105,8 @@ class PartieController extends AbstractController
     public function edit(Request $request, Partie $partieCourante): Response
     {
         // verification de la partie courante
-        if($this->checkStep->checkPartie($partieCourante) != null){
-          return $this->redirectToRoute($this->checkStep->checkPartie($partieCourante));
+        if($this->checkStep->checkLogin($partieCourante) != null){
+          return $this->redirectToRoute($this->checkStep->checkLogin($partieCourante));
         }
 
         $form = $this->createForm(PartieType::class, $partieCourante);
@@ -130,8 +130,8 @@ class PartieController extends AbstractController
     public function delete(Request $request, Partie $partieCourante): Response
     {
         // verification de la partie courante
-        if($this->checkStep->checkPartie($partieCourante) != null){
-          return $this->redirectToRoute($this->checkStep->checkPartie($partieCourante));
+        if($this->checkStep->checkLogin($partieCourante) != null){
+          return $this->redirectToRoute($this->checkStep->checkLogin($partieCourante));
         }
 
         if ($this->isCsrfTokenValid('delete'.$partieCourante->getId(), $request->request->get('_token'))) {
