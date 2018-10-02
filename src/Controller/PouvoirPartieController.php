@@ -52,17 +52,21 @@ class PouvoirPartieController extends AbstractController
           return $this->redirectToRoute($this->checkStep->checkActeur());
         }
 
+        //recupération de la partie courante
         $session = new Session();
         $partieCourante = $session->get('partieCourante');
+        $em = $this->getDoctrine()->getManager();
+        $partieCourante = $em->merge($partieCourante);
 
         $pouvoirPartie = new PouvoirPartie();
-        $pouvoirPartie->setPartie($partieCourante); //util ?
+        $pouvoirPartie->setPartie($partieCourante);
+
         $form = $this->createForm(PouvoirPartieType::class, $pouvoirPartie);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $partieCourante = $em->merge($partieCourante);
+
+
             $pouvoirPartie->setPartie($partieCourante);
             $em->persist($pouvoirPartie);
             $em->flush();
@@ -81,7 +85,7 @@ class PouvoirPartieController extends AbstractController
      * @Route("/{id}", name="pouvoir_partie_show", methods="GET")
      */
     public function show(PouvoirPartie $pouvoirPartie): Response
-    {
+    {   
         return $this->render('pouvoir_partie/show.html.twig', ['pouvoir_partie' => $pouvoirPartie]);
     }
 

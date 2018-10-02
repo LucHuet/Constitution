@@ -64,9 +64,9 @@ class PouvoirPartieType extends AbstractType
 
     function onPreSetData(FormEvent $event) {
         $pouvoirPartie = $event->getData();
+        dump($pouvoirPartie);
         $form = $event->getForm();
 
-        // When you create a new person, the City is always empty
         $partie = $pouvoirPartie->getPartie() ? $pouvoirPartie->getPartie() : null;
         $this->addElements($form, $partie);
     }
