@@ -39,6 +39,12 @@ class DesignationPartie
      */
     private $acteurDesignant;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Partie", inversedBy="designationParties")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $partie;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -88,6 +94,18 @@ class DesignationPartie
     public function setActeurDesignant(?ActeurPartie $acteurDesignant): self
     {
         $this->acteurDesignant = $acteurDesignant;
+
+        return $this;
+    }
+
+    public function getPartie(): ?Partie
+    {
+        return $this->partie;
+    }
+
+    public function setPartie(?Partie $partie): self
+    {
+        $this->partie = $partie;
 
         return $this;
     }

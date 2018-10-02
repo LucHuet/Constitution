@@ -37,8 +37,11 @@ class DesignationPartieController extends AbstractController
 
         $session = new Session();
         $partieCourante = $session->get('partieCourante');
+        $em = $this->getDoctrine()->getManager();
+        $partieCourante = $em->merge($partieCourante);
 
         $designationPartie = new DesignationPartie();
+        $designationPartie->setPartie($partieCourante);
         $form = $this->createForm(DesignationPartieType::class, $designationPartie);
         $form->handleRequest($request);
 
