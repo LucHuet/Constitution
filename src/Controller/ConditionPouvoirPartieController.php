@@ -45,6 +45,8 @@ class ConditionPouvoirPartieController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $partieCourante = $em->merge($partieCourante);
+            $conditionPouvoirPartie->setPartie($partieCourante);
             $em->persist($conditionPouvoirPartie);
             $em->flush();
 
