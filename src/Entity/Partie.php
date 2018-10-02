@@ -49,12 +49,24 @@ class Partie
      */
     private $pouvoirParties;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\DesignationPartie", mappedBy="partie", orphanRemoval=true)
+     */
+    private $designationParties;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ConditionPouvoirPartie", mappedBy="partie", orphanRemoval=true)
+     */
+    private $conditionPouvoirParties;
+
     public function __construct()
     {
         $this->droitDevoirs = new ArrayCollection();
         $this->valeurPrincipes = new ArrayCollection();
         $this->acteurParties = new ArrayCollection();
         $this->pouvoirParties = new ArrayCollection();
+        $this->designationParties = new ArrayCollection();
+        $this->conditionPouvoirParties = new ArrayCollection();
     }
 
     public function __toString()
@@ -203,6 +215,68 @@ class Partie
             // set the owning side to null (unless already changed)
             if ($pouvoirParty->getPartie() === $this) {
                 $pouvoirParty->setPartie(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DesignationPartie[]
+     */
+    public function getDesignationParties(): Collection
+    {
+        return $this->designationParties;
+    }
+
+    public function addDesignationParty(DesignationPartie $designationParty): self
+    {
+        if (!$this->designationParties->contains($designationParty)) {
+            $this->designationParties[] = $designationParty;
+            $designationParty->setPartie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDesignationParty(DesignationPartie $designationParty): self
+    {
+        if ($this->designationParties->contains($designationParty)) {
+            $this->designationParties->removeElement($designationParty);
+            // set the owning side to null (unless already changed)
+            if ($designationParty->getPartie() === $this) {
+                $designationParty->setPartie(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ConditionPouvoirPartie[]
+     */
+    public function getConditionPouvoirParties(): Collection
+    {
+        return $this->conditionPouvoirParties;
+    }
+
+    public function addConditionPouvoirParty(ConditionPouvoirPartie $conditionPouvoirParty): self
+    {
+        if (!$this->conditionPouvoirParties->contains($conditionPouvoirParty)) {
+            $this->conditionPouvoirParties[] = $conditionPouvoirParty;
+            $conditionPouvoirParty->setPartie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConditionPouvoirParty(ConditionPouvoirPartie $conditionPouvoirParty): self
+    {
+        if ($this->conditionPouvoirParties->contains($conditionPouvoirParty)) {
+            $this->conditionPouvoirParties->removeElement($conditionPouvoirParty);
+            // set the owning side to null (unless already changed)
+            if ($conditionPouvoirParty->getPartie() === $this) {
+                $conditionPouvoirParty->setPartie(null);
             }
         }
 

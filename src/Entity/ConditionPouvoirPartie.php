@@ -32,6 +32,12 @@ class ConditionPouvoirPartie
      */
     private $parametre;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Partie", inversedBy="conditionPouvoirParties")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $partie;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +75,18 @@ class ConditionPouvoirPartie
     public function setParametre(?string $parametre): self
     {
         $this->parametre = $parametre;
+
+        return $this;
+    }
+
+    public function getPartie(): ?Partie
+    {
+        return $this->partie;
+    }
+
+    public function setPartie(?Partie $partie): self
+    {
+        $this->partie = $partie;
 
         return $this;
     }
