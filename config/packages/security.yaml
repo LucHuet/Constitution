@@ -19,7 +19,7 @@ security:
             form_login:
                 login_path: login
                 check_path: login
-                default_target_path : /partie/
+                default_target_path : /partie/liste/
             logout:
                 path:   /logout
                 target: /

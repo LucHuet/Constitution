@@ -19,34 +19,54 @@ use App\Service\CheckStepService;
  */
 class PouvoirPartieController extends AbstractController
 {
+    private $checkStep;
+
+    public function __construct(CheckStepService $checkStep)
+    {
+        $this->checkStep = $checkStep;
+    }
+
     /**
      * @Route("/", name="pouvoir_partie_index", methods="GET")
      */
     public function index(PouvoirPartieRepository $pouvoirPartieRepository): Response
     {
-        return $this->render('pouvoir_partie/index.html.twig', ['pouvoir_parties' => $pouvoirPartieRepository->findAll()]);
+        //on verifie la partie actuelle
+        if($this->checkStep->checkPartie() != null){
+          return $this->redirectToRoute($this->checkStep->checkPartie());
+        }
+
+        //on récupere la partie courante afin de n'afficher que les acteurs de la partie courante
+        $session = new Session();
+        $partiCourante = $session->get('partieCourante');
+
+        return $this->render('pouvoir_partie/index.html.twig', ['pouvoir_parties' => $pouvoirPartieRepository->findBy(['partie' => $partiCourante])]);
     }
 
     /**
      * @Route("/new", name="pouvoir_partie_new", methods="GET|POST")
      */
-    public function new(Request $request, CheckStepService $checkStep): Response
+    public function new(Request $request): Response
     {
-        if($checkStep->ckeckActeur() != null){
-          return $this->redirectToRoute($checkStep->ckeckActeur());
+        if($this->checkStep->checkActeur() != null){
+          return $this->redirectToRoute($this->checkStep->checkActeur());
         }
 
+        //recupération de la partie courante
         $session = new Session();
         $partieCourante = $session->get('partieCourante');
+        $em = $this->getDoctrine()->getManager();
+        $partieCourante = $em->merge($partieCourante);
 
         $pouvoirPartie = new PouvoirPartie();
-        $pouvoirPartie->setPartie($partieCourante); //util ?
+        $pouvoirPartie->setPartie($partieCourante);
+
         $form = $this->createForm(PouvoirPartieType::class, $pouvoirPartie);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $partieCourante = $em->merge($partieCourante);
+
+
             $pouvoirPartie->setPartie($partieCourante);
             $em->persist($pouvoirPartie);
             $em->flush();
@@ -65,7 +85,7 @@ class PouvoirPartieController extends AbstractController
      * @Route("/{id}", name="pouvoir_partie_show", methods="GET")
      */
     public function show(PouvoirPartie $pouvoirPartie): Response
-    {
+    {   
         return $this->render('pouvoir_partie/show.html.twig', ['pouvoir_partie' => $pouvoirPartie]);
     }
 
