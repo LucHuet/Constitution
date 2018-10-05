@@ -19,7 +19,7 @@ class Designation
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nom;    
+    private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -43,13 +43,17 @@ class Designation
 
 
 
-    public function __construct($description)
+    public function __construct($nom, $description, $stabilite, $equilibre, $democratie)
     {
+        $this->nom = $nom;
         $this->description = $description;
+        $this->stabilite = $stabilite;
+        $this->equilibre = $equilibre;
+        $this->democratie = $democratie;
     }
 
     public function __toString(){
-      return $this->description;
+      return $this->nom;
     }
 
     public function getId(): ?int

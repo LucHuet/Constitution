@@ -40,11 +40,6 @@ class Pouvoir
     private $importance;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isControle;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $stabilite;
@@ -70,17 +65,30 @@ class Pouvoir
     private $pouvoirParent;
 
 
-    public function __construct($description, $type, $importance, $isControle)
+    public function __construct(
+      $nom,
+      $description,
+      $type,
+      $importance,
+      $stabilite,
+      $equilibre,
+      $democratie
+      )
     {
-      $this->setDescription($description)
+      $this
+      ->setNom($nom)
+      ->setDescription($description)
       ->setType($type)
       ->setImportance($importance)
-      ->setIsControle($isControle);
+      ->setStabilite($stabilite)
+      ->setEquilibre($equilibre)
+      ->setDemocratie($democratie)
+      ;
     }
 
     public function __toString()
     {
-      return $this->getDescription();
+      return $this->getNom();
     }
 
     public function getId(): ?int

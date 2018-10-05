@@ -37,9 +37,12 @@ class Acteur
     private $democratie;
 
 
-    public function __construct($type)
+    public function __construct($type, $stabilite, $equilibre, $democratie)
     {
         $this->type = $type;
+        $this->stabilite = $stabilite;
+        $this->equilibre = $equilibre;
+        $this->democratie = $democratie;
     }
 
     public function __toString()
@@ -101,7 +104,7 @@ class Acteur
 
         return $this;
     }
-    /*fin setter et getter de SED*/    
+    /*fin setter et getter de SED*/
 
 
 }
