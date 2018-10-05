@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Partie;
+use App\Entity\ActeurPartie;
 use App\Form\PartieType;
 use App\Repository\PartieRepository;
+use App\Repository\ActeurRepository;
 use App\Repository\ActeurPartieRepository;
 use App\Repository\PouvoirPartieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -47,7 +49,7 @@ class PartieController extends AbstractController
     /**
      * @Route("/new", name="partie_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, ActeurRepository $acteurRepository): Response
     {
         // verification qu'un utilisateur est loggé
         if($this->checkStep->checkLogin() != null){
@@ -61,6 +63,15 @@ class PartieController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $partieCourante->setUser($this->getUser());
             $em = $this->getDoctrine()->getManager();
+            //faire en sorte que le peuple soit présent par défaut
+            $acteurPartie = new ActeurPartie();
+            //ajout de l'acteur peuple
+            $acteurPeuple = $acteurRepository->findOneBy(['id'=>2]);
+            $acteurPartie->setPartie($partieCourante);
+            $acteurPartie->setTypeActeur($acteurPeuple);
+            $acteurPartie->setNom($acteurPeuple->getType());
+            //persister le peuple
+            $em->persist($acteurPartie);
             $em->persist($partieCourante);
             $em->flush();
             $session = new Session();
