@@ -67,7 +67,7 @@ class PartieController extends AbstractController
             //faire en sorte que le peuple soit présent par défaut
             $acteurPartie = new ActeurPartie();
             //ajout de l'acteur peuple
-            $acteurPeuple = $acteurRepository->findOneBy(['id'=>2]);
+            $acteurPeuple = $acteurRepository->findOneBy(['type'=>'Peuple']);
             $acteurPartie->setPartie($partieCourante);
             $acteurPartie->setTypeActeur($acteurPeuple);
             $acteurPartie->setNom($acteurPeuple->getType());

@@ -227,6 +227,28 @@ class ActeurPartie
 
     public function setTypeActeur(?Acteur $typeActeur): self
     {
+        $this->setForceActeur(0);
+
+        if ($typeActeur->getType() == 'Groupe d\'individus')
+        {
+          if($this->getNombreIndividus() == 1)
+          {
+            $this->setDemocratie(0)->setStabilite(0)->setEquilibre(0);
+          }
+          elseif($this->getNombreIndividus() > 100)
+          {
+              $this->setDemocratie(2)->setStabilite(2)->setEquilibre(0);
+          }else
+          {
+            $this->setDemocratie(1)->setStabilite(1)->setEquilibre(0);
+          }
+        }else {
+          $this
+          ->setStabilite($typeActeur->getStabilite())
+          ->setEquilibre($typeActeur->getEquilibre())
+          ->setDemocratie($typeActeur->getDemocratie());
+        }
+
         $this->typeActeur = $typeActeur;
 
         return $this;
@@ -281,6 +303,6 @@ class ActeurPartie
 
         return $this;
     }
-    /*fin setter et getter de SED*/       
+    /*fin setter et getter de SED*/
 
 }

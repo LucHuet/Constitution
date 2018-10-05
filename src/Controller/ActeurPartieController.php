@@ -64,7 +64,7 @@ class ActeurPartieController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $partieCourante = $em->merge($partieCourante);
-            $acteurPartie->setPartie($partieCourante);
+            $acteurPartie->setPartie($partieCourante);            
             $em->persist($acteurPartie);
             $em->flush();
 

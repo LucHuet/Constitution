@@ -22,8 +22,8 @@ class ActeurPartieType extends AbstractType
                 'expanded' => false,
                 'class'  => 'App:Acteur',
                 'query_builder' => function(ActeurRepository $acteurRepository) {
-                  return $acteurRepository->createQueryBuilder('q')->where('q.id != :identifier')
-                     ->setParameter('identifier', 2);
+                  return $acteurRepository->createQueryBuilder('q')->where('q.type != :identifier')
+                     ->setParameter('identifier', 'Peuple');
                  },
              ));
         ;
