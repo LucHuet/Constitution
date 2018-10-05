@@ -44,7 +44,7 @@
                       {% for pouvoirs_acteur in acteur_partie.pouvoirParties %}
                       <a href="{{ path('pouvoir_partie_show', {'id': pouvoirs_acteur.id}) }}"><li>{{ pouvoirs_acteur }}</li></a>
                         <ul>
-                        {% for condition_pouvoir in pouvoirs_acteur.conditionsPouvoir %}
+                        {% for condition_pouvoir in pouvoirs_acteur.conditionsPouvoirs %}
                           <li>{{condition_pouvoir.nom}}</li>
                         {% endfor %}
                         </ul>

@@ -11,7 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Entity\Partie;
+use App\Entity\ConditionPouvoirPartie;
 use App\Service\CheckStepService;
+use App\Service\CalculJaugeService;
 
 
 /**
@@ -46,7 +48,7 @@ class PouvoirPartieController extends AbstractController
     /**
      * @Route("/new", name="pouvoir_partie_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, CalculJaugeService $calculJauge): Response
     {
         if($this->checkStep->checkActeur() != null){
           return $this->redirectToRoute($this->checkStep->checkActeur());
@@ -57,7 +59,6 @@ class PouvoirPartieController extends AbstractController
         $partieCourante = $session->get('partieCourante');
         $em = $this->getDoctrine()->getManager();
         $partieCourante = $em->merge($partieCourante);
-
         $pouvoirPartie = new PouvoirPartie();
         $pouvoirPartie->setPartie($partieCourante);
 
@@ -68,6 +69,7 @@ class PouvoirPartieController extends AbstractController
 
 
             $pouvoirPartie->setPartie($partieCourante);
+            $calculJauge->ajoutPouvoir($pouvoirPartie);
             $em->persist($pouvoirPartie);
             $em->flush();
 

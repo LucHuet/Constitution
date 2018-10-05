@@ -2,12 +2,8 @@
 namespace App\Service;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
-use App\Repository\ActeurPartieRepository;
-use App\Repository\PouvoirPartieRepository;
-use App\Entity\Partie;
-use App\Entity\ActeurPartie;
 use App\Entity\DesignationPartie;
+use App\Entity\PouvoirPartie;
 
 class CalculJaugeService
 {
@@ -37,8 +33,24 @@ class CalculJaugeService
 
     }
 
-    public function ajoutPouvoir()
+    public function ajoutPouvoir(PouvoirPartie $pouvoirPartie)
     {
+        foreach($pouvoirPartie->getActeurPossedant() as $acteurPossedant)
+        {
+          $acteurPossedant->setForceActeur(
+              $acteurPossedant->getForceActeur() + $pouvoirPartie->getImportance()
+            );
+          //on diminue l'influence du pouvoir -1 car il n'a pas encore de condition
+          $acteurPossedant->setStabilite($acteurPossedant->getStabilite()-1);
+          $acteurPossedant->setEquilibre($acteurPossedant->getEquilibre()-1);
+          $acteurPossedant->setDemocratie($acteurPossedant->getDemocratie()-1);
+        }
+
+        $partieCourante = $pouvoirPartie->getPartie();
+        $partieCourante
+          ->setStabilite($partieCourante->getStabilite() + $pouvoirPartie->getStabilite())
+          ->setDemocratie($partieCourante->getDemocratie() + $pouvoirPartie->getDemocratie())
+          ->setEquilibre($partieCourante->getEquilibre() + $pouvoirPartie->getEquilibre());
 
     }
 
