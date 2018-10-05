@@ -27,6 +27,7 @@
                   <th>Actions</th>
                   <th>Pouvoirs de l'acteur</th>
                   <th>Désigné par</th>
+                  <th>Force</th>
               </tr>
           </thead>
           <tbody>
@@ -42,6 +43,11 @@
                     <ul>
                       {% for pouvoirs_acteur in acteur_partie.pouvoirParties %}
                       <a href="{{ path('pouvoir_partie_show', {'id': pouvoirs_acteur.id}) }}"><li>{{ pouvoirs_acteur }}</li></a>
+                        <ul>
+                        {% for condition_pouvoir in pouvoirs_acteur.conditionsPouvoir %}
+                          <li>{{condition_pouvoir.nom}}</li>
+                        {% endfor %}
+                        </ul>
                       {% endfor %}
                     </ul>
                   </td>
@@ -52,6 +58,7 @@
                       {% endfor %}
                     </ul>
                   </td>
+                  <td>{{ acteur_partie.forceActeur }}</td>
               </tr>
           {% else %}
               <tr>
@@ -73,5 +80,11 @@
       {% if acteurs|length > 1 %}
       <a href="{{ path('designation_partie_new') }}">Create new désignation</a>
       {% endif %}
+
+      <ul>
+        <li>S {{ partieCourante.stabilite }}</li>
+        <li>E {{ partieCourante.equilibre }}</li>
+        <li>D {{ partieCourante.democratie }}</li>
+      </ul>
 
 {% endblock %}
