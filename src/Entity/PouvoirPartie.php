@@ -50,6 +50,21 @@ class PouvoirPartie
      */
     private $conditionsPouvoirs;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\PouvoirPartie")
+     */
+    private $pouvoirControlled;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\ActeurPartie")
+     */
+    private $acteurControlled;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\DesignationPartie")
+     */
+    private $designationControlled;
+
 
     public function __construct()
     {
@@ -168,6 +183,42 @@ class PouvoirPartie
                 $conditionsPouvoir->setPouvoirPartie(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPouvoirControlled(): ?self
+    {
+        return $this->pouvoirControlled;
+    }
+
+    public function setPouvoirControlled(?self $pouvoirControlled): self
+    {
+        $this->pouvoirControlled = $pouvoirControlled;
+
+        return $this;
+    }
+
+    public function getActeurControlled(): ?self
+    {
+        return $this->acteurControlled;
+    }
+
+    public function setActeurControlled(?ActeurPartie $acteurControlled): self
+    {
+        $this->acteurControlled = $acteurControlled;
+
+        return $this;
+    }
+
+    public function getDesignationControlled(): ?DesignationPartie
+    {
+        return $this->designationControlled;
+    }
+
+    public function setDesignationControlled(?DesignationPartie $designationControlled): self
+    {
+        $this->designationControlled = $designationControlled;
 
         return $this;
     }
