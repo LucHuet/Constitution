@@ -15,6 +15,7 @@ class ConditionPouvoirPartieType extends AbstractType
             ->add('nom')
             ->add('parametre')
             ->add('conditionPouvoir')
+            ->add('pouvoirPartie')
         ;
     }
 
