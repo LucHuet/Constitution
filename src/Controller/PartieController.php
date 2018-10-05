@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Partie;
+use App\Entity\Acteur;
 use App\Entity\ActeurPartie;
 use App\Form\PartieType;
 use App\Repository\PartieRepository;
@@ -91,7 +92,8 @@ class PartieController extends AbstractController
     public function show(
       Partie $partieCourante,
       ActeurPartieRepository $acteurPartieRepository,
-      PouvoirPartieRepository $pouvoirPartieRepository
+      PouvoirPartieRepository $pouvoirPartieRepository,
+      ActeurRepository $acteurRepository
     ): Response
     {
         // verification de la partie courante
@@ -101,7 +103,6 @@ class PartieController extends AbstractController
 
         $session = new Session();
         $session->set('partieCourante', $partieCourante);
-
         return $this->render('partie/show.html.twig', [
           'partieCourante' => $partieCourante,
           'acteurs' => $acteurPartieRepository->findBy(['partie' => $partieCourante]),

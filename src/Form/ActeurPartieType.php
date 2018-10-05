@@ -3,8 +3,10 @@
 namespace App\Form;
 
 use App\Entity\ActeurPartie;
+use App\Repository\ActeurRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ActeurPartieType extends AbstractType
@@ -14,7 +16,16 @@ class ActeurPartieType extends AbstractType
         $builder
             ->add('nom')
             ->add('nombreIndividus')
-            ->add('typeActeur')
+            ->add('typeActeur', EntityType::class, array(
+                'required' => true,
+                'multiple' => false,
+                'expanded' => false,
+                'class'  => 'App:Acteur',
+                'query_builder' => function(ActeurRepository $acteurRepository) {
+                  return $acteurRepository->createQueryBuilder('q')->where('q.id != :identifier')
+                     ->setParameter('identifier', 2);
+                 },
+             ));
         ;
     }
 
