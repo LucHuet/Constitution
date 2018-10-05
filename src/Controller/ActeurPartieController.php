@@ -68,7 +68,7 @@ class ActeurPartieController extends AbstractController
             $em->persist($acteurPartie);
             $em->flush();
 
-            return $this->redirectToRoute('pouvoir_partie_new');
+            return $this->redirectToRoute('designation_partie_new');
         }
 
         return $this->render('acteur_partie/new.html.twig', [
@@ -99,7 +99,7 @@ class ActeurPartieController extends AbstractController
         if($this->checkStep->checkActeur($acteurPartie) != null){
           return $this->redirectToRoute($this->checkStep->checkActeur($acteurPartie));
         }
-            
+
         $form = $this->createForm(ActeurPartieType::class, $acteurPartie);
         $form->handleRequest($request);
 

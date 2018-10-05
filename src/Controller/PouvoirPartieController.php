@@ -85,7 +85,7 @@ class PouvoirPartieController extends AbstractController
      * @Route("/{id}", name="pouvoir_partie_show", methods="GET")
      */
     public function show(PouvoirPartie $pouvoirPartie): Response
-    {   
+    {
         return $this->render('pouvoir_partie/show.html.twig', ['pouvoir_partie' => $pouvoirPartie]);
     }
 

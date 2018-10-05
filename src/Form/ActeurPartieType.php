@@ -14,7 +14,6 @@ class ActeurPartieType extends AbstractType
         $builder
             ->add('nom')
             ->add('nombreIndividus')
-            //->add('pouvoirParties')
             ->add('typeActeur')
         ;
     }
