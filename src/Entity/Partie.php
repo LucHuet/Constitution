@@ -61,19 +61,16 @@ class Partie
 
     /**
      * @ORM\Column(type="integer")
-     * @ORM\JoinColumn(nullable=true)        
      */
     private $stabilite;
 
     /**
      * @ORM\Column(type="integer")
-     * @ORM\JoinColumn(nullable=true)
      */
     private $equilibre;
 
     /**
      * @ORM\Column(type="integer")
-     * @ORM\JoinColumn(nullable=true)
      */
     private $democratie;
 
@@ -85,6 +82,7 @@ class Partie
         $this->pouvoirParties = new ArrayCollection();
         $this->designationParties = new ArrayCollection();
         $this->conditionPouvoirParties = new ArrayCollection();
+        $this->setStabilite(0)->setDemocratie(0)->setEquilibre(0);
     }
 
     public function __toString()

@@ -82,8 +82,11 @@ class DesignationPartie
         return $this->designation;
     }
 
+    //on initialise les jauges pour chaque type de désignation
     public function setDesignation(?Designation $designation): self
     {
+        $this->setDemocratie($designation->getDemocratie())->setStabilite($designation->getStabilite())->setEquilibre($designation->getEquilibre());
+
         $this->designation = $designation;
 
         return $this;
@@ -162,6 +165,6 @@ class DesignationPartie
 
         return $this;
     }
-    /*fin setter et getter de SED*/    
+    /*fin setter et getter de SED*/
 
 }
