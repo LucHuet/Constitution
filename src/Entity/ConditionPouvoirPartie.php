@@ -44,6 +44,21 @@ class ConditionPouvoirPartie
      */
     private $pouvoirPartie;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $stabilite;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $equilibre;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $democratie;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -108,4 +123,43 @@ class ConditionPouvoirPartie
 
         return $this;
     }
+
+    /*setter et getter de SED*/
+
+    public function getStabilite(): ?int
+    {
+        return $this->stabilite;
+    }
+
+    public function setStabilite(int $stabilite): self
+    {
+        $this->stabilite = $stabilite;
+
+        return $this;
+    }
+
+    public function getEquilibre(): ?int
+    {
+        return $this->equilibre;
+    }
+
+    public function setEquilibre(int $equilibre): self
+    {
+        $this->equilibre = $equilibre;
+
+        return $this;
+    }
+
+    public function getDemocratie(): ?int
+    {
+        return $this->democratie;
+    }
+
+    public function setDemocratie(int $democratie): self
+    {
+        $this->democratie = $democratie;
+
+        return $this;
+    }
+    /*fin setter et getter de SED*/       
 }
