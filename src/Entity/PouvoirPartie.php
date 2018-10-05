@@ -46,13 +46,15 @@ class PouvoirPartie
     private $pouvoirDestinataire;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ConditionPouvoirPartie", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\ConditionPouvoirPartie", mappedBy="pouvoirPartie", orphanRemoval=true)
      */
-    private $conditionPouvoir;
+    private $conditionsPouvoirs;
+
 
     public function __construct()
     {
         $this->acteurPossedant = new ArrayCollection();
+        $this->conditionsPouvoirs = new ArrayCollection();
     }
 
     public function __toString()
@@ -139,15 +141,35 @@ class PouvoirPartie
         return $this;
     }
 
-    public function getConditionPouvoir(): ?ConditionPouvoirPartie
+    /**
+     * @return Collection|ConditionPouvoirPartie[]
+     */
+    public function getConditionsPouvoirs(): Collection
     {
-        return $this->conditionPouvoir;
+        return $this->conditionsPouvoirs;
     }
 
-    public function setConditionPouvoir(?ConditionPouvoirPartie $conditionPouvoir): self
+    public function addConditionsPouvoir(ConditionPouvoirPartie $conditionsPouvoir): self
     {
-        $this->conditionPouvoir = $conditionPouvoir;
+        if (!$this->conditionsPouvoirs->contains($conditionsPouvoir)) {
+            $this->conditionsPouvoirs[] = $conditionsPouvoir;
+            $conditionsPouvoir->setPouvoirPartie($this);
+        }
 
         return $this;
     }
+
+    public function removeConditionsPouvoir(ConditionPouvoirPartie $conditionsPouvoir): self
+    {
+        if ($this->conditionsPouvoirs->contains($conditionsPouvoir)) {
+            $this->conditionsPouvoirs->removeElement($conditionsPouvoir);
+            // set the owning side to null (unless already changed)
+            if ($conditionsPouvoir->getPouvoirPartie() === $this) {
+                $conditionsPouvoir->setPouvoirPartie(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
