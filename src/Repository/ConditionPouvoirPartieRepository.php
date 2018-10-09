@@ -36,15 +36,16 @@ class ConditionPouvoirPartieRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?ConditionPouvoirPartie
+
+    public function findOneByConditionPartieNom($value): ?ConditionPouvoirPartie
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
+            ->join('c.conditionPouvoir', 'cp')
+            ->where('cp.nom = :nomCondition')
+            ->setParameter('nomCondition', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+
 }
