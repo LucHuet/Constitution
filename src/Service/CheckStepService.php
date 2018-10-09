@@ -5,24 +5,30 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Repository\ActeurPartieRepository;
 use App\Repository\PouvoirPartieRepository;
+use App\Repository\DesignationPartieRepository;
 use App\Entity\Partie;
 use App\Entity\ActeurPartie;
+use App\Entity\PouvoirPartie;
+use App\Entity\DesignationPartie;
 
 class CheckStepService
 {
     private $token_storage;
     private $acteurPartieRepository;
     private $pouvoirPartieRepository;
+    private $designationPartieRepository;
 
     function __construct(
       TokenStorageInterface $token_storage,
       ActeurPartieRepository $acteurPartieRepository,
-      PouvoirPartieRepository $pouvoirPartieRepository
+      PouvoirPartieRepository $pouvoirPartieRepository,
+      DesignationPartieRepository $designationPartieRepository
     )
     {
       $this->token_storage = $token_storage;
       $this->acteurPartieRepository = $acteurPartieRepository;
       $this->pouvoirPartieRepository = $pouvoirPartieRepository;
+      $this->designationPartieRepository = $designationPartieRepository;
     }
 
     /**
@@ -179,19 +185,82 @@ class CheckStepService
      *
      * @return null ou la route appropriée
      */
-    public function checkPouvoir()
+    public function checkPouvoir(PouvoirPartie $pouvoirPartie = null)
     {
+
+      if(null != $this->checkPartie())
+      {
+        return $this->checkPartie();
+      }
+
       $session = new Session();
       $partieCourante = $session->get('partieCourante');
       $pouvoirsPartie = $this->pouvoirPartieRepository->findBy(['partie' => $partieCourante]);
-      dump($pouvoirsPartie);
+
       if(count($pouvoirsPartie) < 1)
       {
+        $errorMessage = 'Redirection car il n\'y a pas de pouvoir';
+        if(!in_array($errorMessage,$session->getFlashBag()->peek('notice')))
+        {
+          $session->getFlashBag()->add('notice', $errorMessage);
+        }
         return 'pouvoir_partie_new';
       }
 
+      // verification que la partie est bien de la partie
+      if(null != $pouvoirPartie && !in_array($pouvoirPartie, $pouvoirsPartie))
+      {
+        $errorMessage = 'Ce pouvoir n\'est pas de la partie courante';
+        if(!in_array($errorMessage,$session->getFlashBag()->peek('notice')))
+        {
+          $session->getFlashBag()->add('notice', $errorMessage);
+        }
+        return 'pouvoir_partie_new';
+      }
       return null;
+    }
 
+    /**
+     * function checkPouvoir
+     *
+     * verification qu'une partie a aux moins 1 pouvoir
+     * si il n'y a pas de pouvoir, on doit en créer
+     *
+     * @return null ou la route appropriée
+     */
+    public function checkDesignation(DesignationPartie $designationPartie = null)
+    {
+
+      if(null != $this->checkPartie())
+      {
+        return $this->checkPartie();
+      }
+
+      $session = new Session();
+      $partieCourante = $session->get('partieCourante');
+      $designationsPartie = $this->designationPartieRepository->findBy(['partie' => $partieCourante]);
+
+      if(count($designationsPartie) < 1)
+      {
+        $errorMessage = 'Redirection car il n\'y a pas de désignation';
+        if(!in_array($errorMessage,$session->getFlashBag()->peek('notice')))
+        {
+          $session->getFlashBag()->add('notice', $errorMessage);
+        }
+        return 'designation_partie_new';
+      }
+
+      // verification que la partie est bien de la partie
+      if(null != $designationPartie && !in_array($designationPartie, $designationsPartie))
+      {
+        $errorMessage = 'Cette désignation n\'est pas de la partie courante';
+        if(!in_array($errorMessage,$session->getFlashBag()->peek('notice')))
+        {
+          $session->getFlashBag()->add('notice', $errorMessage);
+        }
+        return 'designation_partie_new';
+      }
+      return null;
     }
 
 }

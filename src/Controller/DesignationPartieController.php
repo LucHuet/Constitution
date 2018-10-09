@@ -22,8 +22,17 @@ class DesignationPartieController extends AbstractController
      * @Route("/", name="designation_partie_index", methods="GET")
      */
     public function index(DesignationPartieRepository $designationPartieRepository): Response
-    {
-        return $this->render('designation_partie/index.html.twig', ['designation_parties' => $designationPartieRepository->findAll()]);
+      {
+        //on verifie la partie actuelle
+        if($this->checkStep->checkPartie() != null){
+          return $this->redirectToRoute($this->checkStep->checkPartie());
+        }
+
+        //on récupere la partie courante afin de n'afficher que les acteurs de la partie courante
+        $session = new Session();
+        $partiCourante = $session->get('partieCourante');
+
+        return $this->render('designation_partie/index.html.twig', ['designation_parties' => $designationPartieRepository->findBy(['partie' => $partiCourante])]);
     }
 
     /**
@@ -65,6 +74,9 @@ class DesignationPartieController extends AbstractController
      */
     public function show(DesignationPartie $designationPartie): Response
     {
+        if($this->checkStep->checkDesignation($designationPartie) != null){
+          return $this->redirectToRoute($this->checkStep->checkDesignation($designationPartie));
+        }
         return $this->render('designation_partie/show.html.twig', ['designation_partie' => $designationPartie]);
     }
 
@@ -73,6 +85,9 @@ class DesignationPartieController extends AbstractController
      */
     public function edit(Request $request, DesignationPartie $designationPartie): Response
     {
+      if($this->checkStep->checkDesignation($designationPartie) != null){
+        return $this->redirectToRoute($this->checkStep->checkDesignation($designationPartie));
+      }
         $form = $this->createForm(DesignationPartieType::class, $designationPartie);
         $form->handleRequest($request);
 
@@ -93,6 +108,9 @@ class DesignationPartieController extends AbstractController
      */
     public function delete(Request $request, DesignationPartie $designationPartie): Response
     {
+      if($this->checkStep->checkDesignation($designationPartie) != null){
+        return $this->redirectToRoute($this->checkStep->checkDesignation($designationPartie));
+      }           
         if ($this->isCsrfTokenValid('delete'.$designationPartie->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($designationPartie);

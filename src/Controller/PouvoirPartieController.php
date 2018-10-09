@@ -86,6 +86,9 @@ class PouvoirPartieController extends AbstractController
      */
     public function show(PouvoirPartie $pouvoirPartie): Response
     {
+        if($this->checkStep->checkPouvoir($pouvoirPartie) != null){
+          return $this->redirectToRoute($this->checkStep->checkPouvoir($pouvoirPartie));
+        }
         return $this->render('pouvoir_partie/show.html.twig', ['pouvoir_partie' => $pouvoirPartie]);
     }
 
@@ -94,6 +97,10 @@ class PouvoirPartieController extends AbstractController
      */
     public function edit(Request $request, PouvoirPartie $pouvoirPartie): Response
     {
+        if($this->checkStep->checkPouvoir($pouvoirPartie) != null){
+          return $this->redirectToRoute($this->checkStep->checkPouvoir($pouvoirPartie));
+        }
+
         $form = $this->createForm(PouvoirPartieType::class, $pouvoirPartie);
         $form->handleRequest($request);
 
@@ -114,6 +121,10 @@ class PouvoirPartieController extends AbstractController
      */
     public function delete(Request $request, PouvoirPartie $pouvoirPartie): Response
     {
+        if($this->checkStep->checkPouvoir($pouvoirPartie) != null){
+          return $this->redirectToRoute($this->checkStep->checkPouvoir($pouvoirPartie));
+        }
+
         if ($this->isCsrfTokenValid('delete'.$pouvoirPartie->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($pouvoirPartie);

@@ -96,13 +96,16 @@ class PartieController extends AbstractController
       ActeurRepository $acteurRepository
     ): Response
     {
-        // verification de la partie courante
-        if($this->checkStep->checkLogin($partieCourante) != null){
-          return $this->redirectToRoute($this->checkStep->checkLogin($partieCourante));
-        }
+
 
         $session = new Session();
         $session->set('partieCourante', $partieCourante);
+
+        // verification de la partie courante
+        if($this->checkStep->checkPartie($partieCourante) != null){
+          return $this->redirectToRoute($this->checkStep->checkPartie($partieCourante));
+        }
+
         return $this->render('partie/show.html.twig', [
           'partieCourante' => $partieCourante,
           'acteurs' => $acteurPartieRepository->findBy(['partie' => $partieCourante]),
