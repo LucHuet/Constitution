@@ -64,11 +64,11 @@ class ActeurPartieController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $partieCourante = $em->merge($partieCourante);
-            $acteurPartie->setPartie($partieCourante);            
+            $acteurPartie->setPartie($partieCourante);
             $em->persist($acteurPartie);
             $em->flush();
 
-            return $this->redirectToRoute('designation_partie_new');
+            return $this->redirectToRoute('partie_show', ['id' => $partieCourante->getId()] );
         }
 
         return $this->render('acteur_partie/new.html.twig', [
