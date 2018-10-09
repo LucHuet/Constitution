@@ -192,6 +192,7 @@ class CalculJaugeService implements EventSubscriber
 
             if(null != $designationPartie->getActeurDesignant())
             {
+              
               //la force de l'acteur qui désigne est augmentée de 1
               $session->getFlashBag()->add('notice', "la force de l'acteur qui désigne (".$designationPartie->getActeurDesignant().") est diminuée de 1");
               $designationPartie->getActeurDesignant()->setForceActeur($designationPartie->getActeurDesignant()->getForceActeur() - 1);
