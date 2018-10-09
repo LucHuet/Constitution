@@ -93,12 +93,14 @@ class DesignationPartieController extends AbstractController
      */
     public function delete(Request $request, DesignationPartie $designationPartie): Response
     {
+        $session = new Session();
+        $partieCourante = $session->get('partieCourante');
         if ($this->isCsrfTokenValid('delete'.$designationPartie->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($designationPartie);
             $em->flush();
         }
 
-        return $this->redirectToRoute('designation_partie_index');
+        return $this->redirectToRoute('partie_show', ['id' => $partieCourante->getId()] );
     }
 }
