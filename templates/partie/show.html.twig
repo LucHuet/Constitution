@@ -67,18 +67,24 @@
           {% endfor %}
           </tbody>
       </table>
-      <a href="{{ path('acteur_partie_new') }}">Create new acteur</a>
+      <a href="{{ path('acteur_partie_new') }}">Nouvel acteur</a>
 
       <br>
 
       {% if acteurs|length > 0 %}
-      <a href="{{ path('pouvoir_partie_new') }}">Create new pouvoir</a>
+      <a href="{{ path('pouvoir_partie_new') }}">Nouveau pouvoir</a>
       {% endif %}
 
       <br>
 
       {% if acteurs|length > 1 %}
-      <a href="{{ path('designation_partie_new') }}">Create new désignation</a>
+      <a href="{{ path('designation_partie_new') }}">Nouvelle désignation</a>
+      {% endif %}
+
+      <br>
+
+      {% if pouvoir_parties|length > 1 %}
+      <a href="{{ path('condition_pouvoir_partie_new') }}">Nouvelle condition pouvoir</a>
       {% endif %}
 
       <ul>

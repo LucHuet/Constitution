@@ -71,7 +71,7 @@ class PouvoirPartieController extends AbstractController
             $em->persist($pouvoirPartie);
             $em->flush();
 
-            return $this->redirectToRoute('condition_pouvoir_partie_new');
+            return $this->redirectToRoute('partie_show', ['id' => $partieCourante->getId()] );
         }
 
         return $this->render('pouvoir_partie/new.html.twig', [
@@ -125,12 +125,15 @@ class PouvoirPartieController extends AbstractController
           return $this->redirectToRoute($this->checkStep->checkPouvoir($pouvoirPartie));
         }
 
+        $session = new Session();
+        $partieCourante = $session->get('partieCourante');
+        
         if ($this->isCsrfTokenValid('delete'.$pouvoirPartie->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($pouvoirPartie);
             $em->flush();
         }
 
-        return $this->redirectToRoute('pouvoir_partie_index');
+        return $this->redirectToRoute('partie_show', ['id' => $partieCourante->getId()] );
     }
 }
