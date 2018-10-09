@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use App\Entity\Partie;
 use App\Repository\ActeurPartieRepository;
 use App\Service\CheckStepService;
-use App\Service\CalculJaugeService;
 
 /**
  * @Route("/condition/pouvoir/partie")
@@ -31,7 +30,7 @@ class ConditionPouvoirPartieController extends AbstractController
     /**
      * @Route("/new", name="condition_pouvoir_partie_new", methods="GET|POST")
      */
-    public function new(Request $request, CheckStepService $checkStep, CalculJaugeService $calculJauge): Response
+    public function new(Request $request, CheckStepService $checkStep): Response
     {
         if($checkStep->checkPouvoir() != null){
           return $this->redirectToRoute($checkStep->checkPouvoir());
@@ -48,7 +47,6 @@ class ConditionPouvoirPartieController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $partieCourante = $em->merge($partieCourante);
             $conditionPouvoirPartie->setPartie($partieCourante);
-            $calculJauge->ajoutCondition($conditionPouvoirPartie);
             $em->persist($conditionPouvoirPartie);
             $em->flush();
 

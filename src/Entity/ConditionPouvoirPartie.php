@@ -84,6 +84,10 @@ class ConditionPouvoirPartie
     public function setConditionPouvoir(?ConditionPouvoir $conditionPouvoir): self
     {
         $this->conditionPouvoir = $conditionPouvoir;
+        $this
+          ->setStabilite($conditionPouvoir->getStabilite())
+          ->setEquilibre($conditionPouvoir->getEquilibre())
+          ->setDemocratie($conditionPouvoir->getDemocratie());
 
         return $this;
     }
@@ -161,5 +165,5 @@ class ConditionPouvoirPartie
 
         return $this;
     }
-    /*fin setter et getter de SED*/       
+    /*fin setter et getter de SED*/
 }

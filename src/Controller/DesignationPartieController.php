@@ -12,7 +12,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Entity\Partie;
 use App\Service\CheckStepService;
-use App\Service\CalculJaugeService;
 
 /**
  * @Route("/designation/partie")
@@ -30,7 +29,7 @@ class DesignationPartieController extends AbstractController
     /**
      * @Route("/new", name="designation_partie_new", methods="GET|POST")
      */
-    public function new(Request $request, CheckStepService $checkStep, CalculJaugeService $calculJauge): Response
+    public function new(Request $request, CheckStepService $checkStep): Response
     {
         if($checkStep->check2Acteurs() != null){
           return $this->redirectToRoute($checkStep->check2Acteurs());
@@ -48,8 +47,6 @@ class DesignationPartieController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            //on calcule les scores de chaques jauges avant enregistrement en base de données
-            $calculJauge->ajoutDesignation($designationPartie);
             $em->persist($designationPartie);
             $em->flush();
 
