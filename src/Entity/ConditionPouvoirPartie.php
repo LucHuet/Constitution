@@ -59,6 +59,11 @@ class ConditionPouvoirPartie
      */
     private $democratie;
 
+    public function __toString()
+    {
+      return $this->getNom();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

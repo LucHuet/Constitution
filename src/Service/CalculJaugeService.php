@@ -69,31 +69,42 @@ class CalculJaugeService implements EventSubscriber
     {
       $session = new Session();
       $session->getFlashBag()->add('notice', "NOUVELLE DESIGNATION DE ".$designationPartie->getActeurDesignant()." A ".$designationPartie->getActeurDesigne());
-      //la force de l'acteur qui désigne est augmentée de 1
-      $session->getFlashBag()->add('notice', "la force de l'acteur qui désigne ($acteurDesignant) est augmentée de 1");
-      $acteurDesignant = $designationPartie->getActeurDesignant();
-      $acteurDesignant->setForceActeur($acteurDesignant->getForceActeur() + 1);
+
+      $acteurDesignantStabilite = 0;
+      $acteurDesignantEquilibre = 0;
+      $acteurDesignantDemocratie = 0;
+
+      if(null != $designationPartie->getActeurDesignant())
+      {
+        //la force de l'acteur qui désigne est augmentée de 1
+        $session->getFlashBag()->add('notice', "la force de l'acteur qui désigne (".$designationPartie->getActeurDesignant().") est augmentée de 1");
+        $designationPartie->getActeurDesignant()->setForceActeur($designationPartie->getActeurDesignant()->getForceActeur() + 1);
+        $acteurDesignantStabilite = $designationPartie->getActeurDesignant()->getStabilite();
+        $acteurDesignantEquilibre = $designationPartie->getActeurDesignant()->getEquilibre();
+        $acteurDesignantDemocratie = $designationPartie->getActeurDesignant()->getDemocratie();
+      }
 
       //on enregistre les scores des jauges après la désignation
       $partieCourante = $designationPartie->getPartie();
 
       $session->getFlashBag()->add('notice', "la partie courante (".$partieCourante->getStabilite().", ".$partieCourante->getEquilibre().", ".$partieCourante->getDemocratie().")
                                 reçoit la designation (".$designationPartie->getStabilite().", ".$designationPartie->getEquilibre().", ".$designationPartie->getDemocratie().")
-                                + l'acteur designant (".$acteurDesignant->getStabilite().", ".$acteurDesignant->getEquilibre().", ".$acteurDesignant->getDemocratie().")");
+                                + l'acteur designant (".$acteurDesignantStabilite.", ".$acteurDesignantEquilibre.", ".$acteurDesignantDemocratie.")");
       $partieCourante
-        ->setStabilite($partieCourante->getStabilite() + $acteurDesignant->getStabilite() + $designationPartie->getStabilite())
-        ->setDemocratie($partieCourante->getDemocratie() + $acteurDesignant->getDemocratie() + $designationPartie->getDemocratie())
-        ->setEquilibre($partieCourante->getEquilibre() + $acteurDesignant->getEquilibre() + $designationPartie->getEquilibre());
+        ->setStabilite($partieCourante->getStabilite() + $acteurDesignantStabilite + $designationPartie->getStabilite())
+        ->setDemocratie($partieCourante->getDemocratie() + $acteurDesignantDemocratie + $designationPartie->getDemocratie())
+        ->setEquilibre($partieCourante->getEquilibre() + $acteurDesignantEquilibre + $designationPartie->getEquilibre());
 
     }
 
     public function ajoutPouvoir(PouvoirPartie $pouvoirPartie)
     {
         $session = new Session();
-        $session->getFlashBag()->add('notice', "NOUVEAU POUVOIR POUR ".$pouvoirPartie->getActeurPossedant()." : ".$pouvoirPartie);
 
         foreach($pouvoirPartie->getActeurPossedant() as $acteurPossedant)
         {
+          $session->getFlashBag()->add('notice', "NOUVEAU POUVOIR POUR ".$acteurPossedant." : ".$pouvoirPartie);
+
           //on ajoute la force du pouvoir à l'acteur, on ajoute + 1 car pour le moment, le pouvoir n'a pas de condition
           $session->getFlashBag()->add('notice', "le pouvoir n'a pas de condition : la force de l'acteur qui possede le pouvoir ($acteurPossedant) est augmentée de 1");
           $acteurPossedant->setForceActeur(
@@ -174,42 +185,48 @@ class CalculJaugeService implements EventSubscriber
       $session = new Session();
       $session->getFlashBag()->add('notice', "REMOVE DESIGNATION DE ".$designationPartie->getActeurDesignant()." A ".$designationPartie->getActeurDesigne());
 
-      //la force de l'acteur qui désigne est augmentée de 1
-      $session->getFlashBag()->add('notice', "la force de l'acteur qui désigne ($acteurDesignant) est diminuée de 1");
-      $acteurDesignant = $designationPartie->getActeurDesignant();
-      $acteurDesignant->setForceActeur($acteurDesignant->getForceActeur() - 1);
-      //on enregistre les scores des jauges après la désignation
-      $partieCourante = $designationPartie->getPartie();
-      $session->getFlashBag()->add('notice', "la partie courante (".$partieCourante->getStabilite().", ".$partieCourante->getEquilibre().", ".$partieCourante->getDemocratie().")
-                                est retirée de la designation (".$designationPartie->getStabilite().", ".$designationPartie->getEquilibre().", ".$designationPartie->getDemocratie().")
-                                - l'acteur designant (".$acteurDesignant->getStabilite().", ".$acteurDesignant->getEquilibre().", ".$acteurDesignant->getDemocratie().")");
 
-      $partieCourante
-        ->setStabilite($partieCourante->getStabilite() - $acteurDesignant->getStabilite() - $designationPartie->getStabilite())
-        ->setDemocratie($partieCourante->getDemocratie() - $acteurDesignant->getDemocratie() - $designationPartie->getDemocratie())
-        ->setEquilibre($partieCourante->getEquilibre() - $acteurDesignant->getEquilibre() - $designationPartie->getEquilibre());
+            $acteurDesignantStabilite = 0;
+            $acteurDesignantEquilibre = 0;
+            $acteurDesignantDemocratie = 0;
+
+            if(null != $designationPartie->getActeurDesignant())
+            {
+              //la force de l'acteur qui désigne est augmentée de 1
+              $session->getFlashBag()->add('notice', "la force de l'acteur qui désigne (".$designationPartie->getActeurDesignant().") est diminuée de 1");
+              $designationPartie->getActeurDesignant()->setForceActeur($designationPartie->getActeurDesignant()->getForceActeur() - 1);
+              $acteurDesignantStabilite = $designationPartie->getActeurDesignant()->getStabilite();
+              $acteurDesignantEquilibre = $designationPartie->getActeurDesignant()->getEquilibre();
+              $acteurDesignantDemocratie = $designationPartie->getActeurDesignant()->getDemocratie();
+            }
+
+            //on enregistre les scores des jauges après la désignation
+            $partieCourante = $designationPartie->getPartie();
+
+            $session->getFlashBag()->add('notice', "la partie courante (".$partieCourante->getStabilite().", ".$partieCourante->getEquilibre().", ".$partieCourante->getDemocratie().")
+                                      retire la designation (".$designationPartie->getStabilite().", ".$designationPartie->getEquilibre().", ".$designationPartie->getDemocratie().")
+                                      - l'acteur designant (".$acteurDesignantStabilite.", ".$acteurDesignantEquilibre.", ".$acteurDesignantDemocratie.")");
+            $partieCourante
+              ->setStabilite($partieCourante->getStabilite() - $acteurDesignantStabilite - $designationPartie->getStabilite())
+              ->setDemocratie($partieCourante->getDemocratie() - $acteurDesignantDemocratie - $designationPartie->getDemocratie())
+              ->setEquilibre($partieCourante->getEquilibre() - $acteurDesignantEquilibre - $designationPartie->getEquilibre());
 
     }
 
     public function removePouvoir(PouvoirPartie $pouvoirPartie)
     {
       $session = new Session();
-      $session->getFlashBag()->add('notice', "REMOVE POUVOIR POUR ".$pouvoirPartie->getActeurPossedant()." : ".$pouvoirPartie);
 
         foreach($pouvoirPartie->getActeurPossedant() as $acteurPossedant)
         {
+          $session->getFlashBag()->add('notice', "REMOVE POUVOIR POUR ".$acteurPossedant." : ".$pouvoirPartie);
+
           //on ajoute la force du pouvoir à l'acteur, on ajoute + 1 car pour le moment, le pouvoir n'a pas de condition
           $session->getFlashBag()->add('notice', "le pouvoir n'a pas de condition : la force de l'acteur qui possedait le pouvoir ($acteurPossedant) est diminuée de 1");
           $acteurPossedant->setForceActeur(
               $acteurPossedant->getForceActeur() - $pouvoirPartie->getImportance() - 1
             );
         }
-
-        //on diminue l'influence du pouvoir -1 car il n'a pas encore de condition
-        $session->getFlashBag()->add('notice', "le pouvoir n'avait pas de condition : son influence (".$pouvoirPartie->getStabilite().", ".$pouvoirPartie->getEquilibre().", ".$pouvoirPartie->getDemocratie().") augnmente de +1");
-        $pouvoirPartie->setStabilite($pouvoirPartie->getStabilite()+1);
-        $pouvoirPartie->setEquilibre($pouvoirPartie->getEquilibre()+1);
-        $pouvoirPartie->setDemocratie($pouvoirPartie->getDemocratie()+1);
 
         $partieCourante = $pouvoirPartie->getPartie();
         $session->getFlashBag()->add('notice', "la partie courante (".$partieCourante->getStabilite().", ".$partieCourante->getEquilibre().", ".$partieCourante->getDemocratie().")
