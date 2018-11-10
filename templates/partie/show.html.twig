@@ -17,79 +17,78 @@
 
     <!--  <a href="{{ path('partie_new') }}">Create new</a> -->
       <br>
-      <h2>Acteurs de la partie en cours</h2>
-      <table class="table">
-          <thead>
-              <tr>
-                  <th>Nom</th>
-                  <th>Nb Individus</th>
-                  <th>Actions</th>
-                  <th>Pouvoirs de l'acteur</th>
-                  <th>Désigné par</th>
-                  <th>Force</th>
-              </tr>
-          </thead>
-          <tbody>
-          {% for acteur_partie in acteurs %}
-              <tr>
-                  <td>{{ acteur_partie.nom }}</td>
-                  <td>{{ acteur_partie.nombreIndividus }}</td>
-                  <td>
-                      <a href="{{ path('acteur_partie_show', {'id': acteur_partie.id}) }}">show</a>
-                      <a href="{{ path('acteur_partie_edit', {'id': acteur_partie.id}) }}">edit</a>
-                  </td>
-                  <td>
-                    <ul>
-                      {% for pouvoirs_acteur in acteur_partie.pouvoirParties %}
-                      <a href="{{ path('pouvoir_partie_show', {'id': pouvoirs_acteur.id}) }}"><li>{{ pouvoirs_acteur }}</li></a>
-                        <ul>
-                        {% for condition_pouvoir in pouvoirs_acteur.conditionsPouvoirs %}
-                          <li>{{condition_pouvoir.nom}}</li>
-                        {% endfor %}
-                        </ul>
-                      {% endfor %}
-                    </ul>
-                  </td>
-                  <td>
-                    <ul>
-                      {% for acteur_designe in acteur_partie.acteursDesignes %}
-                      <a href="{{ path('designation_partie_show', {'id':  acteur_designe.id}) }}"<li>{{ acteur_designe.designation }} par {{ acteur_designe.acteurDesignant }}</li>
-                      {% endfor %}
-                    </ul>
-                  </td>
-                  <td>{{ acteur_partie.forceActeur }}</td>
-              </tr>
-          {% else %}
-              <tr>
-                  <td colspan="4">pas d'acteur</td>
-              </tr>
-          {% endfor %}
-          </tbody>
-      </table>
-      <a href="{{ path('acteur_partie_new') }}">Nouvel acteur</a>
+      <div class="js-acteur-table">
+        <h2>Acteurs de la partie en cours</h2>
+        <table class="table js-acteur-table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Nb Individus</th>
+                    <th>Actions</th>
+                    <th>Pouvoirs de l'acteur</th>
+                    <th>Désigné par</th>
+                    <th>Force</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for acteur_partie in acteurs %}
+                {{ include('partie/_tableauPartie.html.twig') }}
+            {% else %}
+                <tr>
+                    <td colspan="4">pas d'acteur</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ path('acteur_partie_new') }}">Nouvel acteur</a>
 
-      <br>
+        <br>
+        <!-- Appel de la modal d'ajout -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+          Ajouter un acteur
+        </button>
 
-      {% if acteurs|length > 0 %}
-      <a href="{{ path('pouvoir_partie_new') }}">Nouveau pouvoir</a>
-      {% endif %}
+        <br>
 
-      <br>
+        {% if acteurs|length > 0 %}
+        <a href="{{ path('pouvoir_partie_new') }}">Nouveau pouvoir</a>
+        {% endif %}
 
-      {% if acteurs|length > 1 %}
-      <a href="{{ path('designation_partie_new') }}">Nouvelle désignation</a>
-      {% endif %}
+        <br>
 
-      <br>
+        {% if acteurs|length > 1 %}
+        <a href="{{ path('designation_partie_new') }}">Nouvelle désignation</a>
+        {% endif %}
 
-      {% if pouvoir_parties|length > 1 %}
-      <a href="{{ path('condition_pouvoir_partie_new') }}">Nouvelle condition pouvoir</a>
-      {% endif %}
+        <br>
 
-      <ul>
-        <li>S {{ partieCourante.stabilite }}</li>
-        <li>E {{ partieCourante.equilibre }}</li>
-        <li>D {{ partieCourante.democratie }}</li>
-      </ul>
+        {% if pouvoir_parties|length > 1 %}
+        <a href="{{ path('condition_pouvoir_partie_new') }}">Nouvelle condition pouvoir</a>
+        {% endif %}
+
+        <ul>
+          <li>S {{ partieCourante.stabilite }}</li>
+          <li>E {{ partieCourante.equilibre }}</li>
+          <li>D {{ partieCourante.democratie }}</li>
+        </ul>
+
+        {{ include('partie/_modal.html.twig') }}
+      </div>
+{% endblock %}
+
+{% block javascripts %}
+
+  {{ parent() }}
+
+  <script src="{{ asset('assets/js/ActeurApp.js') }}"></script>
+
+  <script>
+    $(document).ready(function() {
+      var $wrapper = $('.js-acteur-table');
+
+      var acteurApp = new ActeurApp($wrapper);
+    });
+  </script>
 
 {% endblock %}

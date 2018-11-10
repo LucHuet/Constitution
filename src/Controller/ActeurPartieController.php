@@ -58,7 +58,9 @@ class ActeurPartieController extends AbstractController
         $partieCourante = $session->get('partieCourante');
 
         $acteurPartie = new ActeurPartie();
-        $form = $this->createForm(ActeurPartieType::class, $acteurPartie);
+        $form = $this->createForm(ActeurPartieType::class, $acteurPartie, array(
+          'action' => $this->generateUrl('acteur_partie_new')
+        ));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -68,9 +70,22 @@ class ActeurPartieController extends AbstractController
             $em->persist($acteurPartie);
             $em->flush();
 
+            if($request->isXmlHttpRequest()){
+              return $this->render('partie/_tableauPartie.html.twig', [
+                'acteur_partie' => $acteurPartie
+              ]);
+            }
+
             return $this->redirectToRoute('partie_show', ['id' => $partieCourante->getId()] );
         }
 
+        if($request->isXmlHttpRequest()) {
+            $html = $this->renderView('acteur_partie/_form.html.twig', [
+              'form' => $form->createView()
+            ]);
+
+            return new Response($html, 400);
+        }
         return $this->render('acteur_partie/new.html.twig', [
             'acteur_partie' => $acteurPartie,
             'form' => $form->createView(),
@@ -118,17 +133,19 @@ class ActeurPartieController extends AbstractController
     /**
      * @Route("/{id}", name="acteur_partie_delete", methods="DELETE")
      */
-    public function delete(Request $request, ActeurPartie $acteurPartie): Response
+    public function deleteActeurPartie(Request $request, ActeurPartie $acteurPartie): Response
     {
+      $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
       $session = new Session();
       $partieCourante = $session->get('partieCourante');
 
-        if ($this->isCsrfTokenValid('delete'.$acteurPartie->getId(), $request->request->get('_token'))) {
+    //    if ($this->isCsrfTokenValid('delete'.$acteurPartie->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($acteurPartie);
             $em->flush();
-        }
+            return new Response(null, 204);
+    //    }
 
-        return $this->redirectToRoute('partie_show', ['id' => $partieCourante->getId()]);
+      //  return $this->redirectToRoute('partie_show', ['id' => $partieCourante->getId()]);
     }
 }
