@@ -3,18 +3,21 @@
 (function(window, $) {
   window.ActeurApp =  function($wrapper){
     this.$wrapper = $wrapper;
-    this.$wrapper.find('.js-delete-acteur').on(
+    this.$wrapper.on(
       'click',
+      '.js-delete-acteur',
       this.handleActeurDelete.bind(this)
     );
 
-    this.$wrapper.find('tbody tr').on(
+    this.$wrapper.on(
       'click',
+      'tbody tr',
       this.handleRowClick.bind(this)
     );
 
-    this.$wrapper.find('.js-new-acteur-form').on(
+    this.$wrapper.on(
       'submit',
+      '.js-new-acteur-form',
       this.handleNewFormSubmit.bind(this)
     );
   };
@@ -58,6 +61,7 @@
         data: $form.serialize(),
         success: function(data) {
           $tbody.append(data);
+          $('#ajoutActeurModal').modal('hide');
         },
         error: function(jqXHR){
           $form.closest('.js-new-acteur-form-wrapper')

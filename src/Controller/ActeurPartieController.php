@@ -69,23 +69,9 @@ class ActeurPartieController extends AbstractController
             $acteurPartie->setPartie($partieCourante);
             $em->persist($acteurPartie);
             $em->flush();
-
-            if($request->isXmlHttpRequest()){
-              return $this->render('partie/_tableauPartie.html.twig', [
-                'acteur_partie' => $acteurPartie
-              ]);
-            }
-
             return $this->redirectToRoute('partie_show', ['id' => $partieCourante->getId()] );
         }
 
-        if($request->isXmlHttpRequest()) {
-            $html = $this->renderView('acteur_partie/_form.html.twig', [
-              'form' => $form->createView()
-            ]);
-
-            return new Response($html, 400);
-        }
         return $this->render('acteur_partie/new.html.twig', [
             'acteur_partie' => $acteurPartie,
             'form' => $form->createView(),
