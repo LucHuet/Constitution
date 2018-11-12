@@ -32,16 +32,8 @@
                 </tr>
             </thead>
             <tbody>
-            {% for acteur_partie in acteurs %}
-                {{ include('partie/_tableauPartie.html.twig') }}
-            {% else %}
-                <tr>
-                    <td colspan="4">pas d'acteur</td>
-                </tr>
-            {% endfor %}
             </tbody>
         </table>
-        <a href="{{ path('acteur_partie_new') }}">Nouvel acteur</a>
 
         <br>
         <!-- Appel de la modal d'ajout -->
@@ -50,22 +42,6 @@
         </button>
 
         <br>
-
-        {% if acteurs|length > 0 %}
-        <a href="{{ path('pouvoir_partie_new') }}">Nouveau pouvoir</a>
-        {% endif %}
-
-        <br>
-
-        {% if acteurs|length > 1 %}
-        <a href="{{ path('designation_partie_new') }}">Nouvelle désignation</a>
-        {% endif %}
-
-        <br>
-
-        {% if pouvoir_parties|length > 1 %}
-        <a href="{{ path('condition_pouvoir_partie_new') }}">Nouvelle condition pouvoir</a>
-        {% endif %}
 
         <ul>
           <li>S {{ partieCourante.stabilite }}</li>
@@ -77,11 +53,19 @@
       </div>
 {% endblock %}
 
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.1.1/sweetalert2.min.css">
+{% endblock %}
+
 {% block javascripts %}
 
   {{ parent() }}
-
+  <script src="https://cdn.jsdelivr.net/sweetalert2/6.1.1/sweetalert2.min.js"></script>
   <script src="{{ asset('assets/js/ActeurApp.js') }}"></script>
+
+
+</script>
 
   <script>
     $(document).ready(function() {
@@ -89,6 +73,26 @@
 
       var acteurApp = new ActeurApp($wrapper);
     });
+  </script>
+
+  <script type="text/template" id="js-acteur-row-template">
+    <tr>
+        <td><%= nom %></td>
+        <td><%= nombreIndividus %></td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td></td>
+        <td>
+          <a href="#"
+            class="js-delete-acteur"
+            data-url="<%= links._self %>"
+          >
+            <span class="fa fa-trash"></span>
+          </a>
+        </td>
+    </tr>
   </script>
 
 {% endblock %}

@@ -6,6 +6,7 @@ use App\Entity\ActeurPartie;
 use App\Form\ActeurPartieType;
 use App\Repository\ActeurPartieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,9 +17,8 @@ use App\Service\CheckStepService;
 /**
  * @Route("/acteur")
  */
-class ActeurPartieController extends AbstractController
+class ActeurPartieController extends BaseController
 {
-
     private $checkStep;
 
     public function __construct(CheckStepService $checkStep)
@@ -27,21 +27,26 @@ class ActeurPartieController extends AbstractController
     }
 
     /**
-     * @Route("/", name="acteur_partie_index", methods="GET")
+     * @Route("/", name="acteur_partie_list", options={"expose"=true})
+     * @Method("GET")
      */
-    public function index(ActeurPartieRepository $acteurPartieRepository): Response
+    public function getActeursPartie(ActeurPartieRepository $acteurPartieRepository)
     {
-        //on verifie la partie actuelle
-        if($this->checkStep->checkPartie() != null){
-          return $this->redirectToRoute($this->checkStep->checkPartie());
-        }
+        $models = $this->findAllUsersActeursModels();
+        return $this->createApiResponse([
+            'items' => $models
+        ]);
+    }
 
-        //on récupere la partie courante afin de n'afficher que les acteurs de la partie courante
-        $session = new Session();
-        $partiCourante = $session->get('partieCourante');
+    /**
+     * @Route("/{id}", name="acteur_partie_get" , methods="GET|POST")
+     * @Method("GET")
+     */
+    public function getActeurPartie(ActeurPartie $acteurPartie)
+    {
+        $apiModel = $this->createActeurApiModel($acteurPartie);
 
-        return $this->render('acteur_partie/index.html.twig',
-                            ['acteur_parties' => $acteurPartieRepository->findBy(['partie' => $partiCourante])]);
+        return $this->createApiResponse($apiModel);
     }
 
     /**
@@ -50,8 +55,8 @@ class ActeurPartieController extends AbstractController
     public function new(Request $request): Response
     {
         //on verifie la partie actuelle
-        if($this->checkStep->checkPartie() != null){
-          return $this->redirectToRoute($this->checkStep->checkPartie());
+        if ($this->checkStep->checkPartie() != null) {
+            return $this->redirectToRoute($this->checkStep->checkPartie());
         }
 
         $session = new Session();
@@ -69,7 +74,7 @@ class ActeurPartieController extends AbstractController
             $acteurPartie->setPartie($partieCourante);
             $em->persist($acteurPartie);
             $em->flush();
-            return $this->redirectToRoute('partie_show', ['id' => $partieCourante->getId()] );
+            return $this->redirectToRoute('partie_show', ['id' => $partieCourante->getId()]);
         }
 
         return $this->render('acteur_partie/new.html.twig', [
@@ -79,16 +84,53 @@ class ActeurPartieController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="acteur_partie_show", methods="GET")
+     * @Route("/new/JS", name="acteur_partie_newJS", options={"expose"=true})
+     * @Method("POST")
      */
-    public function show(ActeurPartie $acteurPartie): Response
+    public function newActeurJS(Request $request)
     {
-        //on verifie que l'acteur est bien de la partie actuelle
-        if($this->checkStep->checkActeur($acteurPartie) != null){
-          return $this->redirectToRoute($this->checkStep->checkActeur($acteurPartie));
+        $session = new Session();
+        $partieCourante = $session->get('partieCourante');
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+        $data = json_decode($request->getContent(), true);
+        if ($data === null) {
+            throw new BadRequestHttpException('Invalid JSON');
         }
 
-        return $this->render('acteur_partie/show.html.twig', ['acteur_partie' => $acteurPartie]);
+        $form = $this->createForm(ActeurPartieType::class, null, [
+          'action' => $this->generateUrl('acteur_partie_new'),
+          'csrf_protection' => false
+        ]);
+
+        $form->submit($data);
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromForm($form);
+
+            return $this->createApiResponse([
+                'errors' => $errors
+            ], 400);
+        }
+
+        /** @var Acteur $acteur */
+        $acteur = $form->getData();
+        $em = $this->getDoctrine()->getManager();
+        $partieCourante = $em->merge($partieCourante);
+        $acteur->setPartie($partieCourante);
+        $em->persist($acteur);
+        $em->flush();
+
+        $apiModel = $this->createActeurApiModel($acteur);
+
+        //$response = $this->createApiResponse($apiModel);
+        $response = new Response(null, 204);
+        // setting the Location header... it's a best-practice
+        $response->headers->set(
+            'Location',
+            $this->generateUrl('acteur_partie_get', ['id' => $acteur->getId()])
+        );
+
+        return $response;
     }
 
     /**
@@ -97,8 +139,8 @@ class ActeurPartieController extends AbstractController
     public function edit(Request $request, ActeurPartie $acteurPartie): Response
     {
         //on verifie que l'acteur est bien de la partie actuelle
-        if($this->checkStep->checkActeur($acteurPartie) != null){
-          return $this->redirectToRoute($this->checkStep->checkActeur($acteurPartie));
+        if ($this->checkStep->checkActeur($acteurPartie) != null) {
+            return $this->redirectToRoute($this->checkStep->checkActeur($acteurPartie));
         }
 
         $form = $this->createForm(ActeurPartieType::class, $acteurPartie);
@@ -121,17 +163,13 @@ class ActeurPartieController extends AbstractController
      */
     public function deleteActeurPartie(Request $request, ActeurPartie $acteurPartie): Response
     {
-      $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
-      $session = new Session();
-      $partieCourante = $session->get('partieCourante');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+        $session = new Session();
+        $partieCourante = $session->get('partieCourante');
 
-    //    if ($this->isCsrfTokenValid('delete'.$acteurPartie->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($acteurPartie);
-            $em->flush();
-            return new Response(null, 204);
-    //    }
-
-      //  return $this->redirectToRoute('partie_show', ['id' => $partieCourante->getId()]);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($acteurPartie);
+        $em->flush();
+        return new Response(null, 204);
     }
 }
