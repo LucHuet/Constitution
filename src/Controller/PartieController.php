@@ -108,7 +108,7 @@ class PartieController extends AbstractController
 
         return $this->render('partie/show.html.twig', [
           'partieCourante' => $partieCourante,
-          'acteurs' => $acteurPartieRepository->findBy(['partie' => $partieCourante]),
+          //'acteurs' => $acteurPartieRepository->findBy(['partie' => $partieCourante]),
           'pouvoir_parties' => $pouvoirPartieRepository->findBy(['partie' => $partieCourante])
         ]);
     }
