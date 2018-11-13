@@ -35,4 +35,9 @@ class ActeurPartieType extends AbstractType
             'data_class' => ActeurPartie::class,
         ]);
     }
+
+    public function getBlockPrefix()
+    {
+      return '';
+    }
 }
