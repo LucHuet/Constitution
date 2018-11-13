@@ -49,36 +49,13 @@ class ActeurPartieController extends BaseController
         return $this->createApiResponse($apiModel);
     }
 
-    /**
-     * @Route("/new", name="acteur_partie_new", methods="GET|POST")
-     */
-    public function new(Request $request): Response
+    public function getFormActeur(): Response
     {
-        //on verifie la partie actuelle
-        if ($this->checkStep->checkPartie() != null) {
-            return $this->redirectToRoute($this->checkStep->checkPartie());
-        }
+        $form = $this->createForm(ActeurPartieType::class, null, [
+          'csrf_protection' => false
+        ]);
 
-        $session = new Session();
-        $partieCourante = $session->get('partieCourante');
-
-        $acteurPartie = new ActeurPartie();
-        $form = $this->createForm(ActeurPartieType::class, $acteurPartie, array(
-          'action' => $this->generateUrl('acteur_partie_new')
-        ));
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $partieCourante = $em->merge($partieCourante);
-            $acteurPartie->setPartie($partieCourante);
-            $em->persist($acteurPartie);
-            $em->flush();
-            return $this->redirectToRoute('partie_show', ['id' => $partieCourante->getId()]);
-        }
-
-        return $this->render('acteur_partie/new.html.twig', [
-            'acteur_partie' => $acteurPartie,
+        return $this->render('acteur_partie/_form.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -99,7 +76,6 @@ class ActeurPartieController extends BaseController
         }
 
         $form = $this->createForm(ActeurPartieType::class, null, [
-          'action' => $this->generateUrl('acteur_partie_new'),
           'csrf_protection' => false
         ]);
 
