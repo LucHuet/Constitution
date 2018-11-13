@@ -3,22 +3,9 @@
 {% block title %}Partie{% endblock %}
 
 {% block body %}
-    <h2>Partie en cours</h2>
-    <table class="table">
-        <tbody>
-            <tr>
-                <td>{{ partieCourante.nom }}</td>
-                <td><a href="{{ path('partie_liste') }}">Liste des parties</a></td>
-                <td><a href="{{ path('partie_edit', {'id': partieCourante.id}) }}">Editer la partie en cours</a></td>
-            </tr>
-        </tbody>
-    </table>
 
-
-    <!--  <a href="{{ path('partie_new') }}">Create new</a> -->
-      <br>
       <div class="js-acteur-table">
-        <h2>Acteurs de la partie en cours</h2>
+        <h2>Partie en cours</h2>
         <table class="table js-acteur-table">
             <thead>
                 <tr>

@@ -54,7 +54,6 @@
             self._deleteActeur($link);
       }).catch(function (arg) {
             console.log('cancel');
-          }
       });
     },
 
