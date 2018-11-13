@@ -106,7 +106,7 @@ class PartieController extends AbstractController
           return $this->redirectToRoute($this->checkStep->checkPartie($partieCourante));
         }
 
-        return $this->render('partie/show.html.twig', [
+        return $this->render('partie/partiePagePrincipale.html.twig', [
           'partieCourante' => $partieCourante,
           //'acteurs' => $acteurPartieRepository->findBy(['partie' => $partieCourante]),
           'pouvoir_parties' => $pouvoirPartieRepository->findBy(['partie' => $partieCourante])
