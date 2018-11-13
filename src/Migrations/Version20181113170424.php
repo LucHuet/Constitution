@@ -8,7 +8,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20181113160512 extends AbstractMigration
+final class Version20181113170424 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
@@ -16,14 +16,14 @@ final class Version20181113160512 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE acteur_partie DROP stabilite, DROP equilibre, DROP democratie, DROP force_acteur');
+        $this->addSql('ALTER TABLE condition_pouvoir DROP stabilite, DROP equilibre, DROP democratie');
         $this->addSql('ALTER TABLE condition_pouvoir_partie DROP stabilite, DROP equilibre, DROP democratie');
         $this->addSql('ALTER TABLE designation_partie DROP stabilite, DROP equilibre, DROP democratie');
-        $this->addSql('ALTER TABLE partie DROP stabilite, DROP equilibre, DROP democratie');
         $this->addSql('ALTER TABLE pouvoir_partie DROP importance, DROP stabilite, DROP equilibre, DROP democratie');
         $this->addSql('ALTER TABLE acteur DROP stabilite, DROP equilibre, DROP democratie');
+        $this->addSql('ALTER TABLE partie DROP stabilite, DROP equilibre, DROP democratie');
         $this->addSql('ALTER TABLE pouvoir DROP importance, DROP stabilite, DROP equilibre, DROP democratie');
         $this->addSql('ALTER TABLE designation DROP stabilite, DROP equilibre, DROP democratie');
-        $this->addSql('ALTER TABLE condition_pouvoir DROP stabilite, DROP equilibre, DROP democratie');
     }
 
     public function down(Schema $schema) : void
