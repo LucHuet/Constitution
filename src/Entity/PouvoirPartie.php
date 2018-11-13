@@ -66,25 +66,6 @@ class PouvoirPartie
      */
     private $designationControlled;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $importance;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $stabilite;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $equilibre;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $democratie;
 
     public function __construct()
     {
@@ -134,14 +115,6 @@ class PouvoirPartie
     public function setPouvoir(?Pouvoir $pouvoir): self
     {
         $this->pouvoir = $pouvoir;
-
-        $this
-          ->setImportance($pouvoir->getImportance())
-          ->setStabilite($pouvoir->getStabilite())
-          ->setEquilibre($pouvoir->getEquilibre())
-          ->setDemocratie($pouvoir->getDemocratie());
-
-
         return $this;
     }
 
@@ -250,56 +223,4 @@ class PouvoirPartie
 
         return $this;
     }
-
-    public function getImportance(): ?int
-    {
-        return $this->importance;
-    }
-
-    public function setImportance(int $importance): self
-    {
-        $this->importance = $importance;
-
-        return $this;
-    }
-
-    /*setter et getter de SED*/
-
-    public function getStabilite(): ?int
-    {
-        return $this->stabilite;
-    }
-
-    public function setStabilite(int $stabilite): self
-    {
-        $this->stabilite = $stabilite;
-
-        return $this;
-    }
-
-    public function getEquilibre(): ?int
-    {
-        return $this->equilibre;
-    }
-
-    public function setEquilibre(int $equilibre): self
-    {
-        $this->equilibre = $equilibre;
-
-        return $this;
-    }
-
-    public function getDemocratie(): ?int
-    {
-        return $this->democratie;
-    }
-
-    public function setDemocratie(int $democratie): self
-    {
-        $this->democratie = $democratie;
-
-        return $this;
-    }
-    /*fin setter et getter de SED*/
-
 }

@@ -26,30 +26,10 @@ class ConditionPouvoir
      */
     private $description;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $stabilite;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $equilibre;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $democratie;
-
-
-
-    public function __construct($nom,$description, $stabilite, $equilibre, $democratie)
+    public function __construct($nom,$description)
     {
         $this->nom = $nom;
         $this->description = $description;
-        $this->stabilite = $stabilite;
-        $this->equilibre = $equilibre;
-        $this->democratie = $democratie;
     }
 
     public function __toString(){
@@ -73,44 +53,6 @@ class ConditionPouvoir
         return $this;
     }
 
-    /*setter et getter de SED*/
-
-    public function getStabilite(): ?int
-    {
-        return $this->stabilite;
-    }
-
-    public function setStabilite(int $stabilite): self
-    {
-        $this->stabilite = $stabilite;
-
-        return $this;
-    }
-
-    public function getEquilibre(): ?int
-    {
-        return $this->equilibre;
-    }
-
-    public function setEquilibre(int $equilibre): self
-    {
-        $this->equilibre = $equilibre;
-
-        return $this;
-    }
-
-    public function getDemocratie(): ?int
-    {
-        return $this->democratie;
-    }
-
-    public function setDemocratie(int $democratie): self
-    {
-        $this->democratie = $democratie;
-
-        return $this;
-    }
-
     public function getNom(): ?string
     {
         return $this->nom;
@@ -122,5 +64,4 @@ class ConditionPouvoir
 
         return $this;
     }
-    /*fin setter et getter de SED*/
 }

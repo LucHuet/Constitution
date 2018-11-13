@@ -35,26 +35,6 @@ class Pouvoir
     private $type;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $importance;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $stabilite;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $equilibre;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $democratie;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $groupePouvoir;
@@ -68,21 +48,13 @@ class Pouvoir
     public function __construct(
       $nom,
       $description,
-      $type,
-      $importance,
-      $stabilite,
-      $equilibre,
-      $democratie
+      $type
       )
     {
       $this
       ->setNom($nom)
       ->setDescription($description)
       ->setType($type)
-      ->setImportance($importance)
-      ->setStabilite($stabilite)
-      ->setEquilibre($equilibre)
-      ->setDemocratie($democratie)
       ;
     }
 
@@ -116,18 +88,6 @@ class Pouvoir
     public function setType(string $type): self
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    public function getImportance(): ?int
-    {
-        return $this->importance;
-    }
-
-    public function setImportance(int $importance): self
-    {
-        $this->importance = $importance;
 
         return $this;
     }
@@ -179,44 +139,5 @@ class Pouvoir
 
         return $this;
     }
-
-    /*setter et getter de SED*/
-
-    public function getStabilite(): ?int
-    {
-        return $this->stabilite;
-    }
-
-    public function setStabilite(int $stabilite): self
-    {
-        $this->stabilite = $stabilite;
-
-        return $this;
-    }
-
-    public function getEquilibre(): ?int
-    {
-        return $this->equilibre;
-    }
-
-    public function setEquilibre(int $equilibre): self
-    {
-        $this->equilibre = $equilibre;
-
-        return $this;
-    }
-
-    public function getDemocratie(): ?int
-    {
-        return $this->democratie;
-    }
-
-    public function setDemocratie(int $democratie): self
-    {
-        $this->democratie = $democratie;
-
-        return $this;
-    }
-    /*fin setter et getter de SED*/
 
 }
