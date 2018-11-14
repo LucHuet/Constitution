@@ -95,7 +95,7 @@
         self._clearForm();
         self._addRow(data);
       }).catch(function(errorData){
-        self._mapErrorsToForm(errorData.errors);
+        self._mapErrorsToForm(errorData.responseJSON.errors);
       });
     },
 
