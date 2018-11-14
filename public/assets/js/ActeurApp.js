@@ -31,12 +31,11 @@
     },
 
     loadActeurs: function(){
-      var self = this;
       $.ajax({
         url:Routing.generate('acteur_partie_list'),
-      }).then(function(data){
-        $.each(data.items, function(key, acteur){
-            self._addRow(acteur);
+      }).then((data) => {
+        $.each(data.items, (key, acteur) =>{
+            this._addRow(acteur);
         });
       });
     },
@@ -44,15 +43,14 @@
     handleActeurDelete: function(e) {
       e.preventDefault();
 
-      var $link = $(e.currentTarget);
-      var self = this;
+      const $link = $(e.currentTarget);
       swal({
         title: 'Supprimer cet Acteur ?',
         html: 'Supprimer ?',
         showCancelButton: true,
-      }).then(function(){
-            self._deleteActeur($link);
-      }).catch(function (arg) {
+      }).then(() =>{
+            this._deleteActeur($link);
+      }).catch( (arg) => {
             console.log('cancel');
       });
     },
@@ -64,16 +62,16 @@
         .addClass('fa-spinner')
         .addClass('fa-spin');
 
-      var deleteUrl = $link.data('url');
-      var $row = $link.closest('tr');
+      const deleteUrl = $link.data('url');
+      const $row = $link.closest('tr');
       $.ajax({
         url: deleteUrl,
         method: 'DELETE',
-      }).then(function(data){
-        $row.fadeOut('normal', function(){
+      }).then((data) =>{
+        $row.fadeOut('normal', () =>{
           $row.remove();
         });
-      }).catch(function(jqXHR){
+      }).catch((jqXHR) =>{
         console.log('delete fail')
       });
     },
@@ -84,18 +82,17 @@
 
     handleNewFormSubmit: function(e) {
       e.preventDefault();
-      var $form = $(e.currentTarget);
-      var formData = {};
-      $.each($form.serializeArray(), function(key, fieldData){
+      const $form = $(e.currentTarget);
+      const formData = {};
+      $.each($form.serializeArray(), (key, fieldData)=>{
         formData[fieldData.name] = fieldData.value;
       });
-      var self = this;
       this._saveActeur(formData)
-      .then(function(data){
-        self._clearForm();
-        self._addRow(data);
-      }).catch(function(errorData){
-        self._mapErrorsToForm(errorData.responseJSON.errors);
+      .then((data) =>{
+        this._clearForm();
+        this._addRow(data);
+      }).catch((errorData) =>{
+        this._mapErrorsToForm(errorData.responseJSON.errors);
       });
     },
 
@@ -104,7 +101,7 @@
           url: Routing.generate('acteur_partie_newJS'),
           method: 'POST',
           data: JSON.stringify(data),
-        }).then(function(data, textStatus, jqXHR){
+        }).then((data, textStatus, jqXHR) =>{
             return $.ajax({
               url: jqXHR.getResponseHeader('Location')
             });
@@ -113,19 +110,19 @@
 
     _mapErrorsToForm: function(errorData){
       // reset things
-      var $form = this.$wrapper.find(this._selectors.newActeurForm);
+      const $form = this.$wrapper.find(this._selectors.newActeurForm);
       this._removeFormErrors();
 
-      $form.find(':input').each(function(){
-        var fieldName = $(this).attr('name');
-        var $wrapper = $(this).closest('.form-group');
+      $form.find(':input').each((index, element) =>{
+        const fieldName = $(element).attr('name');
+        const $wrapper = $(element).closest('.form-group');
         if(!errorData[fieldName])
         {
           //no error
           return;
         }
 
-        var $error = $('<span class="js-field-error help-block"></span>');
+        const $error = $('<span class="js-field-error help-block"></span>');
         $error.html(errorData[fieldName]);
         $wrapper.append($error);
         $wrapper.addClass('has-error');
@@ -133,22 +130,22 @@
     },
 
     _removeFormErrors: function(){
-      var $form = this.$wrapper.find(this._selectors.newActeurForm);
+      const $form = this.$wrapper.find(this._selectors.newActeurForm);
       $form.find('.js-field-error').remove();
       $form.find('.form-group').removeClass('has-error');
     },
 
     _clearForm: function(){
       this._removeFormErrors();
-      var $form = this.$wrapper.find(this._selectors.newActeurForm);
+      const $form = this.$wrapper.find(this._selectors.newActeurForm);
       $form[0].reset();
     },
 
     _addRow: function(acteur){
-      var tplText = $('#js-acteur-row-template').html();
-      var tpl = _.template(tplText);
+      const tplText = $('#js-acteur-row-template').html();
+      const tpl = _.template(tplText);
 
-      var html = tpl(acteur);
+      const html = tpl(acteur);
       this.$wrapper.find('tbody')
         .append($.parseHTML(html));
     }
