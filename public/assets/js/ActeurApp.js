@@ -1,46 +1,49 @@
 'use strict';
 
 (function(window, $, Routing, swal) {
-  window.ActeurApp =  function($wrapper){
-    this.$wrapper = $wrapper;
-    this.$wrapper.on(
-      'click',
-      '.js-delete-acteur',
-      this.handleActeurDelete.bind(this)
-    );
 
-    this.loadActeurs();
+  class ActeurApp {
 
-    this.$wrapper.on(
-      'click',
-      'tbody tr',
-      this.handleRowClick.bind(this)
-    );
+    constructor ($wrapper){
+      this.$wrapper = $wrapper;
+      this.$wrapper.on(
+        'click',
+        '.js-delete-acteur',
+        this.handleActeurDelete.bind(this)
+      );
 
-    this.$wrapper.on(
-      'submit',
-      this._selectors.newActeurForm,
-      this.handleNewFormSubmit.bind(this)
-    );
-  };
+      this.loadActeurs();
 
-  $.extend(window.ActeurApp.prototype, {
+      this.$wrapper.on(
+        'click',
+        'tbody tr',
+        this.handleRowClick.bind(this)
+      );
 
-    _selectors: {
-      newActeurForm: '.js-new-acteur-form'
-    },
+      this.$wrapper.on(
+        'submit',
+        ActeurApp._selectors.newActeurForm,
+        this.handleNewFormSubmit.bind(this)
+      );
+    }
 
-    loadActeurs: function(){
+    static get _selectors() {
+      return{
+        newActeurForm: '.js-new-acteur-form'
+      };
+    }
+
+    loadActeurs(){
       $.ajax({
         url:Routing.generate('acteur_partie_list'),
       }).then((data) => {
-        $.each(data.items, (key, acteur) =>{
+        for(let acteur of data.items){
             this._addRow(acteur);
-        });
+        }
       });
-    },
+    }
 
-    handleActeurDelete: function(e) {
+    handleActeurDelete(e) {
       e.preventDefault();
 
       const $link = $(e.currentTarget);
@@ -53,9 +56,9 @@
       }).catch( (arg) => {
             console.log('cancel');
       });
-    },
+    }
 
-    _deleteActeur:function($link){
+    _deleteActeur($link){
       $link.addClass('text-danger');
       $link.find('.fa')
         .removeClass('fa-trash')
@@ -74,19 +77,19 @@
       }).catch((jqXHR) =>{
         console.log('delete fail')
       });
-    },
+    }
 
-    handleRowClick: function() {
+    handleRowClick() {
       console.log('row click');
-    },
+    }
 
-    handleNewFormSubmit: function(e) {
+    handleNewFormSubmit(e) {
       e.preventDefault();
       const $form = $(e.currentTarget);
       const formData = {};
-      $.each($form.serializeArray(), (key, fieldData)=>{
+      for(let fieldData of $form.serializeArray()){
         formData[fieldData.name] = fieldData.value;
-      });
+      }
       this._saveActeur(formData)
       .then((data) =>{
         this._clearForm();
@@ -94,11 +97,12 @@
       }).catch((errorData) =>{
         this._mapErrorsToForm(errorData.responseJSON.errors);
       });
-    },
+    }
 
-    _saveActeur: function(data) {
+    _saveActeur(data) {
+      const url = Routing.generate('acteur_partie_newJS');
       return $.ajax({
-          url: Routing.generate('acteur_partie_newJS'),
+          url,
           method: 'POST',
           data: JSON.stringify(data),
         }).then((data, textStatus, jqXHR) =>{
@@ -106,14 +110,14 @@
               url: jqXHR.getResponseHeader('Location')
             });
         });
-    },
+    }
 
-    _mapErrorsToForm: function(errorData){
+    _mapErrorsToForm(errorData){
       // reset things
-      const $form = this.$wrapper.find(this._selectors.newActeurForm);
+      const $form = this.$wrapper.find(ActeurApp._selectors.newActeurForm);
       this._removeFormErrors();
 
-      $form.find(':input').each((index, element) =>{
+      for(let element of $form.find(':input')){
         const fieldName = $(element).attr('name');
         const $wrapper = $(element).closest('.form-group');
         if(!errorData[fieldName])
@@ -126,29 +130,49 @@
         $error.html(errorData[fieldName]);
         $wrapper.append($error);
         $wrapper.addClass('has-error');
-      });
-    },
+      }
+    }
 
-    _removeFormErrors: function(){
-      const $form = this.$wrapper.find(this._selectors.newActeurForm);
+    _removeFormErrors(){
+      const $form = this.$wrapper.find(ActeurApp._selectors.newActeurForm);
       $form.find('.js-field-error').remove();
       $form.find('.form-group').removeClass('has-error');
-    },
+    }
 
-    _clearForm: function(){
+    _clearForm(){
       this._removeFormErrors();
-      const $form = this.$wrapper.find(this._selectors.newActeurForm);
+      const $form = this.$wrapper.find(ActeurApp._selectors.newActeurForm);
       $form[0].reset();
-    },
+    }
 
-    _addRow: function(acteur){
-      const tplText = $('#js-acteur-row-template').html();
-      const tpl = _.template(tplText);
+    _addRow(acteur){
 
-      const html = tpl(acteur);
+      const html = rowTemplate(acteur);
       this.$wrapper.find('tbody')
         .append($.parseHTML(html));
     }
 
-  });
+  }
+
+  const rowTemplate = (acteur) => `
+        <tr>
+            <td>${ acteur.nom }</td>
+            <td>${ acteur.nombreIndividus }</td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td></td>
+            <td>
+              <a href="#"
+                class="js-delete-acteur"
+                data-url="${ acteur.links._self }"
+              >
+                <span class="fa fa-trash"></span>
+              </a>
+            </td>
+        </tr>`;
+
+  window.ActeurApp = ActeurApp;
+
 })(window, jQuery, Routing, swal);

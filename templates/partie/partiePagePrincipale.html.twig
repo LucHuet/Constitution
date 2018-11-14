@@ -43,7 +43,7 @@
 
   {{ parent() }}
   <script src="https://cdn.jsdelivr.net/sweetalert2/6.1.1/sweetalert2.min.js"></script>
-  <script src="{{ asset('assets/js/ActeurApp.js') }}"></script>
+  <script src="{{ asset('assets/dist/ActeurApp.js') }}"></script>
 
 
 </script>
@@ -54,26 +54,6 @@
 
       var acteurApp = new ActeurApp($wrapper);
     });
-  </script>
-
-  <script type="text/template" id="js-acteur-row-template">
-    <tr>
-        <td><%= nom %></td>
-        <td><%= nombreIndividus %></td>
-        <td>
-        </td>
-        <td>
-        </td>
-        <td></td>
-        <td>
-          <a href="#"
-            class="js-delete-acteur"
-            data-url="<%= links._self %>"
-          >
-            <span class="fa fa-trash"></span>
-          </a>
-        </td>
-    </tr>
   </script>
 
 {% endblock %}
