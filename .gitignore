@@ -14,5 +14,6 @@
 ###> symfony/web-server-bundle ###
 /.web-server-pid
 ###< symfony/web-server-bundle ###
-/node-modules/
+/node_modules/
 /yarn.lock/
+/public/build/*
