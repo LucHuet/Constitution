@@ -5,8 +5,17 @@
   "author": "Luc <luck.huet@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "7",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "bootstrap": "3",
+    "copy-webpack-plugin": "^4.6.0",
+    "css-loader": "^1.0.1",
+    "file-loader": "^2.0.0",
+    "font-awesome": "^4.7.0",
     "jquery": "^3.3.1",
+    "style-loader": "^0.23.1",
     "sweetalert2": "^7.29.0",
     "webpack": "3",
     "webpack-cli": "^3.1.2"

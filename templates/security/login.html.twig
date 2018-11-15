@@ -24,11 +24,16 @@
         <input type="hidden" name="_target_path" value="/account" />
     #}
 
-    <button type="submit">login</button>
+    <button class='loggin-save' type="submit">login</button>
 
     <h3>Vous n'êtes pas encore enregistré ? </h3>
     <p>
       <a href="{{ path('user_registration') }}"> <class="button">S'enregistrer</a>
     </p>
 </form>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('build/login.js') }}"></script>
 {% endblock %}
