@@ -16,4 +16,4 @@
 ###< symfony/web-server-bundle ###
 /node_modules/
 /yarn.lock/
-/public/build/*
+/public/build/
