@@ -1,12 +1,13 @@
 'use strict';
 
-const $ = require('jquery');
-const swal = require('sweetalert2');
-require('sweetalert2/dist/sweetalert2.css');
+import $ from 'jquery';
+import swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.css';
+import Routing from './Routing';
 
 class ActeurApp {
 
-  constructor ($wrapper){
+  constructor ($wrapper, initialActeurs){
     this.$wrapper = $wrapper;
     this.$wrapper.on(
       'click',
@@ -14,7 +15,9 @@ class ActeurApp {
       this.handleActeurDelete.bind(this)
     );
 
-    this.loadActeurs();
+    for(let acteur of initialActeurs){
+      this._addRow(acteur);
+    }
 
     this.$wrapper.on(
       'click',
@@ -33,16 +36,6 @@ class ActeurApp {
     return{
       newActeurForm: '.js-new-acteur-form'
     };
-  }
-
-  loadActeurs(){
-    $.ajax({
-      url:Routing.generate('acteur_partie_list'),
-    }).then((data) => {
-      for(let acteur of data.items){
-          this._addRow(acteur);
-      }
-    });
   }
 
   handleActeurDelete(e) {
@@ -177,4 +170,4 @@ const rowTemplate = (acteur) => `
           </td>
       </tr>`;
 
-module.exports = ActeurApp;
+export default ActeurApp;

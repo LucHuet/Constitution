@@ -20,7 +20,7 @@ use App\Service\CheckStepService;
 /**
  * @Route("/partie")
  */
-class PartieController extends AbstractController
+class PartieController extends BaseController
 {
 
     private $checkStep;
@@ -106,10 +106,14 @@ class PartieController extends AbstractController
           return $this->redirectToRoute($this->checkStep->checkPartie($partieCourante));
         }
 
+        $acteurModels = $this->findAllUsersActeursModels();
+        $acteursJson = $this->get('serializer')
+            ->serialize($acteurModels, 'json');
+
         return $this->render('partie/partiePagePrincipale.html.twig', [
           'partieCourante' => $partieCourante,
-          //'acteurs' => $acteurPartieRepository->findBy(['partie' => $partieCourante]),
-          'pouvoir_parties' => $pouvoirPartieRepository->findBy(['partie' => $partieCourante])
+          'pouvoir_parties' => $pouvoirPartieRepository->findBy(['partie' => $partieCourante]),
+          'acteursJson' => $acteursJson,
         ]);
     }
 
