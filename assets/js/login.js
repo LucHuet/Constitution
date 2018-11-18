@@ -1,6 +1,6 @@
 'use strict';
 
-require('../css/login.css');
+import '../css/login.css';
 
 (function(){
   $(document).ready(function(){

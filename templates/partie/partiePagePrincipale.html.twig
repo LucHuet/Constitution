@@ -4,9 +4,16 @@
 
 {% block body %}
 
-      <div class="js-acteur-table">
-        <h2>Partie en cours</h2>
-        <table class="table js-acteur-table">
+      <div class="js-acteur-table" data-acteurs="{{ acteursJson|e('html_attr') }}">
+        <h2 class="js-custom_popover"
+            data-toggle="popover"
+            title="à propos"
+            data-content="pour la République !"
+        >
+          Partie en cours
+        </h2>
+
+        <table class="table" >
             <thead>
                 <tr>
                     <th>Nom</th>
@@ -38,5 +45,15 @@
 
   {{ parent() }}
   <script src="{{ asset('build/acteur.js') }}"></script>
+  <script>
+
+      $(document).ready(function(){
+        $('.js-custom-popover').popover({
+          trigger: 'hover',
+          placement:'left'
+        });
+      });
+
+  </script>
 
 {% endblock %}
