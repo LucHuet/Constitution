@@ -1,8 +1,9 @@
+'use strict';
+
 import $ from 'jquery';
-import 'bootstrap-sass';
 import ActeurApp from './Components/ActeurApp';
 
-global.$ = $;
+//global.$ = $;
 
 $(document).ready(function() {
   var $wrapper = $('.js-acteur-table');
