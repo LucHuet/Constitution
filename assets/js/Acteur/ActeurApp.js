@@ -14,28 +14,38 @@ export default class ActeurApp extends Component {
         {id: uuid(),nom:"RERE",nombreIndividus:null},
         {id: uuid(),nom:"RERE2",nombreIndividus:34},
         {id: uuid(),nom:"RERE3",nombreIndividus:1}
-      ]
+      ],
+      numberOfProuts: 1,
     };
 
     this.handleRowClick = this.handleRowClick.bind(this);
-    this.handleNewItemSubmit = this.handleNewItemSubmit.bind(this);
+    this.handleAddActeur = this.handleAddActeur.bind(this);
+    this.handleProutChange = this.handleProutChange.bind(this);
   }
 
   handleRowClick(acteurId) {
       this.setState({highlightedRowId:acteurId});
   }
 
-  handleNewItemSubmit(acteurName, nombreIndividus, typeActeur){
-      console.log(acteurName, nombreIndividus, typeActeur);
+  handleAddActeur(acteurName, nombreIndividus, typeActeur){
 
-      const acteurs = this.state.acteurs;
       const newActeur = {
         id: uuid(),
         nom: acteurName,
         nombreIndividus : nombreIndividus
-      }
-      acteurs.push(newActeur);
-      this.setState({acteurs: acteurs});
+      };
+
+      this.setState(prevStat => {
+        const newActeurs = [...prevStat.acteurs, newActeur];
+
+        return {acteurs: newActeurs}
+      });
+  }
+
+  handleProutChange(proutsCount) {
+    this.setState({
+      numberOfProuts: proutsCount
+    });
   }
 
   render(){
@@ -45,7 +55,8 @@ export default class ActeurApp extends Component {
         {...this.props}
         {...this.state}
         onRowClick={this.handleRowClick}
-        onNewItemSubmit={this.handleNewItemSubmit}
+        onAddActeur={this.handleAddActeur}
+        onProutChange={this.handleProutChange}
       />
     )
   }

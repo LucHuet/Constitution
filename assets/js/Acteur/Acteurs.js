@@ -5,10 +5,19 @@ import PropTypes from 'prop-types';
 
 export default function Acteurs(props){
 
-  const { withProut, highlightedRowId, onRowClick, acteurs, onNewItemSubmit } = props;
+  const {
+    withProut,
+    highlightedRowId,
+    onRowClick,
+    acteurs,
+    onAddActeur,
+    numberOfProuts,
+    onProutChange
+  } = props;
+
   let prout = '';
   if(withProut){
-    prout = <span>prout</span>;
+    prout = <span>{'Prout '.repeat(numberOfProuts)}</span>;
   }
 
   return (
@@ -20,6 +29,14 @@ export default function Acteurs(props){
       >
         Partie en cours {prout}
       </h2>
+
+      <input
+        type="range"
+        value={numberOfProuts}
+        onChange={(e) => {
+          onProutChange(+e.target.value)
+        }}
+      />
 
       <table className="table" >
           <thead>
@@ -42,10 +59,13 @@ export default function Acteurs(props){
           />
 
       </table>
-
-      <ActeurCreator
-        onNewItemSubmit={onNewItemSubmit}
-      />
+      <div className="row">
+        <div className="col-md-6">
+          <ActeurCreator
+            onAddActeur={onAddActeur}
+          />
+        </div>
+      </div>
 
   </div>
   );
@@ -55,6 +75,8 @@ Acteurs.propTypes = {
   withProut: PropTypes.bool,
   highlightedRowId: PropTypes.any,
   onRowClick: PropTypes.func.isRequired,
-  onNewItemSubmit: PropTypes.func.isRequired,
-  acteurs: PropTypes.array.isRequired
+  onAddActeur: PropTypes.func.isRequired,
+  onProutChange: PropTypes.func.isRequired,
+  acteurs: PropTypes.array.isRequired,
+  numberOfProuts: PropTypes.number.isRequired,
 }
