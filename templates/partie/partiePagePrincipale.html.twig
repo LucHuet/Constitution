@@ -3,6 +3,12 @@
 {% block title %}Partie{% endblock %}
 
 {% block body %}
+      <div class="row">
+        <div id="lift-stuff-app"></div>
+      </div>
+
+      <br><br><br><br><br><br>
+      <hr />
 
       <div class="js-acteur-table" data-acteurs="{{ acteursJson|e('html_attr') }}">
         <h2 class="js-custom_popover"
@@ -45,4 +51,5 @@
 
   {{ parent() }}
   <script src="{{ asset('build/acteur.js') }}"></script>
+    <script src="{{ asset('build/acteur_react.js') }}"></script>
 {% endblock %}
