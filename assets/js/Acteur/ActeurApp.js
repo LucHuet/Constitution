@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Acteurs from './Acteurs';
 import PropTypes from 'prop-types';
+import uuid from 'uuid/v4';
 
 export default class ActeurApp extends Component {
 
@@ -10,17 +11,31 @@ export default class ActeurApp extends Component {
     this.state = {
       highlightedRowId: null,
       acteurs: [
-        {id: 1,nom:"RERE",nombreIndividus:null},
-        {id: 2,nom:"RERE2",nombreIndividus:34},
-        {id: 3,nom:"RERE3",nombreIndividus:1}
+        {id: uuid(),nom:"RERE",nombreIndividus:null},
+        {id: uuid(),nom:"RERE2",nombreIndividus:34},
+        {id: uuid(),nom:"RERE3",nombreIndividus:1}
       ]
     };
 
     this.handleRowClick = this.handleRowClick.bind(this);
+    this.handleNewItemSubmit = this.handleNewItemSubmit.bind(this);
   }
 
   handleRowClick(acteurId) {
       this.setState({highlightedRowId:acteurId});
+  }
+
+  handleNewItemSubmit(acteurName, nombreIndividus, typeActeur){
+      console.log(acteurName, nombreIndividus, typeActeur);
+
+      const acteurs = this.state.acteurs;
+      const newActeur = {
+        id: uuid(),
+        nom: acteurName,
+        nombreIndividus : nombreIndividus
+      }
+      acteurs.push(newActeur);
+      this.setState({acteurs: acteurs});
   }
 
   render(){
@@ -30,6 +45,7 @@ export default class ActeurApp extends Component {
         {...this.props}
         {...this.state}
         onRowClick={this.handleRowClick}
+        onNewItemSubmit={this.handleNewItemSubmit}
       />
     )
   }

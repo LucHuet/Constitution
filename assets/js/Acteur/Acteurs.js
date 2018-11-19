@@ -1,10 +1,11 @@
 import React from 'react';
 import ActeurList from './ActeurList';
+import ActeurCreator from './ActeurCreator';
 import PropTypes from 'prop-types';
 
 export default function Acteurs(props){
 
-  const { withProut, highlightedRowId, onRowClick, acteurs } = props;
+  const { withProut, highlightedRowId, onRowClick, acteurs, onNewItemSubmit } = props;
   let prout = '';
   if(withProut){
     prout = <span>prout</span>;
@@ -41,23 +42,11 @@ export default function Acteurs(props){
           />
 
       </table>
-      <div>
-          <form method="post" className="form-inline" data-url="/acteur/new/JS">
-              <div className="form-group">
-              <div><label htmlFor="nom" className="required">Nom</label><input type="text" id="nom" name="nom" required="required" maxLength="255" /></div>
-              </div>
-              {' '}
-              <div className="form-group">
-              <div><label htmlFor="nombreIndividus">Nombre individus</label><input type="number" id="nombreIndividus" name="nombreIndividus" /></div>
-              </div>
-              {' '}
-              <div className="form-group">
-              <div><label htmlFor="typeActeur" className="required">Type acteur</label><select id="typeActeur" name="typeActeur"><option value="4">Groupe d&#039;individus</option><option value="6">Autorité Indépendante</option></select></div>
-              </div>
-              {' '}
-              <button className="btn">Save</button>
-          </form>
-      </div>
+
+      <ActeurCreator
+        onNewItemSubmit={onNewItemSubmit}
+      />
+
   </div>
   );
 }
@@ -66,5 +55,6 @@ Acteurs.propTypes = {
   withProut: PropTypes.bool,
   highlightedRowId: PropTypes.any,
   onRowClick: PropTypes.func.isRequired,
+  onNewItemSubmit: PropTypes.func.isRequired,
   acteurs: PropTypes.array.isRequired
 }
