@@ -15,8 +15,8 @@ export default class ActeurCreator extends Component{
     this.typeActeur = React.createRef();
 
     this.typeActeurOptions = [
-      { id: 'groupe', text: 'Groupe d\'individus' },
-      { id: 'autorite', text: 'Autorité Indépendante' },
+      { id: '4', text: 'Groupe d\'individus' },
+      { id: '6', text: 'Autorité Indépendante' },
 
     ];
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -40,7 +40,7 @@ export default class ActeurCreator extends Component{
     onAddActeur(
       nomActeur.value,
       nombreActeur.value,
-      typeActeur.options[typeActeur.selectedIndex].text
+      typeActeur.options[typeActeur.selectedIndex].value
     );
 
     nomActeur.value = '';

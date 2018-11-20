@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Acteurs from './Acteurs';
 import PropTypes from 'prop-types';
 import uuid from 'uuid/v4';
-import { getActeurs } from '../api/acteur_api.js';
+import { getActeurs, deleteActeur, createActeur } from '../api/acteur_api.js';
 
 
 export default class ActeurApp extends Component {
@@ -10,44 +10,84 @@ export default class ActeurApp extends Component {
   constructor(props){
     super(props);
 
-    getActeurs()
-      .then((data)=>{
-        console.log(data);
-      });
 
     this.state = {
       highlightedRowId: null,
-      acteurs: [
-        {id: uuid(),nom:"RERE",nombreIndividus:null},
-        {id: uuid(),nom:"RERE2",nombreIndividus:34},
-        {id: uuid(),nom:"RERE3",nombreIndividus:1}
-      ],
+      acteurs: [],
       numberOfProuts: 1,
+      isLoaded: false,
+      isSavingNewActeur: false,
+      successMessage: '',
     };
+
+    this.successMessageTimemoutHandle = 0;
 
     this.handleRowClick = this.handleRowClick.bind(this);
     this.handleAddActeur = this.handleAddActeur.bind(this);
     this.handleProutChange = this.handleProutChange.bind(this);
     this.handleDeleteActeur = this.handleDeleteActeur.bind(this);
   }
+  //componentDidMount est une methode magique qui est automatiquement
+  //lancée apres le render de l'app
+  componentDidMount(){
+    getActeurs()
+      .then((data)=>{
+        this.setState({
+          acteurs: data,
+          isLoaded: true
+        });
+      });
+  }
+  //componentWillUnmount est une methode magique qui est automatiquement
+  //lancée juste apres qu'un element soit supprimé
+  componentWillUnmount(){
+    clearTimeout(this.successMessageTimemoutHandle);
+  }
 
   handleRowClick(acteurId) {
       this.setState({highlightedRowId:acteurId});
   }
 
-  handleAddActeur(acteurName, nombreIndividus, typeActeur){
+  handleAddActeur(nom, nombreIndividus, typeActeur){
 
       const newActeur = {
-        id: uuid(),
-        nom: acteurName,
-        nombreIndividus : nombreIndividus
+        nom: nom,
+        nombreIndividus : nombreIndividus,
+        typeActeur : typeActeur
       };
 
-      this.setState(prevStat => {
-        const newActeurs = [...prevStat.acteurs, newActeur];
-
-        return {acteurs: newActeurs}
+      this.setState({
+        isSavingNewActeur: true
       });
+
+      createActeur(newActeur)
+        .then(acteur => {
+          this.setState(prevState =>{
+            const newActeurs = [...prevState.acteurs, acteur];
+
+            return {
+              acteurs: newActeurs,
+              isSavingNewActeur: false,
+            };
+          });
+          this.setSuccessMessage('Acteur enregistré !');
+        });
+  }
+
+  setSuccessMessage(message){
+
+    this.setState({
+      successMessage: message
+    });
+
+    clearTimeout(this.successMessageTimemoutHandle);
+    this.successMessageTimemoutHandle = setTimeout(() => {
+      this.setState({
+        successMessage: ''
+      });
+
+      this.successMessageTimemoutHandle =  0;
+    }, 3000);
   }
 
   handleProutChange(proutsCount) {
@@ -57,13 +97,31 @@ export default class ActeurApp extends Component {
   }
 
   handleDeleteActeur(id) {
-    // remove the rep log without mutating state
-    // filter returns a new array
-    this.setState((prevState) => {
+
+    this.setState((prevState) =>{
       return {
-        acteurs: prevState.acteurs.filter(acteur => acteur.id != id)
+        acteurs: prevState.acteurs.map(acteur => {
+          if (acteur.id !== id){
+            return acteur;
+          }
+
+          return Object.assign({}, acteur, {isDeleting: true});
+        })
       }
     });
+
+    deleteActeur(id)
+      .then(() => {
+        // remove the rep log without mutating state
+        // filter returns a new array
+        this.setState((prevState) => {
+          return {
+            acteurs: prevState.acteurs.filter(acteur => acteur.id != id)
+          }
+        });
+        this.setSuccessMessage('Acteur supprimé !');
+      });
+
   }
 
   render(){

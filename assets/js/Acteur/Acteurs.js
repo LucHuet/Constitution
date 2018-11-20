@@ -14,7 +14,10 @@ export default function Acteurs(props){
     onAddActeur,
     numberOfProuts,
     onProutChange,
-    onDeleteActeur
+    onDeleteActeur,
+    isLoaded,
+    isSavingNewActeur,
+    successMessage
   } = props;
 
   let prout = '';
@@ -39,7 +42,11 @@ export default function Acteurs(props){
           onProutChange(+e.target.value)
         }}
       />
-
+      {successMessage && (
+        <div className="alert alert-success text-center">
+            {successMessage}
+        </div>        
+      )}
       <table className="table" >
           <thead>
               <tr>
@@ -57,6 +64,8 @@ export default function Acteurs(props){
             onRowClick={onRowClick}
             acteurs={acteurs}
             onDeleteActeur={onDeleteActeur}
+            isLoaded={isLoaded}
+            isSavingNewActeur={isSavingNewActeur}
           />
 
       </table>
@@ -81,5 +90,8 @@ Acteurs.propTypes = {
   onProutChange: PropTypes.func.isRequired,
   acteurs: PropTypes.array.isRequired,
   numberOfProuts: PropTypes.number.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
+  isSavingNewActeur: PropTypes.bool.isRequired,
+  successMessage: PropTypes.string.isRequired,
 
 }
