@@ -2,11 +2,18 @@ import React, { Component } from 'react';
 import Acteurs from './Acteurs';
 import PropTypes from 'prop-types';
 import uuid from 'uuid/v4';
+import { getActeurs } from '../api/acteur_api.js';
+
 
 export default class ActeurApp extends Component {
 
   constructor(props){
     super(props);
+
+    getActeurs()
+      .then((data)=>{
+        console.log(data);
+      });
 
     this.state = {
       highlightedRowId: null,
@@ -21,6 +28,7 @@ export default class ActeurApp extends Component {
     this.handleRowClick = this.handleRowClick.bind(this);
     this.handleAddActeur = this.handleAddActeur.bind(this);
     this.handleProutChange = this.handleProutChange.bind(this);
+    this.handleDeleteActeur = this.handleDeleteActeur.bind(this);
   }
 
   handleRowClick(acteurId) {
@@ -48,6 +56,16 @@ export default class ActeurApp extends Component {
     });
   }
 
+  handleDeleteActeur(id) {
+    // remove the rep log without mutating state
+    // filter returns a new array
+    this.setState((prevState) => {
+      return {
+        acteurs: prevState.acteurs.filter(acteur => acteur.id != id)
+      }
+    });
+  }
+
   render(){
 
     return (
@@ -57,6 +75,7 @@ export default class ActeurApp extends Component {
         onRowClick={this.handleRowClick}
         onAddActeur={this.handleAddActeur}
         onProutChange={this.handleProutChange}
+        onDeleteActeur = {this.handleDeleteActeur}
       />
     )
   }

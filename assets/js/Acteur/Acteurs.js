@@ -1,6 +1,7 @@
 import React from 'react';
 import ActeurList from './ActeurList';
 import ActeurCreator from './ActeurCreator';
+//import ActeurCreator from './ActeurCreatorControlledComponents';
 import PropTypes from 'prop-types';
 
 export default function Acteurs(props){
@@ -12,7 +13,8 @@ export default function Acteurs(props){
     acteurs,
     onAddActeur,
     numberOfProuts,
-    onProutChange
+    onProutChange,
+    onDeleteActeur
   } = props;
 
   let prout = '';
@@ -44,9 +46,7 @@ export default function Acteurs(props){
                   <th>Nom</th>
                   <th>Nb Individus</th>
                   <th>Actions</th>
-                  <th>Pouvoirs de l acteur</th>
                   <th>Désigné par</th>
-                  <th>Force</th>
                   <th></th>
               </tr>
           </thead>
@@ -56,6 +56,7 @@ export default function Acteurs(props){
             highlightedRowId={highlightedRowId}
             onRowClick={onRowClick}
             acteurs={acteurs}
+            onDeleteActeur={onDeleteActeur}
           />
 
       </table>
@@ -76,7 +77,9 @@ Acteurs.propTypes = {
   highlightedRowId: PropTypes.any,
   onRowClick: PropTypes.func.isRequired,
   onAddActeur: PropTypes.func.isRequired,
+  onDeleteActeur: PropTypes.func.isRequired,
   onProutChange: PropTypes.func.isRequired,
   acteurs: PropTypes.array.isRequired,
   numberOfProuts: PropTypes.number.isRequired,
+
 }
