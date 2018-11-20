@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import Button from '../Components/Button';
 
 export default class ActeurCreator extends Component{
 
@@ -14,11 +15,6 @@ export default class ActeurCreator extends Component{
     this.nombreActeur = React.createRef();
     this.typeActeur = React.createRef();
 
-    this.typeActeurOptions = [
-      { id: '4', text: 'Groupe d\'individus' },
-      { id: '6', text: 'Autorité Indépendante' },
-
-    ];
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
@@ -54,9 +50,15 @@ export default class ActeurCreator extends Component{
 
   render(){
     const { nombreActeurError } = this.state;
+    const { validationErrorMessage, itemOptions } = this.props;
     return (
       <div>
           <form method="post" data-url="/acteur/new/JS" onSubmit={this.handleFormSubmit}>
+            {validationErrorMessage && (
+              <div className="alert alert-danger">
+              {validationErrorMessage}
+              </div>
+            )}
               <div className="form-group">
                 <div>
                   <label htmlFor="nom" className="required">Nom</label>
@@ -79,14 +81,16 @@ export default class ActeurCreator extends Component{
                 <div>
                   <label htmlFor="typeActeur" className="required">Type acteur</label>
                   <select id="typeActeur" ref={this.typeActeur}>
-                    {this.typeActeurOptions.map(option => {
+                    {itemOptions.map(option => {
                       return <option value={option.id} key={option.id}>{option.text}</option>
                     } )}
                   </select>
                 </div>
               </div>
               {' '}
-              <button className="btn">Save</button>
+              <Button type="submit" className="btn-primary">
+                Sauvegarder
+              </Button>
           </form>
       </div>
     );
@@ -94,5 +98,7 @@ export default class ActeurCreator extends Component{
 }
 
 ActeurCreator.propTypes = {
-  onAddActeur: PropTypes.func.isRequired
+  onAddActeur: PropTypes.func.isRequired,
+  validationErrorMessage: PropTypes.string.isRequired,
+  itemOptions: PropTypes.array.isRequired,
 };

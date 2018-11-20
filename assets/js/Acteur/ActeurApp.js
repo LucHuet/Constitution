@@ -18,6 +18,7 @@ export default class ActeurApp extends Component {
       isLoaded: false,
       isSavingNewActeur: false,
       successMessage: '',
+      newActeurValidationErrorMessage: '',
     };
 
     this.successMessageTimemoutHandle = 0;
@@ -60,18 +61,35 @@ export default class ActeurApp extends Component {
         isSavingNewActeur: true
       });
 
+      const newState = {
+        isSavingNewActeur: false,
+      }
+
       createActeur(newActeur)
         .then(acteur => {
           this.setState(prevState =>{
             const newActeurs = [...prevState.acteurs, acteur];
 
             return {
+              ...newState,
               acteurs: newActeurs,
-              isSavingNewActeur: false,
+              newActeurValidationErrorMessage: ''
             };
+
           });
           this.setSuccessMessage('Acteur enregistré !');
-        });
+        })
+        .catch(error=> {
+          error.response.json().then(errorsData => {
+            const errors = errorsData.errors;
+            const firstError = errors[Object.keys(errors)[0]];
+
+            this.setState({
+              ...newState,
+              newActeurValidationErrorMessage: firstError,
+            });
+          })
+        })
   }
 
   setSuccessMessage(message){
@@ -104,8 +122,7 @@ export default class ActeurApp extends Component {
           if (acteur.id !== id){
             return acteur;
           }
-
-          return Object.assign({}, acteur, {isDeleting: true});
+          return {...acteur, isDeleting: true};
         })
       }
     });
@@ -140,5 +157,10 @@ export default class ActeurApp extends Component {
 }
 
 ActeurApp.propTypes = {
-  withProut: PropTypes.bool
-}
+  withProut: PropTypes.bool,
+  itemOptions:PropTypes.array,
+};
+
+ActeurApp.defaultProps = {
+  itemOptions:[],
+};

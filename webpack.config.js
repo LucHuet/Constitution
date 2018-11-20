@@ -9,7 +9,6 @@ Encore
     .setPublicPath('/build')
 
     .createSharedEntry('layout', './assets/js/layout.js')
-    .addEntry('acteur', './assets/js/acteur.js')
     .addEntry('acteur_react', './assets/js/acteur_react.js')
     .addEntry('login', './assets/js/login.js')
 
@@ -33,6 +32,7 @@ Encore
               'transform-react-remove-prop-types'
           );
       }
+      babelConfig.plugins.push('transform-object-rest-spread');
     })
 ;
 

@@ -17,12 +17,14 @@ export default function Acteurs(props){
     onDeleteActeur,
     isLoaded,
     isSavingNewActeur,
-    successMessage
+    successMessage,
+    newActeurValidationErrorMessage,
+    itemOptions,
   } = props;
 
   let prout = '';
   if(withProut){
-    prout = <span>{'Prout '.repeat(numberOfProuts)}</span>;
+    prout = <span>{'🌬️ '.repeat(numberOfProuts)}</span>;
   }
 
   return (
@@ -45,7 +47,7 @@ export default function Acteurs(props){
       {successMessage && (
         <div className="alert alert-success text-center">
             {successMessage}
-        </div>        
+        </div>
       )}
       <table className="table" >
           <thead>
@@ -73,6 +75,8 @@ export default function Acteurs(props){
         <div className="col-md-6">
           <ActeurCreator
             onAddActeur={onAddActeur}
+            validationErrorMessage={newActeurValidationErrorMessage}
+            itemOptions={itemOptions}
           />
         </div>
       </div>
@@ -93,5 +97,7 @@ Acteurs.propTypes = {
   isLoaded: PropTypes.bool.isRequired,
   isSavingNewActeur: PropTypes.bool.isRequired,
   successMessage: PropTypes.string.isRequired,
+  newActeurValidationErrorMessage: PropTypes.string.isRequired,
+  itemOptions: PropTypes.array.isRequired,
 
 }

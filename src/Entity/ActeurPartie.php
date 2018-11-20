@@ -27,6 +27,7 @@ class ActeurPartie
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+      * @Assert\GreaterThan(value=0, message ="il vous faut au moins 1 membre")
      */
     private $nombreIndividus;
 
