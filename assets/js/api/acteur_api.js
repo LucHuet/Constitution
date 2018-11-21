@@ -1,12 +1,19 @@
 function fetchJson(url, options) {
-    return fetch(url, Object.assign({
-        credentials: 'same-origin',
-    }, options))
-        .then(checkStatus)
-        .then(response => {
-            return response.text()
-              .then(text => text ? JSON.parse(text) :  '')
-        });
+
+  let headers = {'Content-Type': 'application/json'};
+  if (options && options.headers) {
+      headers = {...options.headers, headers};
+      delete options.headers;
+  }
+  return fetch(url, Object.assign({
+      credentials: 'same-origin',
+      headers: headers,
+  }, options))
+      .then(checkStatus)
+      .then(response => {
+          return response.text()
+            .then(text => text ? JSON.parse(text) :  '')
+      });
 }
 
 function checkStatus(response) {
@@ -40,8 +47,5 @@ export function createActeur(acteur){
   return fetchJson('http://localhost:8000/acteur/new/JS', {
     method: 'POST',
     body: JSON.stringify(acteur),
-    header: {
-      'Content-Type': 'application/json',
-    }
   })
 }
