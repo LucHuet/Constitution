@@ -13,13 +13,7 @@
   {{ parent() }}
 
   <script>
-    window.ACTEUR_APP_PROPS = {
-      withProut: true,
-      itemOptions: [
-         { id: '1', text: 'Groupe d\'individus' },
-         { id: '3', text: 'Autorité Indépendante' },
-      ]
-    }
+    window.ACTEUR_APP_PROPS = {{acteursAppProps|json_encode|raw}}
   </script>
   <script src="{{ asset('build/acteur_react.js') }}"></script>
 {% endblock %}

@@ -91,7 +91,6 @@ class PartieController extends BaseController
      */
     public function show(
       Partie $partieCourante,
-      ActeurPartieRepository $acteurPartieRepository,
       PouvoirPartieRepository $pouvoirPartieRepository,
       ActeurRepository $acteurRepository
     ): Response
@@ -110,10 +109,22 @@ class PartieController extends BaseController
         $acteursJson = $this->get('serializer')
             ->serialize($acteurModels, 'json');
 
+        $acteursAppProps = [
+            'itemOptions' => [],
+        ];
+
+        foreach ($acteurRepository->findAll() as $acteur) {
+            $acteursAppProps['itemOptions'][] = [
+                'id' => $acteur->getId(),
+                'text' => $acteur->getType(),
+            ];
+        }
+
         return $this->render('partie/partiePagePrincipale.html.twig', [
           'partieCourante' => $partieCourante,
           'pouvoir_parties' => $pouvoirPartieRepository->findBy(['partie' => $partieCourante]),
           'acteursJson' => $acteursJson,
+          'acteursAppProps' => $acteursAppProps,
         ]);
     }
 
