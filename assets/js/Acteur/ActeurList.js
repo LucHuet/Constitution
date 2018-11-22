@@ -14,6 +14,8 @@ export default function ActeurList(props) {
   } = props;
 
   const handleDeleteClick = function(event, acteurId){
+    //évite le comportement normal du boutton
+    //exemple évite que le submit soumette la page.
     event.preventDefault();
 
     onDeleteActeur(acteurId);
@@ -31,6 +33,9 @@ export default function ActeurList(props) {
 
   return(
     <tbody>
+    { /*
+    pour chaque acteur restant on le met dans le tableau
+  */ }
     {acteurs.map((acteur) => (
           <tr
             key={acteur.id}

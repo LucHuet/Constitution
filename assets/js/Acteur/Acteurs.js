@@ -4,6 +4,7 @@ import ActeurCreator from './ActeurCreator';
 //import ActeurCreator from './ActeurCreatorControlledComponents';
 import PropTypes from 'prop-types';
 
+//function et pas class car pas beaucoup de logique à l'intérieur
 export default function Acteurs(props){
 
   const {
@@ -22,21 +23,30 @@ export default function Acteurs(props){
     itemOptions,
   } = props;
 
+
+  //définit ce que l'on doit mettre dans prout
   let prout = '';
   if(withProut){
     prout = <span>{'🌬️ '.repeat(numberOfProuts)}</span>;
   }
 
+
   return (
-    <div data-acteurs="{{ acteursJson|e('html_attr') }}">
+    <div>
       <h2 className="js-custom_popover"
           data-toggle="popover"
           title="à propos"
           data-content="pour la République !"
       >
+      { /*
+        prout affiche les nuages
+        appelle la méthode qui est dans ActeursApp en lui donnant la target value
+      */ }
         Partie en cours {prout}
       </h2>
 
+      { /* onProutChange donne la valeur de la target value
+      le + signifie qu on envoie un résultat positif */ }
       <input
         type="range"
         value={numberOfProuts}
@@ -44,6 +54,10 @@ export default function Acteurs(props){
           onProutChange(+e.target.value)
         }}
       />
+
+      { /*
+        Si message de succès on l'affiche
+      */ }
       {successMessage && (
         <div className="alert alert-success text-center">
             {successMessage}
@@ -60,7 +74,9 @@ export default function Acteurs(props){
               </tr>
           </thead>
 
-
+          { /*
+            On appelle acteurList pour récupérer la liste des acteurs
+          */ }
           <ActeurList
             highlightedRowId={highlightedRowId}
             onRowClick={onRowClick}
@@ -71,6 +87,9 @@ export default function Acteurs(props){
           />
 
       </table>
+      { /*
+      ItemOptions : ensemble des options de types acteurs 
+    */ }
       <div className="row">
         <div className="col-md-6">
           <ActeurCreator

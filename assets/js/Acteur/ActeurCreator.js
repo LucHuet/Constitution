@@ -5,12 +5,15 @@ import Button from '../Components/Button';
 export default class ActeurCreator extends Component{
 
   constructor(props){
+    //super(props) permet d'appeler le constructeur parent
     super(props);
 
     this.state = {
       nombreActeurError: ''
     };
 
+    //ref permettent d'accéder à des élements du dom
+    //permet de facilement récupérer les valeurs des variables
     this.nomActeur = React.createRef();
     this.nombreActeur = React.createRef();
     this.typeActeur = React.createRef();
@@ -20,6 +23,8 @@ export default class ActeurCreator extends Component{
 
   handleFormSubmit(event){
     event.preventDefault();
+
+    //fait appel au props de l'objet
     const {onAddActeur} = this.props;
 
     const nomActeur = this.nomActeur.current;
@@ -39,6 +44,7 @@ export default class ActeurCreator extends Component{
       typeActeur.options[typeActeur.selectedIndex].value
     );
 
+    //réinitialisation des données
     nomActeur.value = '';
     nombreActeur.value = '';
     typeActeur.selectedIndex = 0;
@@ -53,7 +59,7 @@ export default class ActeurCreator extends Component{
     const { validationErrorMessage, itemOptions } = this.props;
     return (
       <div>
-          <form method="post" data-url="/acteur/new/JS" onSubmit={this.handleFormSubmit}>
+          <form onSubmit={this.handleFormSubmit}>
             {validationErrorMessage && (
               <div className="alert alert-danger">
               {validationErrorMessage}
