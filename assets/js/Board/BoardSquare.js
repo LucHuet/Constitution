@@ -1,36 +1,32 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Square from './Square';
-import { canMoveElement, moveElement } from './Game';
+import { canMoveKnight, moveKnight } from './Game';
 import { ItemTypes } from './Constants';
 import { DropTarget } from 'react-dnd';
 
 const squareTarget = {
+  canDrop(props) {
+    return canMoveKnight(props.x, props.y);
+  },
+
   drop(props) {
-    moveElement(props.x, props.y);
-  }
+    moveKnight(props.x, props.y);
+  },
 };
 
 function collect(connect, monitor) {
   return {
     connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver()
+    isOver: monitor.isOver(),
+    canDrop: monitor.canDrop(),
   };
 }
 
-function BoardSquare({ x, y, connectDropTarget, isOver, children }) {
-  const black = (x + y) % 2 === 1;
-
-  return connectDropTarget(
-    <div style={{
-      position: 'relative',
-      width: '100%',
-      height: '100%'
-    }}>
-      <Square black={black}>
-        {children}
-      </Square>
-      {isOver &&
-        <div style={{
+class BoardSquare extends Component {
+  renderOverlay(color) {
+    return (
+      <div style={{
           position: 'absolute',
           top: 0,
           left: 0,
@@ -38,11 +34,34 @@ function BoardSquare({ x, y, connectDropTarget, isOver, children }) {
           width: '100%',
           zIndex: 1,
           opacity: 0.5,
-          backgroundColor: 'yellow',
-        }} />
-      }
-    </div>
-  );
+          backgroundColor: color,
+        }}
+      />
+    );
+  }
+
+  render() {
+    const { x, y, connectDropTarget, isOver, canDrop } = this.props;
+    const black = (x + y) % 2 === 1;
+
+    return connectDropTarget(
+      <div style={{ position: 'relative' }}>
+        <Square black={black}>
+          {this.props.children}
+        </Square>
+        {isOver && !canDrop && this.renderOverlay('red')}
+        {!isOver && canDrop && this.renderOverlay('yellow')}
+        {isOver && canDrop && this.renderOverlay('green')}
+      </div>
+    );
+  }
 }
 
-export default DropTarget(ItemTypes.ELEMENT, squareTarget, collect)(BoardSquare);
+BoardSquare.propTypes = {
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  isOver: PropTypes.bool.isRequired,
+  canDrop: PropTypes.bool.isRequired,
+};
+
+export default DropTarget(ItemTypes.KNIGHT, squareTarget, collect)(BoardSquare);

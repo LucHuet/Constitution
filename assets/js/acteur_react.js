@@ -9,9 +9,9 @@ const shouldShowProut = true;
 
 const root = document.getElementById('board-app');
 
-observe(elementPosition =>
+observe(knightPosition =>
   render(
-    <Board elementPosition={elementPosition} />,
+    <Board knightPosition={knightPosition} />,
     root
   )
 );
