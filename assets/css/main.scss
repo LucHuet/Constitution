@@ -6,6 +6,11 @@ $bootstrap-sass-asset-helper: true;
     margin-top: 80px;
 }
 
+.container-fluid {
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+
 .btn-add-acteur {
     background-color: #59B2E0;
     outline: none;

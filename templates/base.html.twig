@@ -65,24 +65,51 @@
   </div>
 {% endblock %}
 
-<div class="container main-content">
-  {% for type, messages in app.session.flashbag.all() %}
-    {% for message in messages %}
-        <div class="flash-{{ type }} alert alert-info">
-            {{ message }}
-        </div>
-    {% endfor %}
-  {% endfor %}
-  {% block body %}{% endblock %}
-</div>
-
-    {% block javascripts %}
-      <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-      <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.0.5/es6-promise.auto.min.js"></script>
-      <script src="{{ asset('build/manifest.js') }}"></script>
-      <script src="{{ asset('build/layout.js') }}"></script>
+<div class="container-fluid text-center">
+  <div class="row content">
+    {% block leftmenu %}
+      <div class="col-sm-2 sidenav">
+        <p><a href="#">Link</a></p>
+        <p><a href="#">Link</a></p>
+        <p><a href="#">Link</a></p>
+      </div>
     {% endblock %}
+    {% for type, messages in app.session.flashbag.all() %}
+      {% for message in messages %}
+          <div class="flash-{{ type }} alert alert-info">
+              {{ message }}
+          </div>
+      {% endfor %}
+    {% endfor %}
+    <div class="col-sm-8 text-left">
+      {% block body %}
+      {% endblock %}
+    </div>
+    {% block rightmenu %}
+    <div class="col-sm-2 sidenav">
+      <div class="well">
+        <p>ADS</p>
+      </div>
+      <div class="well">
+        <p>ADS</p>
+      </div>
+    </div>
+    {% endblock %}
+  </div>
+</div>
+{% block footer %}
+<footer class="container-fluid text-center">
+  <p>Serious game by Voots</p>
+</footer>
+{% endblock %}
+
+{% block javascripts %}
+  <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+  <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.0.5/es6-promise.auto.min.js"></script>
+  <script src="{{ asset('build/manifest.js') }}"></script>
+  <script src="{{ asset('build/layout.js') }}"></script>
+{% endblock %}
 
 </body>
 </html>

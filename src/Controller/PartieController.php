@@ -105,10 +105,6 @@ class PartieController extends BaseController
           return $this->redirectToRoute($this->checkStep->checkPartie($partieCourante));
         }
 
-        $acteurModels = $this->findAllUsersActeursModels();
-        $acteursJson = $this->get('serializer')
-            ->serialize($acteurModels, 'json');
-
         $acteursAppProps = [
             'itemOptions' => [],
         ];
@@ -123,7 +119,6 @@ class PartieController extends BaseController
         return $this->render('partie/partiePagePrincipale.html.twig', [
           'partieCourante' => $partieCourante,
           'pouvoir_parties' => $pouvoirPartieRepository->findBy(['partie' => $partieCourante]),
-          'acteursJson' => $acteursJson,
           'acteursAppProps' => $acteursAppProps,
         ]);
     }
