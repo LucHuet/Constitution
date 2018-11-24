@@ -2,9 +2,20 @@
 
 {% block title %}Partie{% endblock %}
 
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/card.css">
+{% endblock %}
+
 {% block body %}
-        <div id="board-app">
+        <div id="sort1" class="ui cards" data-sortable=".card">
+          {% for i in 1..12 %}
+          <div class="card" data-position="{{ i -1 }}" data-id="{{ i }}">
+            <div class="content"> <img src="{{asset('build/static/card.jpg')}}"> </div>
+          </div>
+          {% endfor %}
         </div>
+
         <div id="acteur-app">
         </div>
 {% endblock %}
@@ -12,6 +23,11 @@
 {% block javascripts %}
 
   {{ parent() }}
+
+<script src="{{asset('build/sorter.js')}}"></script>
+<script>
+  sortable = new Sortable(document.querySelector('#sort1'));
+</script>
 
   <script>
     window.ACTEUR_APP_PROPS = {{acteursAppProps|json_encode|raw}}

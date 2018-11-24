@@ -11,6 +11,7 @@ Encore
     .createSharedEntry('layout', './assets/js/layout.js')
     .addEntry('acteur_react', './assets/js/acteur_react.js')
     .addEntry('login', './assets/js/login.js')
+    .addEntry('sorter', './assets/js/cardBoard/sorter.js')
 
     .enableBuildNotifications()
     // fixes modules that expect jQuery to be global
