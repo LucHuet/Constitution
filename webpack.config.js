@@ -9,9 +9,9 @@ Encore
     .setPublicPath('/build')
 
     .createSharedEntry('layout', './assets/js/layout.js')
-    .addEntry('acteur_react', './assets/js/acteur_react.js')
+    .addEntry('partie_react', './assets/js/partie_react.js')
     .addEntry('login', './assets/js/login.js')
-    .addEntry('sorter', './assets/js/cardBoard/sorter.js')
+    .addEntry('sorter', './assets/js/CardBoard/sorter.js')
 
     .enableBuildNotifications()
     // fixes modules that expect jQuery to be global
