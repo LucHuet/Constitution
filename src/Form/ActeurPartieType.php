@@ -25,6 +25,7 @@ class ActeurPartieType extends AbstractType
                   return $acteurRepository->createQueryBuilder('q')->where('q.type != :identifier')
                      ->setParameter('identifier', 'Peuple');
                  },
+                 'invalid_message' => 'Choisissez un type d\'acteur valide'
              ));
         ;
     }

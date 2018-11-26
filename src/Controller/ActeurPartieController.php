@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+//use App\Api\ApiRoute;
 use App\Entity\ActeurPartie;
 use App\Form\ActeurPartieType;
 use App\Repository\ActeurPartieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,6 +19,7 @@ use App\Service\CheckStepService;
 
 /**
  * @Route("/acteur")
+ * @IsGranted("ROLE_USER")
  */
 class ActeurPartieController extends BaseController
 {
@@ -98,8 +102,8 @@ class ActeurPartieController extends BaseController
 
         $apiModel = $this->createActeurApiModel($acteur);
 
-        //$response = $this->createApiResponse($apiModel);
-        $response = new Response(null, 204);
+        $response = $this->createApiResponse($apiModel);
+        //$response = new Response(null, 204);
         // setting the Location header... it's a best-practice
         $response->headers->set(
             'Location',
@@ -137,7 +141,7 @@ class ActeurPartieController extends BaseController
     /**
      * @Route("/{id}", name="acteur_partie_delete", methods="DELETE")
      */
-    public function deleteActeurPartie(Request $request, ActeurPartie $acteurPartie): Response
+    public function deleteActeurPartie(ActeurPartie $acteurPartie)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $session = new Session();

@@ -1,5 +1,6 @@
 'use strict';
 
+import $ from 'jquery';
 import '../css/login.css';
 
 (function(){

@@ -2,58 +2,35 @@
 
 {% block title %}Partie{% endblock %}
 
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/card.css">
+{% endblock %}
+
 {% block body %}
+        <div id="sort1" class="ui cards" data-sortable=".card">
+          {% for i in 1..12 %}
+          <div class="card" data-position="{{ i -1 }}" data-id="{{ i }}">
+            <div class="content"> <img src="{{asset('build/static/card.jpg')}}"> </div>
+          </div>
+          {% endfor %}
+        </div>
 
-      <div class="js-acteur-table" data-acteurs="{{ acteursJson|e('html_attr') }}">
-        <h2 class="js-custom_popover"
-            data-toggle="popover"
-            title="à propos"
-            data-content="pour la République !"
-        >
-          Partie en cours
-        </h2>
-
-        <table class="table" >
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Nb Individus</th>
-                    <th>Actions</th>
-                    <th>Pouvoirs de l'acteur</th>
-                    <th>Désigné par</th>
-                    <th>Force</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-
-        <br>
-        <!-- Appel de la modal d'ajout -->
-        <button type="button" class="btn btn-primary btn-add-acteur" data-toggle="modal" data-target="#ajoutActeurModal">
-          Ajouter un acteur
-        </button>
-
-        <br>
-
-        {{ include('partie/_modal.html.twig') }}
-      </div>
+        <div id="acteur-app">
+        </div>
 {% endblock %}
 
 {% block javascripts %}
 
   {{ parent() }}
-  <script src="{{ asset('build/acteur.js') }}"></script>
+
+<script src="{{asset('build/sorter.js')}}"></script>
+<script>
+  sortable = new Sortable(document.querySelector('#sort1'));
+</script>
+
   <script>
-
-      $(document).ready(function(){
-        $('.js-custom-popover').popover({
-          trigger: 'hover',
-          placement:'left'
-        });
-      });
-
+    window.ACTEUR_APP_PROPS = {{acteursAppProps|json_encode|raw}}
   </script>
-
+  <script src="{{ asset('build/acteur_react.js') }}"></script>
 {% endblock %}
