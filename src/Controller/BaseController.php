@@ -75,7 +75,7 @@ class BaseController extends Controller
         $model->nombreIndividus = $acteurPartie->getNombreIndividus();
 
         $selfUrl = $this->generateUrl(
-            'acteur_partie_get',
+            'acteur_partie',
             ['id' => $acteurPartie->getId()]
         );
         $model->addLink('_self', $selfUrl);
