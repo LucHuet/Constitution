@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Votre profile{% endblock %}
+
+{% block body %}
+  <div class="user">
+
+    <h2>Votre profile</h2>
+
+    <h3>Nom d'utilisateur :
+      {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+
+        {{ app.user.username }}
+
+      {% endif %}</h3>
+
+    <h3>Photo de profile</h3>
+
+
+  </div>
+{% endblock %}
