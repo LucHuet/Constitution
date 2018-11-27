@@ -19,7 +19,6 @@ use App\Service\CheckStepService;
 
 /**
  * @Route("/acteur")
- * @IsGranted("ROLE_USER")
  */
 class ActeurPartieController extends BaseController
 {
@@ -31,44 +30,10 @@ class ActeurPartieController extends BaseController
     }
 
     /**
-     * @Route("/", name="acteur_partie_list", options={"expose"=true})
-     * @Method("GET")
-     */
-    public function getActeursPartie(ActeurPartieRepository $acteurPartieRepository)
-    {
-        $models = $this->findAllUsersActeursModels();
-        return $this->createApiResponse([
-            'items' => $models
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="acteur_partie_get" , methods="GET|POST")
-     * @Method("GET")
-     */
-    public function getActeurPartie(ActeurPartie $acteurPartie)
-    {
-        $apiModel = $this->createActeurApiModel($acteurPartie);
-
-        return $this->createApiResponse($apiModel);
-    }
-
-    public function getFormActeur(): Response
-    {
-        $form = $this->createForm(ActeurPartieType::class, null, [
-          'csrf_protection' => false
-        ]);
-
-        return $this->render('acteur_partie/_form.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/new/JS", name="acteur_partie_newJS", options={"expose"=true})
+     * @Route("/", name="acteur_new", methods="POST", options={"expose"=true})
      * @Method("POST")
      */
-    public function newActeurJS(Request $request)
+    public function createActeur(Request $request)
     {
         $session = new Session();
         $partieCourante = $session->get('partieCourante');
@@ -107,14 +72,49 @@ class ActeurPartieController extends BaseController
         // setting the Location header... it's a best-practice
         $response->headers->set(
             'Location',
-            $this->generateUrl('acteur_partie_get', ['id' => $acteur->getId()])
+            $this->generateUrl('acteur_partie', ['id' => $acteur->getId()])
         );
 
         return $response;
     }
 
+
     /**
-     * @Route("/{id}/edit", name="acteur_partie_edit", methods="GET|POST")
+     * @Route("/", name="acteur_partie_list", methods="GET", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function getActeursPartie(ActeurPartieRepository $acteurPartieRepository)
+    {
+        $models = $this->findAllUsersActeursModels();
+        return $this->createApiResponse([
+            'items' => $models
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="acteur_partie" , methods="GET")
+     * @Method("GET")
+     */
+    public function getActeurPartie(ActeurPartie $acteurPartie)
+    {
+        $apiModel = $this->createActeurApiModel($acteurPartie);
+
+        return $this->createApiResponse($apiModel);
+    }
+
+    public function getFormActeur(): Response
+    {
+        $form = $this->createForm(ActeurPartieType::class, null, [
+          'csrf_protection' => false
+        ]);
+
+        return $this->render('acteur_partie/_form.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="acteur_partie_edit", methods="PUT")
      */
     public function edit(Request $request, ActeurPartie $acteurPartie): Response
     {

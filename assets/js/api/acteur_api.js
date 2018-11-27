@@ -44,7 +44,8 @@ export function deleteActeur(id) {
 }
 
 export function createActeur(acteur){
-  return fetchJson('http://localhost:8000/acteur/new/JS', {
+  console.log("Hello");
+  return fetchJson('http://localhost:8000/acteur/', {
     method: 'POST',
     body: JSON.stringify(acteur),
   })
