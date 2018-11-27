@@ -19,7 +19,6 @@ use App\Service\CheckStepService;
 
 /**
  * @Route("/acteur")
- * @IsGranted("ROLE_USER")
  */
 class ActeurPartieController extends BaseController
 {
@@ -115,7 +114,7 @@ class ActeurPartieController extends BaseController
     }
 
     /**
-     * @Route("/{id}/edit", name="acteur_partie_edit", methods="GET|POST")
+     * @Route("/{id}", name="acteur_partie_edit", methods="PUT")
      */
     public function edit(Request $request, ActeurPartie $acteurPartie): Response
     {

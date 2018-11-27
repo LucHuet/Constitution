@@ -45,9 +45,9 @@ class PouvoirPartieController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="pouvoir_partie_new", methods="GET|POST")
+     * @Route("/", name="pouvoir_partie_new", methods="POST")
      */
-    public function new(Request $request): Response
+    public function createPouvoirPartie(Request $request): Response
     {
         if($this->checkStep->checkActeur() != null){
           return $this->redirectToRoute($this->checkStep->checkActeur());
@@ -84,7 +84,7 @@ class PouvoirPartieController extends AbstractController
     /**
      * @Route("/{id}", name="pouvoir_partie_show", methods="GET")
      */
-    public function show(PouvoirPartie $pouvoirPartie): Response
+    public function showPouvoirPartie(PouvoirPartie $pouvoirPartie): Response
     {
         if($this->checkStep->checkPouvoir($pouvoirPartie) != null){
           return $this->redirectToRoute($this->checkStep->checkPouvoir($pouvoirPartie));
@@ -93,9 +93,9 @@ class PouvoirPartieController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="pouvoir_partie_edit", methods="GET|POST")
+     * @Route("/{id}", name="pouvoir_partie_edit", methods="PUT")
      */
-    public function edit(Request $request, PouvoirPartie $pouvoirPartie): Response
+    public function editPouvoirPartie(Request $request, PouvoirPartie $pouvoirPartie): Response
     {
         if($this->checkStep->checkPouvoir($pouvoirPartie) != null){
           return $this->redirectToRoute($this->checkStep->checkPouvoir($pouvoirPartie));
@@ -119,7 +119,7 @@ class PouvoirPartieController extends AbstractController
     /**
      * @Route("/{id}", name="pouvoir_partie_delete", methods="DELETE")
      */
-    public function delete(Request $request, PouvoirPartie $pouvoirPartie): Response
+    public function deletePouvoirPartie(Request $request, PouvoirPartie $pouvoirPartie): Response
     {
         if($this->checkStep->checkPouvoir($pouvoirPartie) != null){
           return $this->redirectToRoute($this->checkStep->checkPouvoir($pouvoirPartie));
@@ -127,7 +127,7 @@ class PouvoirPartieController extends AbstractController
 
         $session = new Session();
         $partieCourante = $session->get('partieCourante');
-        
+
         if ($this->isCsrfTokenValid('delete'.$pouvoirPartie->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($pouvoirPartie);
