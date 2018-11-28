@@ -10,11 +10,13 @@ window.Sortable = function (element, scrollable){
   this.element = element;// récupéré dans App et transmis en dessous
   //dans componentDidMount car on le récupère des le début :
   this.items = this.element.querySelectorAll(this.element.getAttribute('data-sortable')); //ou e.dataset.sortable
-  //
+  //on met les cartes à leur position initiale
   this.setPositions();
   window.addEventListener('resize', _.debounce(function(){
     self.setPositions();
   }, 200));
+
+  //on effectu les actions de "dragg"
   interact(this.element.dataset.sortable, {
     context: this.element
   }).draggable({

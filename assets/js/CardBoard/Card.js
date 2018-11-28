@@ -49,7 +49,7 @@ export default class Card extends Component {
             className="card"
             key={acteur.id}
             onClick={()=> onRowClick(acteur.id)}
-            data-position={index - 1}
+            data-position={index}
             data-id={index}
             style={{
                 position: "relative",
@@ -61,7 +61,7 @@ export default class Card extends Component {
             <div className="content">
                 {acteur.nom} -
                 {acteur.nombreIndividus} -
-                <a href="#" onClick={(event => handleDeleteClick(event, acteur.id))}>
+                <a href="#" onClick={(event => this.handleDeleteClick(event, acteur.id))}>
                     <span className="fa fa-trash"></span>
                 </a>
             </div>

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import CardBoard from './CardBoard';
 //permet de définit le type de props
 import PropTypes from 'prop-types';
+import interact from 'interactjs';
+import _ from 'lodash';
 //import uuid from 'uuid/v4';
 import { getActeurs, deleteActeur, createActeur } from '../api/acteur_api.js';
 
@@ -23,13 +25,15 @@ export default class CardBoardApp extends Component {
       successMessage: '',
       newActeurValidationErrorMessage: '',
       //sorter
-      item_translation: '',
       item_width: 0,
       item_height: 0,
       cols:0,
       element: null,
       items: null,
       scrollable: document.body,
+      startPosition:0,
+      offset:0,
+      scrollTopStart:0,
     };
 
 
@@ -44,6 +48,7 @@ export default class CardBoardApp extends Component {
     //sorter
     this.moveItem = this.moveItem.bind(this);
     this.getXY = this.getXY.bind(this);
+    this.move = this.move.bind(this);
   }
   //componentDidMount est une methode magique qui est automatiquement
   //lancée apres le render de l'app
@@ -56,15 +61,50 @@ export default class CardBoardApp extends Component {
           acteurs: data,
           isLoaded: true,
         });
+        console.log(this.state.scrollable);
         //on fait le set state apres pour pouvoir récuperer les infos
         var elementTemp = document.querySelector('#sort1');
         var itemsTemp = elementTemp.querySelectorAll(elementTemp.getAttribute('data-sortable'));
+        var self = this;
         this.setState({
           element: elementTemp,
           items: itemsTemp
         });
-      console.log("test luc", this.state.items);
-      console.log("test luc 2", this.state.element);
+        this.setPositions();
+        interact(this.state.element.dataset.sortable, {
+          context: this.state.element
+        }).draggable({
+          inertia: false,
+          manualStart: false,
+          autoScroll: {
+            container: self.state.scrollable,
+            margin: 250,
+            speed: 600
+          },
+          onmove: _.throttle(function (e){
+            self.move(e)
+          }, 16, {trailing: false})
+        }).on('dragstart', (e)=>{
+          var r = e.target.getBoundingClientRect();
+          e.target.classList.add('is-dragged');
+          //self.startPosition = e.target.dataset.position;
+          //          self.offset = {
+          //            x: e.clientX - r.left,
+          //            y: e.clientY - r.top
+          //          };
+          //self.scrollTopStart = this.state.scrollable.scrollTop;
+          this.setState({
+            startPosition: e.target.dataset.position,
+            offset: {
+              x: e.clientX - r.left,
+              y: e.clientY - r.top
+            },
+            scrollTopStart: this.state.scrollable.scrollTop
+          });
+        }).on('dragend', (e)=>{
+          e.target.classList.remove('is-dragged');
+          this.moveItem(e.target, e.target.dataset.position);
+        });
       });
   }
 
@@ -198,12 +238,13 @@ export default class CardBoardApp extends Component {
     });
     //on détermine la taille de element afin de pouvoir mettre des chose dessous
     // ! dépend de element
-    this.element.style.height = (this.item_height * Math.ceil(this.items.length / this.cols)) + "px";
+    //this.element.style.height = (this.item_height * Math.ceil(this.items.length / this.cols)) + "px";
     var elementTemp = this.state.element;
     elementTemp.style.height = (this.state.item_height * Math.ceil(this.state.items.length / this.state.cols)) + "px";
     this.setState({
       element: elementTemp
     });
+
     //on change le style des cartes pour les rendre absolute
     for(var i = 0; i< this.state.items.length; i++) {
       var item = this.state.items[i];
@@ -225,26 +266,70 @@ export default class CardBoardApp extends Component {
 
   moveItem(item, position){
     var p = this.getXY(position);
-
-    //item.style.transform = "translate3D(" + p.x + "px, " + p.y + "px, 0)";
-    //item.dataset.position = position;
-
-    //on défini un tableau des translation des élements afin de les placer lors du render
-    //la position de l'objet correspond juste à la case du tableau
-    //ce tableau sera envoyé à l'affichage pour qu'il puisse décaler les objets
-    const newItem_translation = this.state.item_translation.slice() //copy the array
-    newItem_translation[position] = p //execute the manipulations
-    this.setState({item_translation: newItem_translation}) //set the new state
+    item.style.transform = "translate3D(" + p.x + "px, " + p.y + "px, 0)";
+    item.dataset.position = position;
 
   }
 
   getXY(position){
-    var x = this.item_width * (position % this.cols);
-    var y = this.item_height * Math.floor(position / this.cols);
+    var x = this.state.item_width * (position % this.state.cols);
+    var y = this.state.item_height * Math.floor(position / this.state.cols);
       return {
         x: x,
         y: y
       };
+  }
+
+  move(e){
+    var p = this.getXY(this.state.startPosition);
+    var x = p.x + e.clientX - e.clientX0;
+    var y = p.y + e.clientY - e.clientY0 + this.state.scrollable.scrollTop - this.state.scrollTopStart;
+    e.target.style.transform = "translate3D(" + x + "px, " + y + "px, 0)";
+    var oldPosition = e.target.dataset.position;
+    var newPosition = this.guessPosition(x + this.state.offset.x, y + this.state.offset.y);
+    if(oldPosition != newPosition){
+      //console.log(oldPosition, newPosition);
+      this.swap(oldPosition, newPosition);
+      e.target.dataset.position = newPosition;
+    }
+    this.guessPosition(x, y);
+  }
+
+  guessPosition (x, y){
+    var col = Math.floor(x / this.state.item_width);
+    if(col >= this.state.cols){
+      col = this.state.cols - 1;
+    }
+    if(col <= 0){
+      col = 0;
+    }
+
+    var row = Math.floor(y / this.state.item_height);
+    if(row < 0){
+      row = 0;
+    }
+
+    var position = col + row * this.state.cols;
+    if(position >= this.state.items.length){
+      return this.state.items.length -1;
+    }
+    return position;
+  }
+
+  swap(start, end){
+      for(var i = 0; i< this.state.items.length; i++) {
+        var item = this.state.items[i];
+        if(!item.classList.contains('is-dragged'))
+        {
+          var position = parseInt(item.dataset.position, 10);
+          if(position >= end && position < start && end < start){
+            this.moveItem(item, position + 1);
+          } else if(position <= end && position > start && start < end){
+            this.moveItem(item, position -1);
+          }
+        }
+
+      }
   }
 
   render(){
