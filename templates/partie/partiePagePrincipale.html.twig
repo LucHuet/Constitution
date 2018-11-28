@@ -8,49 +8,6 @@
 {% endblock %}
 
 {% block body %}
-        <div id="sort1" class="ui cards" data-sortable=".card">
-          {% for i in 1..12 %}
-          <div class="card" data-position="{{ i -1 }}" data-id="{{ i }}">
-            <div class="extra content">
-              <a>
-                Cet acteur a été désigné par :
-              </a>
-              <div class="right floated">
-                <i class="meh icon"></i>
-                <i class="meh icon"></i>
-              </div>
-            </div>
-            <div class="content">
-              <img class="right floated tiny ui image" src="{{asset('build/static/card.jpg')}}">
-              <div class="header">
-                Acteur {{ i }}
-              </div>
-              <div class="meta">
-                Type acteur {{ i }}
-              </div>
-              <div class="description">
-                Pouvoirs : ...
-                <br>
-                <button class="right floated ui basic button">
-                  <i class="icon plus"></i>
-                    Ajout pouvoir
-                </button>
-              </div>
-            </div>
-            <div class="extra content">
-              <a>
-                <i class="users icon"></i>
-                Cet acteur désigne :
-              </a>
-              <div class="right floated">
-                <i class="bug icon"></i>
-                <i class="meh icon"></i>
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-
         <div id="acteur-app">
         </div>
 {% endblock %}
@@ -59,16 +16,13 @@
 
   {{ parent() }}
 
-<script src="{{asset('build/sorter.js')}}"></script>
+<!--<script src="{{asset('build/sorter.js')}}"></script>
 <script>
   sortable = new Sortable(document.querySelector('#sort1'));
-</script>
+</script>-->
 
   <script>
     window.ACTEUR_APP_PROPS = {{acteursAppProps|json_encode|raw}}
   </script>
-  <script src="{{ asset('build/acteur_react.js') }}"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
+  <script src="{{ asset('build/partie_react.js') }}"></script>
 {% endblock %}
