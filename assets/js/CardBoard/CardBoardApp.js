@@ -61,7 +61,7 @@ export default class CardBoardApp extends Component {
           acteurs: data,
           isLoaded: true,
         });
-        console.log(this.state.scrollable);
+
         //on fait le set state apres pour pouvoir récuperer les infos
         var elementTemp = document.querySelector('#sort1');
         var itemsTemp = elementTemp.querySelectorAll(elementTemp.getAttribute('data-sortable'));

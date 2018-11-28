@@ -1,83 +1,73 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class Card extends Component {
+export default function Card(props) {
 
-  constructor(props){
-    super(props);
-    //on descructure les props pour en récuperer les variables
+  //on descructure les props pour en récuperer les variables
+  const {
+    highlightedRowId,
+    onRowClick,
+    acteurs,
+    onDeleteActeur,
+    isLoaded,
+    isSavingNewActeur,
+    //sorter
 
-  }
+  } = props;
 
-
-
-  handleDeleteClick (event, acteurId){
+  const handleDeleteClick = function(event, acteurId){
     //évite le comportement normal du boutton
     //exemple évite que le submit soumette la page.
     event.preventDefault();
 
-    this.onDeleteActeur(acteurId);
-  }
+    onDeleteActeur(acteurId);
+  };
 
-  render(){
-
-    const {
-      highlightedRowId,
-      onRowClick,
-      acteurs,
-      onDeleteActeur,
-      isLoaded,
-      isSavingNewActeur,
-      //sorter
-
-    } = this.props;
-
-    if(!isLoaded){
-      return(
-            <div>Loading...</div>
-      )
-    }
-
+  if(!isLoaded){
     return(
-      <div>
-        { /*
-        pour chaque acteur restant on le met dans le tableau
-      */ }
-        <div id="sort1" className="ui cards" data-sortable=".card">
-        {acteurs.map((acteur, index) => (
-          <div
-            className="card"
-            key={acteur.id}
-            onClick={()=> onRowClick(acteur.id)}
-            data-position={index}
-            data-id={index}
-            style={{
-                position: "relative",
-                top: "0px",
-                left: "0px",
-                transitionDuration: null,
-            }}
-          >
-            <div className="content">
-                {acteur.nom} -
-                {acteur.nombreIndividus} -
-                <a href="#" onClick={(event => this.handleDeleteClick(event, acteur.id))}>
-                    <span className="fa fa-trash"></span>
-                </a>
-            </div>
-          </div>
-          )
-        )}
-        </div>
-        {isSavingNewActeur && (
-          <div id="sort1" className="ui cards" data-sortable=".card">
-            En ajout ...
-          </div>
-        )}
-      </div>
-
-    );
+          <div>Loading...</div>
+    )
   }
+
+  return(
+    <div>
+      { /*
+      pour chaque acteur restant on le met dans le tableau
+    */ }
+      <div id="sort1" className="ui cards" data-sortable=".card">
+      {acteurs.map((acteur, index) => (
+        <div
+          className="card"
+          key={acteur.id}
+          onClick={()=> onRowClick(acteur.id)}
+          data-position={index}
+          data-id={index}
+          style={{
+              position: "relative",
+              top: "0px",
+              left: "0px",
+              transitionDuration: null,
+          }}
+        >
+          <div className="content">
+              {acteur.nom} -
+              {acteur.nombreIndividus} -
+              <a href="#" onClick={(event => handleDeleteClick(event, acteur.id))}>
+                  <span className="fa fa-trash"></span>
+              </a>
+          </div>
+        </div>
+        )
+      )}
+      </div>
+      {isSavingNewActeur && (
+        <div id="sort1" className="ui cards" data-sortable=".card">
+          En ajout ...
+        </div>
+      )}
+    </div>
+
+  );
 }
 
 //on défini les types des props
