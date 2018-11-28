@@ -16,6 +16,16 @@
 
     <h3>Photo de profile</h3>
 
+    {% for image in user.images %}
+    <img src="{{ vich_uploader_asset(image, 'imageFile') }}">
+    {% endfor %}
+
+    {{ form_start(form) }}
+      {{ form_widget(form) }}
+      <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+
+
 
   </div>
 {% endblock %}
