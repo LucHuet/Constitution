@@ -26,7 +26,7 @@ export default function CardBoard(props){
           data-toggle="popover"
           title="à propos"
           data-content="pour la République !"
-      > Partie en cours
+      >
       </h2>
 
       { /*
@@ -37,17 +37,19 @@ export default function CardBoard(props){
             {successMessage}
         </div>
       )}
-      { /*
-        On appelle acteurList pour récupérer la liste des acteurs
-      */ }
-      <Card
-        highlightedRowId={highlightedRowId}
-        onRowClick={onRowClick}
-        acteurs={acteurs}
-        onDeleteActeur={onDeleteActeur}
-        isLoaded={isLoaded}
-        isSavingNewActeur={isSavingNewActeur}
-      />
+
+          { /*
+            On appelle acteurList pour récupérer la liste des acteurs
+          */ }
+          <Card
+            highlightedRowId={highlightedRowId}
+            onRowClick={onRowClick}
+            acteurs={acteurs}
+            onDeleteActeur={onDeleteActeur}
+            isLoaded={isLoaded}
+            isSavingNewActeur={isSavingNewActeur}
+          />
+
       { /*
       ItemOptions : ensemble des options de types acteurs
     */ }

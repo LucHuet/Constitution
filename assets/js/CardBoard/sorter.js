@@ -2,14 +2,15 @@ import interact from 'interactjs';
 import _ from 'lodash';
 
 window.Sortable = function (element, scrollable){
-  var rect;
-  var self = this;
+  var self = this; //plus besoin en react
   if(scrollable == null){
     scrollable = document.body;
   }
-  this.scrollable = scrollable;
-  this.element = element;
+  this.scrollable = scrollable;// récupéré dans App et transmis en dessous
+  this.element = element;// récupéré dans App et transmis en dessous
+  //dans componentDidMount car on le récupère des le début :
   this.items = this.element.querySelectorAll(this.element.getAttribute('data-sortable')); //ou e.dataset.sortable
+  //
   this.setPositions();
   window.addEventListener('resize', _.debounce(function(){
     self.setPositions();
@@ -44,11 +45,18 @@ window.Sortable = function (element, scrollable){
 
 Sortable.prototype.setPositions = function(){
   var self = this;
+  //récupère un rectangle de la taille d'une carte
   var rect = this.items[0].getBoundingClientRect();
+  //récupère la longueur et largueur du rectangle
   this.item_width = Math.floor(rect.width);
   this.item_height = Math.floor(rect.height);
+  //récupère le nombre de colonne en fonction de la taille des rectangles
+  // ! dépend de element
   this.cols = Math.floor(this.element.offsetWidth / this.item_width);
+  //on détermine la taille de element afin de pouvoir mettre des chose dessous
+  // ! dépend de element
   this.element.style.height = (this.item_height * Math.ceil(this.items.length / this.cols)) + "px";
+  //on change le style des cartes pour les rendre absolute
   for(var i = 0; i< this.items.length; i++) {
     var item = this.items[i];
     item.style.position = "absolute";
@@ -58,6 +66,7 @@ Sortable.prototype.setPositions = function(){
     var position = item.dataset.position;
     this.moveItem(item, position);
   }
+  //on réinitialise la transition pour un effet visuel
   window.setTimeout(function(){
     for(var i = 0; i< self.items.length; i++) {
       var item = self.items[i];
