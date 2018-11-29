@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 export default function CardBoard(props){
 
   const {
-    highlightedRowId,
     acteurs,
     onAddActeur,
     onDeleteActeur,
@@ -18,6 +17,11 @@ export default function CardBoard(props){
     itemOptions,
   } = props;
 
+  if(!isLoaded){
+    return(
+          <div>Loading...</div>
+    )
+  }
 
   return (
     <div>
@@ -37,17 +41,23 @@ export default function CardBoard(props){
         </div>
       )}
 
-          { /*
-            On appelle acteurList pour récupérer la liste des acteurs
-          */ }
-          <Card
-            highlightedRowId={highlightedRowId}
-            acteurs={acteurs}
-            onDeleteActeur={onDeleteActeur}
-            isLoaded={isLoaded}
-            isSavingNewActeur={isSavingNewActeur}
-          />
+      <div id="sort1" className="ui cards" data-sortable=".card">
+      {acteurs.map((acteur, index) => (
 
+          <Card
+            key = {index}
+            index={index}
+            acteur={acteur}
+            onDeleteActeur={onDeleteActeur}
+          />
+        )
+      )}
+      {isSavingNewActeur && (
+        <div id="sort1" className="ui cards" data-sortable=".card">
+          En ajout ...
+        </div>
+      )}
+    </div>
       { /*
       ItemOptions : ensemble des options de types acteurs
     */ }
@@ -77,7 +87,6 @@ export default function CardBoard(props){
 }
 
 CardBoard.propTypes = {
-  highlightedRowId: PropTypes.any,
   onAddActeur: PropTypes.func.isRequired,
   onDeleteActeur: PropTypes.func.isRequired,
   acteurs: PropTypes.array.isRequired,

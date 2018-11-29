@@ -5,11 +5,9 @@ export default function Card(props) {
 
   //on descructure les props pour en récuperer les variables
   const {
-    acteurs,
+    index,
+    acteur,
     onDeleteActeur,
-    isLoaded,
-    isSavingNewActeur,
-
   } = props;
 
   const handleDeleteClick = function(event, acteurId){
@@ -20,22 +18,11 @@ export default function Card(props) {
     onDeleteActeur(acteurId);
   };
 
-  if(!isLoaded){
-    return(
-          <div>Loading...</div>
-    )
-  }
+
 
   return(
-    <div>
-      { /*
-      pour chaque acteur restant on le met dans le tableau
-    */ }
-      <div id="sort1" className="ui cards" data-sortable=".card">
-      {acteurs.map((acteur, index) => (
         <div
           className="card"
-          key={acteur.id}
           data-position={index}
           data-id={index}
         >
@@ -79,24 +66,12 @@ export default function Card(props) {
             </div>
           </div>
         </div>
-        )
-      )}
-      </div>
-      {isSavingNewActeur && (
-        <div id="sort1" className="ui cards" data-sortable=".card">
-          En ajout ...
-        </div>
-      )}
-    </div>
-
   );
 }
 
 //on défini les types des props
 Card.propTypes = {
+  index: PropTypes.number,
   onDeleteActeur: PropTypes.func.isRequired,
-  acteurs: PropTypes.array.isRequired,
-  isLoaded: PropTypes.bool.isRequired,
-  isSavingNewActeur: PropTypes.bool.isRequired,
-  isPageOnLoad: PropTypes.bool,
+  acteur: PropTypes.object,
 };
