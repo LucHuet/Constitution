@@ -4,9 +4,9 @@
 
 {% block body %}
 
-    <h1>Index</h1>
-
+<div class="index-page">
     {% if not app.user %}
+    <h1 class="ui header">Crée ta Constitution !</h1>
       <p>
         <a href="{{ path('user_registration') }}"> <class="button">S'enregistrer</a>
       </p>
@@ -16,27 +16,66 @@
     {% endif %}
 
     {% if app.user %}
-      <p>
-        <a href="{{ path('logout') }}"> <class="button">Logout</a>
-      </p>
-      <p>
-        <a href="{{ path('partie_new') }}"> <class="button">Créer une partie</a>
-      </p>
-      <p>
-        <a href="{{ path('partie_liste') }}">Liste des parties</a>
-      </p>
-      <h3> Utilisateur : </h3>
-      <p>
-        Nom : {{ app.user.username }}
-      </p>
-      <p>
-        Mail : {{ app.user.email }}
-      </p>
-      <p>
-        Vous avez
-              {{ parties|length }}
-        parties en cours
-      </p>
+    <h1 class="ui header">Bonjour {{ app.user.username }}</h1>
+
+    <div class="ui right aligned grid">
+      <div class="left floated right aligned six wide column">
+        <div class="ui segment">
+          <h2 class="ui header column">
+            <i class="address card icon"></i>
+            <div class="content">
+              Mon compte
+              <div class="sub header">Modifier mon compte</div>
+            </div>
+          </h2>
+        </div>
+      </div>
+
+      <div class="right floated left aligned six wide column">
+        <div class="ui segment">
+          <h2 class="ui header column">
+            <i class="eye icon"></i>
+              <div class="content">
+                Mes parties
+                <div class="sub header">
+                  <a href="{{ path('partie_liste') }}">Voir mes parties</a>
+                </div>
+              </div>
+            </h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="ui right aligned grid">
+        <div class="left floated right aligned six wide column">
+          <div class="ui segment">
+            <h2 class="ui header column">
+              <i class="edit icon"></i>
+              <div class="content">
+                Mes parties
+                <div class="sub header">
+                  <a href="{{ path('partie_new') }}">Créer une nouvelle partie</a></div>
+              </div>
+            </h2>
+          </div>
+        </div>
+
+        <div class="right floated left aligned six wide column">
+          <div class="ui segment">
+            <h2 class="ui header column">
+              <i class="toggle off icon"></i>
+                <div class="content">
+                  Déconnexion
+                  <div class="sub header">
+                    <a href="{{ path('logout') }}">Se déconnecter</a>
+                  </div>
+                </div>
+              </h2>
+            </div>
+          </div>
+        </div>
     {% endif %}
+
+  </div>
 
 {% endblock %}

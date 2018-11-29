@@ -3,6 +3,7 @@ import Card from './Card';
 import ActeurCreator from '../Acteur/ActeurCreator';
 import PropTypes from 'prop-types';
 
+
 //function et pas class car pas beaucoup de logique à l'intérieur
 export default function CardBoard(props){
 
@@ -28,6 +29,7 @@ export default function CardBoard(props){
       > La Partie
       </h2>
       <button type="button" className="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Ajouter un acteur</button>
+
       { /*
         Si message de succès on l'affiche
       */ }
