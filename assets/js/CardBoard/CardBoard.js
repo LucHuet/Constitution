@@ -8,7 +8,6 @@ export default function CardBoard(props){
 
   const {
     highlightedRowId,
-    onRowClick,
     acteurs,
     onAddActeur,
     onDeleteActeur,
@@ -26,9 +25,9 @@ export default function CardBoard(props){
           data-toggle="popover"
           title="à propos"
           data-content="pour la République !"
-      >
+      > La Partie
       </h2>
-
+      <button type="button" className="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Ajouter un acteur</button>
       { /*
         Si message de succès on l'affiche
       */ }
@@ -43,7 +42,6 @@ export default function CardBoard(props){
           */ }
           <Card
             highlightedRowId={highlightedRowId}
-            onRowClick={onRowClick}
             acteurs={acteurs}
             onDeleteActeur={onDeleteActeur}
             isLoaded={isLoaded}
@@ -53,23 +51,33 @@ export default function CardBoard(props){
       { /*
       ItemOptions : ensemble des options de types acteurs
     */ }
-      <div className="row">
-        <div className="col-md-6">
-          <ActeurCreator
-            onAddActeur={onAddActeur}
-            validationErrorMessage={newActeurValidationErrorMessage}
-            itemOptions={itemOptions}
-          />
-        </div>
-      </div>
 
+
+    <div id="myModal" className="modal fade" role="dialog">
+      <div className="modal-dialog">
+
+        <div className="modal-content">
+          <div className="modal-header">
+            <button type="button" className="close" data-dismiss="modal">&times;</button>
+            <h4 className="modal-title">Modal Header</h4>
+          </div>
+          <div className="modal-body">
+            <ActeurCreator
+              onAddActeur={onAddActeur}
+              validationErrorMessage={newActeurValidationErrorMessage}
+              itemOptions={itemOptions}
+            />
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
   );
 }
 
 CardBoard.propTypes = {
   highlightedRowId: PropTypes.any,
-  onRowClick: PropTypes.func.isRequired,
   onAddActeur: PropTypes.func.isRequired,
   onDeleteActeur: PropTypes.func.isRequired,
   acteurs: PropTypes.array.isRequired,

@@ -2,6 +2,8 @@ $bootstrap-sass-asset-helper: true;
 //@import './_bootstrap.scss';
 @import '~font-awesome/css/font-awesome.css';
 
+$width:33.33%;
+
 img {
     max-width: 100%;
     max-height: 100%;
@@ -12,18 +14,21 @@ img {
   position: relative;
 }
 
-.ui.cards .card{
-  margin: 0 !important;
-  width: 33.33% !important;
-  transition: 0.5s;
+.ui.cards{
+  .card{
+    margin: 0 !important;
+    width: $width !important;
+    height: 200px !important;
+    transition: 0.5s;
+    &.is-dragged{
+      transition: 0s;
+      opacity: 0.5;
+      z-index: 9000;
+      position: absolute;
+    }
+  }
 }
 
-.ui.cards .card.is-dragged{
-  transition: 0s;
-  opacity: 0.5;
-  z-index: 9000;
-  position: absolute;
-}
 
 .main-content {
     margin-top: 80px;

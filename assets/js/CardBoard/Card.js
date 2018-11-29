@@ -5,13 +5,10 @@ export default function Card(props) {
 
   //on descructure les props pour en récuperer les variables
   const {
-    highlightedRowId,
-    onRowClick,
     acteurs,
     onDeleteActeur,
     isLoaded,
     isSavingNewActeur,
-    //sorter
 
   } = props;
 
@@ -41,7 +38,6 @@ export default function Card(props) {
           key={acteur.id}
           data-position={index}
           data-id={index}
-          onClick={()=> onRowClick(acteur.id)}
         >
           <div className="extra content">
             <a>
@@ -53,9 +49,9 @@ export default function Card(props) {
             </div>
           </div>
           <div className="content">
-            <img className="right floated tiny ui image" src="./static/card.jpg"/>
+            <img className="right floated tiny ui image" src="/build/static/card.jpg"/>
             <div className="header">
-              Acteur : {acteur.nom}
+              {acteur.nom}
               <a href="#" onClick={(event => handleDeleteClick(event, acteur.id))}>
                   <span className="fa fa-trash"></span>
               </a>
@@ -98,8 +94,6 @@ export default function Card(props) {
 
 //on défini les types des props
 Card.propTypes = {
-  highlightedRowId: PropTypes.any,
-  onRowClick: PropTypes.func.isRequired,
   onDeleteActeur: PropTypes.func.isRequired,
   acteurs: PropTypes.array.isRequired,
   isLoaded: PropTypes.bool.isRequired,

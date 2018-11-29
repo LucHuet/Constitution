@@ -18,7 +18,6 @@ export default class CardBoardApp extends Component {
     //permet  d'initialiser les states donc les
     //variables qui peuvent être modifiées.
     this.state = {
-      highlightedRowId: null,
       acteurs: [],
       isLoaded: false,
       isSavingNewActeur: false,
@@ -41,7 +40,6 @@ export default class CardBoardApp extends Component {
 
     //bind(this) permet de faire en sorte que le this corresponde à la classe
     //et pas à la méthode.
-    this.handleRowClick = this.handleRowClick.bind(this);
     this.handleAddActeur = this.handleAddActeur.bind(this);
     this.handleDeleteActeur = this.handleDeleteActeur.bind(this);
 
@@ -50,6 +48,7 @@ export default class CardBoardApp extends Component {
     this.getXY = this.getXY.bind(this);
     this.move = this.move.bind(this);
   }
+
   //componentDidMount est une methode magique qui est automatiquement
   //lancée apres le render de l'app
   componentDidMount(){
@@ -71,6 +70,9 @@ export default class CardBoardApp extends Component {
           items: itemsTemp
         });
         this.setPositions();
+        window.addEventListener('resize', _.debounce(()=>{
+          this.setPositions();
+        }, 200));
         interact(this.state.element.dataset.sortable, {
           context: this.state.element
         }).draggable({
@@ -115,9 +117,21 @@ export default class CardBoardApp extends Component {
     clearTimeout(this.successMessageTimemoutHandle);
   }
 
-  handleRowClick(acteurId) {
-    //permet à highlightedRowId de prendre la valeur de l'id de la ligne sur laquelle on clique
-      this.setState({highlightedRowId:acteurId});
+  setSuccessMessage(message){
+
+    this.setState({
+      successMessage: message
+    });
+
+    clearTimeout(this.successMessageTimemoutHandle);
+    //setTimeout permet de définir ce qu'il faut faire une fois que l'on ne veut plus du message d'erreur. (au bout de 3s)
+    this.successMessageTimemoutHandle = setTimeout(() => {
+      this.setState({
+        successMessage: ''
+      });
+
+      this.successMessageTimemoutHandle =  0;
+    }, 3000);
   }
 
   handleAddActeur(nom, nombreIndividus, typeActeur){
@@ -155,6 +169,7 @@ export default class CardBoardApp extends Component {
 
           });
           this.setSuccessMessage('Acteur enregistré !');
+          this.setPositions();
         })
         //il y a une erreur dans l'ajout
         .catch(error=> {
@@ -168,23 +183,6 @@ export default class CardBoardApp extends Component {
             });
           })
         })
-  }
-
-  setSuccessMessage(message){
-
-    this.setState({
-      successMessage: message
-    });
-
-    clearTimeout(this.successMessageTimemoutHandle);
-    //setTimeout permet de définir ce qu'il faut faire une fois que l'on ne veut plus du message d'erreur. (au bout de 3s)
-    this.successMessageTimemoutHandle = setTimeout(() => {
-      this.setState({
-        successMessage: ''
-      });
-
-      this.successMessageTimemoutHandle =  0;
-    }, 3000);
   }
 
   handleDeleteActeur(id) {
@@ -212,6 +210,7 @@ export default class CardBoardApp extends Component {
           }
         });
         this.setSuccessMessage('Acteur supprimé !');
+        this.setPositions();
       });
 
   }
@@ -338,9 +337,7 @@ export default class CardBoardApp extends Component {
       <CardBoard
         {...this.props}
         {...this.state}
-        onRowClick={this.handleRowClick}
         onAddActeur={this.handleAddActeur}
-        onProutChange={this.handleProutChange}
         onDeleteActeur = {this.handleDeleteActeur}
       />
     )
