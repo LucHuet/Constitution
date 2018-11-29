@@ -18,8 +18,6 @@ export default function Card(props) {
     onDeleteActeur(acteurId);
   };
 
-
-
   return(
         <div
           className="card"
