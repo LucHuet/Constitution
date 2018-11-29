@@ -4,9 +4,33 @@ $bootstrap-sass-asset-helper: true;
 
 $width:33.33%;
 
+body{
+  padding-top: 100px!important;
+}
+
+h1{
+  color: #404040!important;
+}
+
+h2{
+  color: #505050!important;
+}
+
 img {
     max-width: 100%;
     max-height: 100%;
+}
+
+.index-page{
+  text-align: center;
+}
+
+h1.ui.header{
+  margin-bottom: 25px!important;
+}
+
+.ui.header:first-child, .ui.header:last-child{
+  margin: 0;
 }
 
 .ui.cards{
@@ -26,6 +50,22 @@ img {
       position: absolute;
     }
   }
+}
+
+.ui.menu .item > a:not(.ui), .navbar-nav > li > a{
+  color : 	#A9A9A9;
+    &:hover {
+    color: #008080;
+  }
+}
+
+.navbar-nav > li > a:hover{
+  background-color: white;
+}
+
+.menu-logo a{
+  font-weight: bold;
+  font-size: 130%;
 }
 
 
