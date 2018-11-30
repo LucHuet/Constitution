@@ -15,6 +15,7 @@
 {% block javascripts %}
 
   {{ parent() }}
+  </script>
   <script>
     window.ACTEUR_APP_PROPS = {{acteursAppProps|json_encode|raw}}
   </script>

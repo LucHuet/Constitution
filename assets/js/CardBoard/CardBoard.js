@@ -17,6 +17,10 @@ export default function CardBoard(props){
     itemOptions,
   } = props;
 
+  const handleAddButton = function(){
+    document.querySelector('.ui.modal').modal('show');
+  };
+
   if(!isLoaded){
     return(
           <div>Loading...</div>
@@ -31,6 +35,7 @@ export default function CardBoard(props){
           data-content="pour la République !"
       > La Partie
       </h2>
+
       <button type="button" className="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Ajouter un acteur</button>
       { /*
         Si message de succès on l'affiche
@@ -82,6 +87,7 @@ export default function CardBoard(props){
 
       </div>
     </div>
+
   </div>
   );
 }

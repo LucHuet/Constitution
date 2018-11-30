@@ -123,7 +123,7 @@ export default class CardBoardApp extends Component {
 
           });
           this.setSuccessMessage('Acteur enregistré !');
-          this.state.sortable.setPositions();
+          this.state.sortable.setPositions(true);
         })
         //il y a une erreur dans l'ajout
         .catch(error=> {
@@ -164,7 +164,7 @@ export default class CardBoardApp extends Component {
           }
         });
         this.setSuccessMessage('Acteur supprimé !');
-        this.state.sortable.setPositions();
+        this.state.sortable.setPositions(true);
       });
 
   }

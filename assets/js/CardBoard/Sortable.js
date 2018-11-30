@@ -47,8 +47,10 @@ export default class Sortable {
     });
   }
 
-  setPositions(){
+  setPositions(ajoutSuppressionItem = false){
+    console.log("set position");
     var self = this;
+    this.items = this.element.querySelectorAll(this.element.getAttribute('data-sortable'));
     //récupère un rectangle de la taille d'une carte
     var rect = this.items[0].getBoundingClientRect();
     //récupère la longueur et largueur du rectangle
@@ -66,8 +68,9 @@ export default class Sortable {
       item.style.position = "absolute";
       item.style.top = "0px";
       item.style.left = "0px";
+      console.log("set position", item);
       item.style.height = this.item_height;
-      item.style.transitionDuration = "0s";
+      item.style.transitionDuration = ajoutSuppressionItem ? null : "0s";      
       var position = item.dataset.position;
       this.moveItem(item, position);
     }
