@@ -8,12 +8,16 @@ body{
   padding-top: 100px!important;
 }
 
-h1{
-  color: #404040!important;
+h1.ui.header{
+  color: #404040;
 }
 
-h2{
-  color: #505050!important;
+h2.ui.header{
+  color: #505050;
+}
+
+h3.ui.header{
+  color: #606060;
 }
 
 img {
@@ -52,8 +56,20 @@ h1.ui.header{
   }
 }
 
-.ui.menu .item > a:not(.ui), .navbar-nav > li > a{
-  color : 	#A9A9A9;
+.ui.menu .item > a:not(.ui),
+.navbar-nav > li > a,
+.menu-sous-item,
+.ui.menu.fixed,
+.ui.menu.fixed .item:first-child,
+.ui.menu.fixed .item:last-child{
+  color : 	#A9A9A9 ;
+    &:hover {
+    color: #008080;
+  }
+}
+
+.table-parties > tbody > tr > td > a{
+  color : #43464b;
     &:hover {
     color: #008080;
   }

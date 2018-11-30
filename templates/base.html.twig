@@ -15,53 +15,58 @@
 
 {% block header %}
   <div class="ui stackable top fixed menu">
-      <div class="item menu-logo menu-item">
+      <div class="item menu-logo">
           <a href="{{ path('index') }}" data-toggle="tooltip" data-placement="bottom" title="Créez votre Constitution">Constitution</a>
       </div>
         {% if app.user %}
            {% if app.session.get('partieCourante') is not null %}
-           <div class="item menu-item">
+           <div class="item">
                <a href="{{ path('partie_show', {'id':app.session.get('partieCourante').id}) }}">Partie en cours : {{app.session.get('partieCourante').nom}}</a>
            </div>
-           <div class="item menu-item">
+           <div class="item">
                <a href="{{ path('partie_liste') }}">Changer de partie</a>
            </div>
            {% endif %}
         {% endif %}
-        {% if not app.user %}
-        <div class="item menu-item">
-           <a href="{{ path('login') }}">Login</a>
-        </div>
-        {% endif %}
-      <div class="right menu">
-      <div class="item menu-item">
+
+
           {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-              <ul class="nav navbar-nav navbar-right">
-                  <li class="drop-down">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="fa fa-user"></span> <strong>{{ app.user.username }}</strong> <span class="caret"></span></a>
-                      <ul class="dropdown-menu">
-                          <li>
-                              <a href="{{ path('partie_new') }}">
-                                  <span class="fa fa-child"></span>
-                                  Nouvelle partie
-                          </li>
-                          <li>
-                              <a href="{{ path('logout') }}">
-                                  <span class="fa fa-sign-out"></span>
-                                  Se déconnecter
-                              </a>
-                          </li>
-                      </ul>
-                  </li>
-              </ul>
+          <div class="right menu">
+                <div class="ui simple dropdown item">
+                  <strong>{{ app.user.username }}</strong>
+                  <i class="dropdown icon"></i>
+                  <div class="menu">
+                    <div class="item">
+                      <a href="{{ path('partie_new') }}">
+                        <i class="icon plus"></i>
+                        Nouvelle partie</div>
+                    <div class="item"><a href="{{ path('logout') }}">
+                        <i class="icon sign-out"></i>
+                        Se déconnecter
+                    </a></div>
+
+                  </div>
+                </div>
+
+            </div>
           {% else %}
-              <ul class="nav navbar-nav navbar-right">
-                  <li>
-                      <a href="{{ path('user_registration') }}">
-                          S'enregistrer
-                      </a>
-                  </li>
-              </ul>
+          <div class="right menu">
+            {% if not app.user %}
+              <div class="item">
+                <a href="{{ path('login') }}">
+                  <i class="icon sign-in"></i>
+                  Login
+                </a>
+              </div>
+            {% endif %}
+            <div class="item">
+              <a href="{{ path('user_registration') }}">
+                  <i class="icon edit"></i>
+                  S'enregistrer
+              </a>
+              </div>
+              </div>
+
           {% endif %}
 
       </div>
