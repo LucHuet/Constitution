@@ -3,14 +3,13 @@
 {% block title %}Partie index{% endblock %}
 
 {% block body %}
-    <h1>Liste des parties</h1>
+    <h1 class="ui header">Liste des parties</h1>
 
-    <table class="table">
+    <table class="table table-parties">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Nom</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -18,7 +17,7 @@
             <tr>
                 <td><a href="{{ path('partie_show', {'id': partie.id}) }}">{{ partie.nom }}</a></td>
                 <td>
-                    <a href="{{ path('partie_edit', {'id': partie.id}) }}">edit</a>
+                    <a href="{{ path('partie_edit', {'id': partie.id}) }}">Modifier votre partie</a>
                 </td>
             </tr>
         {% else %}
@@ -29,6 +28,11 @@
         </tbody>
     </table>
     <p>
-      <a href="{{ path('partie_new') }}"> <class="button">Créer une partie</a>
+      <a href="{{ path('partie_new') }}">
+        <button class="ui basic button">
+          <i class="icon plus"></i>
+          Nouvelle partie
+        </button>
+      </a>
     </p>
 {% endblock %}

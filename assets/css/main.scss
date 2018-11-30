@@ -62,7 +62,14 @@ h1.ui.header{
 .ui.menu.fixed,
 .ui.menu.fixed .item:first-child,
 .ui.menu.fixed .item:last-child{
-  color : 	#A9A9A9;
+  color : 	#A9A9A9 ;
+    &:hover {
+    color: #008080;
+  }
+}
+
+.table-parties > tbody > tr > td > a{
+  color : #43464b;
     &:hover {
     color: #008080;
   }
