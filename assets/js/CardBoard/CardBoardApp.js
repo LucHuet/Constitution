@@ -4,7 +4,6 @@ import CardBoard from './CardBoard';
 import PropTypes from 'prop-types';
 import interact from 'interactjs';
 import _ from 'lodash';
-//import uuid from 'uuid/v4';
 import { getActeurs, deleteActeur, createActeur } from '../api/acteur_api.js';
 import Sortable from './Sortable.js';
 
@@ -24,6 +23,7 @@ export default class CardBoardApp extends Component {
       isSavingNewActeur: false,
       successMessage: '',
       newActeurValidationErrorMessage: '',
+      showModal:false,
       //sorter
       item_width: 0,
       item_height: 0,
@@ -43,6 +43,8 @@ export default class CardBoardApp extends Component {
     //bind(this) permet de faire en sorte que le this corresponde à la classe
     //et pas à la méthode.
     this.handleAddActeur = this.handleAddActeur.bind(this);
+    this.handleShowModal = this.handleShowModal.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handleDeleteActeur = this.handleDeleteActeur.bind(this);
 
   }
@@ -139,6 +141,19 @@ export default class CardBoardApp extends Component {
         })
   }
 
+  handleShowModal(acteurId){
+    this.setState({
+      showModal: true
+    });
+  }
+
+  handleCloseModal(acteurId){
+    this.setState({
+      showModal: false
+    });
+  }
+
+
   handleDeleteActeur(id) {
     //prevstate est la liste des acteurs originale
     this.setState((prevState) =>{
@@ -176,6 +191,8 @@ export default class CardBoardApp extends Component {
         {...this.props}
         {...this.state}
         onAddActeur={this.handleAddActeur}
+        onShowModal={this.handleShowModal}
+        onCloseModal={this.handleCloseModal}
         onDeleteActeur = {this.handleDeleteActeur}
       />
     )

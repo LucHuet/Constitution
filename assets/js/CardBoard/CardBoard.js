@@ -2,6 +2,7 @@ import React from 'react';
 import Card from './Card';
 import ActeurCreator from '../Acteur/ActeurCreator';
 import PropTypes from 'prop-types';
+import { Modal, Form, Button, Icon } from 'semantic-ui-react';
 
 
 //function et pas class car pas beaucoup de logique à l'intérieur
@@ -10,17 +11,17 @@ export default function CardBoard(props){
   const {
     acteurs,
     onAddActeur,
+    onShowModal,
+    onCloseModal,
     onDeleteActeur,
     isLoaded,
     isSavingNewActeur,
     successMessage,
     newActeurValidationErrorMessage,
     itemOptions,
+    showModal,
   } = props;
 
-  const handleAddButton = function(){
-    document.querySelector('.ui.modal').modal('show');
-  };
 
   if(!isLoaded){
     return(
@@ -56,6 +57,7 @@ export default function CardBoard(props){
             index={index}
             acteur={acteur}
             onDeleteActeur={onDeleteActeur}
+            onShowModal={onShowModal}
           />
         )
       )}
@@ -90,16 +92,26 @@ export default function CardBoard(props){
       </div>
     </div>
 
+    <Modal closeIcon onClose={onCloseModal} open={showModal}>
+      <Modal.Header>My Modal</Modal.Header>
+      <Modal.Content>
+        <span>TEST</span>
+      </Modal.Content>
+    </Modal>
+
   </div>
   );
 }
 
 CardBoard.propTypes = {
   onAddActeur: PropTypes.func.isRequired,
+  onShowModal: PropTypes.func.isRequired,
+  onCloseModal: PropTypes.func.isRequired,
   onDeleteActeur: PropTypes.func.isRequired,
   acteurs: PropTypes.array.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   isSavingNewActeur: PropTypes.bool.isRequired,
+  showModal: PropTypes.bool.isRequired,
   successMessage: PropTypes.string.isRequired,
   newActeurValidationErrorMessage: PropTypes.string.isRequired,
   itemOptions: PropTypes.array.isRequired,

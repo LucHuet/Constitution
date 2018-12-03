@@ -48,7 +48,6 @@ export default class Sortable {
   }
 
   setPositions(ajoutSuppressionItem = false){
-    console.log("set position");
     var self = this;
     this.items = this.element.querySelectorAll(this.element.getAttribute('data-sortable'));
     //récupère un rectangle de la taille d'une carte
@@ -68,9 +67,8 @@ export default class Sortable {
       item.style.position = "absolute";
       item.style.top = "0px";
       item.style.left = "0px";
-      console.log("set position", item);
       item.style.height = this.item_height;
-      item.style.transitionDuration = ajoutSuppressionItem ? null : "0s";      
+      item.style.transitionDuration = ajoutSuppressionItem ? null : "0s";
       var position = item.dataset.position;
       this.moveItem(item, position);
     }
@@ -91,7 +89,6 @@ export default class Sortable {
     var oldPosition = e.target.dataset.position;
     var newPosition = this.guessPosition(x + this.offset.x, y + this.offset.y);
     if(oldPosition != newPosition){
-      //console.log(oldPosition, newPosition);
       this.swap(oldPosition, newPosition);
       e.target.dataset.position = newPosition;
     }

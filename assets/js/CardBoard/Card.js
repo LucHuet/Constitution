@@ -8,6 +8,7 @@ export default function Card(props) {
     index,
     acteur,
     onDeleteActeur,
+    onShowModal,
   } = props;
 
   const handleDeleteClick = function(event, acteurId){
@@ -17,6 +18,13 @@ export default function Card(props) {
 
     onDeleteActeur(acteurId);
   };
+
+  const handleAjoutPouvoir = function(event, acteurId){
+
+    event.preventDefault();
+    onShowModal(acteurId);
+  };
+
   return(
         <div
           className="card"
@@ -43,7 +51,9 @@ export default function Card(props) {
               <span>{acteur.nom}</span>
             </div>
             <div className="meta">
-              <i className="plus square outline icon"></i>Pouvoir
+              <a href="#" onClick={(event => handleAjoutPouvoir(event, acteur.id))}>
+                <i className="plus square outline icon"></i>Pouvoir
+              </a>
               <i className="plus square outline icon"></i>Contrôle
               <i className="plus square outline icon"></i>Désignation
             </div>
@@ -82,5 +92,6 @@ export default function Card(props) {
 Card.propTypes = {
   index: PropTypes.number,
   onDeleteActeur: PropTypes.func.isRequired,
+  onShowModal: PropTypes.func.isRequired,
   acteur: PropTypes.object,
 };
