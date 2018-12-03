@@ -17,14 +17,16 @@ class UserController extends AbstractController
   public function profile(Request $request){
 
     $user = $this->getUser();
+    dump($user->getImage());
+
         $image = new Image();
         $form = $this->createForm(ImageType::class, $image);
         $form->handleRequest($request);
-        dump($image);
 
         if($form->isSubmitted() && $form->isValid()) {
-
           $image->setUser($user);
+          dump($image);
+          //dump($user);
           $em = $this->getDoctrine()->getManager();
           $em->persist($image);
           $em->flush();

@@ -22,7 +22,7 @@ class Image
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\user", inversedBy="images")
+     * @ORM\OneToOne(targetEntity="User", inversedBy="image")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
