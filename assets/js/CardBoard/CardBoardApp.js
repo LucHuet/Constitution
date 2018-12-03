@@ -3,7 +3,6 @@ import CardBoard from './CardBoard';
 //permet de définit le type de props
 import PropTypes from 'prop-types';
 import interact from 'interactjs';
-import _ from 'lodash';
 import { getActeurs, deleteActeur, createActeur } from '../api/acteur_api.js';
 import Sortable from './Sortable.js';
 
@@ -24,6 +23,7 @@ export default class CardBoardApp extends Component {
       successMessage: '',
       newActeurValidationErrorMessage: '',
       showModal:false,
+      acteurSelect:0,
       //sorter
       item_width: 0,
       item_height: 0,
@@ -43,10 +43,10 @@ export default class CardBoardApp extends Component {
     //bind(this) permet de faire en sorte que le this corresponde à la classe
     //et pas à la méthode.
     this.handleAddActeur = this.handleAddActeur.bind(this);
+    this.handleAddPouvoir = this.handleAddPouvoir.bind(this);
     this.handleShowModal = this.handleShowModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handleDeleteActeur = this.handleDeleteActeur.bind(this);
-
   }
 
   //componentDidMount est une methode magique qui est automatiquement
@@ -120,12 +120,14 @@ export default class CardBoardApp extends Component {
               //on remet isSavingNewActeur à false
               ...newState,
               acteurs: newActeurs,
-              newActeurValidationErrorMessage: ''
+              newActeurValidationErrorMessage: '',
+              showModal: false
             };
 
           });
           this.setSuccessMessage('Acteur enregistré !');
           this.state.sortable.setPositions(true);
+
         })
         //il y a une erreur dans l'ajout
         .catch(error=> {
@@ -141,15 +143,71 @@ export default class CardBoardApp extends Component {
         })
   }
 
+  handleAddPouvoir(nom, typePouvoir, acteurSelect){
+
+      const newPouvoir = {
+        nom: nom,
+        typeActeur : typePouvoir,
+        acteur: acteurSelect
+      };
+      console.log(newPouvoir);
+
+      /*this.setState({
+        isSavingNewActeur: true
+      });
+
+
+      const newState = {
+        isSavingNewActeur: false,
+      }
+
+      createActeur(newActeur)
+      //l'ajout n'as pas d'erreur
+        .then(acteur => {
+          //prevstate est la liste des acteurs originale
+          this.setState(prevState =>{
+            //déclaration d'une nouvelle liste d'acteursJson
+            //qui est la liste de base + le nouvel acteur
+            const newActeurs = [...prevState.acteurs, acteur];
+
+            return {
+              //on remet isSavingNewActeur à false
+              ...newState,
+              acteurs: newActeurs,
+              newActeurValidationErrorMessage: '',
+              showModal: false
+            };
+
+          });
+          this.setSuccessMessage('Acteur enregistré !');
+          this.state.sortable.setPositions(true);
+
+        })
+        //il y a une erreur dans l'ajout
+        .catch(error=> {
+          error.response.json().then(errorsData => {
+            const errors = errorsData.errors;
+            const firstError = errors[Object.keys(errors)[0]];
+
+            this.setState({
+              ...newState,
+              newActeurValidationErrorMessage: firstError,
+            });
+          })
+        })*/
+  }
+
   handleShowModal(acteurId){
     this.setState({
-      showModal: true
+      showModal: true,
+      acteurSelect:acteurId
     });
   }
 
   handleCloseModal(acteurId){
     this.setState({
-      showModal: false
+      showModal: false,
+      acteurSelect:0
     });
   }
 
@@ -191,6 +249,7 @@ export default class CardBoardApp extends Component {
         {...this.props}
         {...this.state}
         onAddActeur={this.handleAddActeur}
+        onAddPouvoir={this.handleAddPouvoir}
         onShowModal={this.handleShowModal}
         onCloseModal={this.handleCloseModal}
         onDeleteActeur = {this.handleDeleteActeur}
@@ -202,8 +261,10 @@ export default class CardBoardApp extends Component {
 CardBoardApp.propTypes = {
   //permet de mettre par defaut les type de items option de props
   itemOptions:PropTypes.array,
+  pouvoirOptions:PropTypes.array,
 };
 
 CardBoardApp.defaultProps = {
   itemOptions:[],
+  pouvoirOptions:[],
 };

@@ -45,7 +45,7 @@ class PouvoirPartieController extends AbstractController
     }
 
     /**
-     * @Route("/", name="pouvoir_partie_new", methods="POST")
+     * @Route("/new", name="pouvoir_partie_new")
      */
     public function createPouvoirPartie(Request $request): Response
     {

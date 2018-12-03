@@ -6,6 +6,7 @@ import CardBoardApp from './CardBoard/CardBoardApp';
 render(
   <CardBoardApp
     {...window.ACTEUR_APP_PROPS}
+    {...window.POUVOIR_APP_PROPS}
   />,
   document.getElementById('cardBoard-app')
 );

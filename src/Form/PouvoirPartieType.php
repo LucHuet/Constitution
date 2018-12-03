@@ -52,16 +52,6 @@ class PouvoirPartieType extends AbstractType
         ));
     }
 
-    /*function onPreSubmit(FormEvent $event) {
-        $form = $event->getForm();
-        $data = $event->getData();
-
-        // Search for selected City and convert it into an Entity
-        $partie = $this->em->getRepository('App:Partie')->find($data['partie']);
-
-        $this->addElements($form, $partie);
-    }*/
-
     function onPreSetData(FormEvent $event) {
         $pouvoirPartie = $event->getData();
         dump($pouvoirPartie);
@@ -76,5 +66,10 @@ class PouvoirPartieType extends AbstractType
         $resolver->setDefaults([
             'data_class' => PouvoirPartie::class,
         ]);
+    }
+
+    public function getBlockPrefix()
+    {
+      return '';
     }
 }

@@ -8,6 +8,7 @@ use App\Entity\ActeurPartie;
 use App\Form\PartieType;
 use App\Repository\PartieRepository;
 use App\Repository\ActeurRepository;
+use App\Repository\PouvoirRepository;
 use App\Repository\ActeurPartieRepository;
 use App\Repository\PouvoirPartieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -92,7 +93,8 @@ class PartieController extends BaseController
     public function show(
       Partie $partieCourante,
       PouvoirPartieRepository $pouvoirPartieRepository,
-      ActeurRepository $acteurRepository
+      ActeurRepository $acteurRepository,
+      PouvoirRepository $pouvoirRepository
     ): Response
     {
 
@@ -109,6 +111,10 @@ class PartieController extends BaseController
             'itemOptions' => [],
         ];
 
+        $pouvoirsAppProps = [
+            'itemOptions' => [],
+        ];
+
         foreach ($acteurRepository->findAll() as $acteur) {
             $acteursAppProps['itemOptions'][] = [
                 'id' => $acteur->getId(),
@@ -116,10 +122,18 @@ class PartieController extends BaseController
             ];
         }
 
+        foreach ($pouvoirRepository->findAll() as $pouvoir) {
+            $pouvoirsAppProps['pouvoirOptions'][] = [
+                'id' => $pouvoir->getId(),
+                'text' => $pouvoir->getNom(),
+            ];
+        }
+
         return $this->render('partie/partiePagePrincipale.html.twig', [
           'partieCourante' => $partieCourante,
           'pouvoir_parties' => $pouvoirPartieRepository->findBy(['partie' => $partieCourante]),
           'acteursAppProps' => $acteursAppProps,
+          'pouvoirAppProps' => $pouvoirsAppProps
         ]);
     }
 

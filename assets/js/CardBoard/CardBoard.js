@@ -1,8 +1,9 @@
 import React from 'react';
 import Card from './Card';
 import ActeurCreator from '../Acteur/ActeurCreator';
+import PouvoirCreator from '../Pouvoir/PouvoirCreator';
 import PropTypes from 'prop-types';
-import { Modal, Form, Button, Icon } from 'semantic-ui-react';
+import { Modal} from 'semantic-ui-react';
 
 
 //function et pas class car pas beaucoup de logique à l'intérieur
@@ -11,6 +12,7 @@ export default function CardBoard(props){
   const {
     acteurs,
     onAddActeur,
+    onAddPouvoir,
     onShowModal,
     onCloseModal,
     onDeleteActeur,
@@ -19,7 +21,9 @@ export default function CardBoard(props){
     successMessage,
     newActeurValidationErrorMessage,
     itemOptions,
+    pouvoirOptions,
     showModal,
+    acteurSelect,
   } = props;
 
 
@@ -92,10 +96,23 @@ export default function CardBoard(props){
       </div>
     </div>
 
-    <Modal closeIcon onClose={onCloseModal} open={showModal}>
-      <Modal.Header>My Modal</Modal.Header>
+    <Modal
+      onClose={onCloseModal}
+      open={showModal}
+      style = {{
+        marginTop: 'auto',
+        marginLeft: 'auto',
+        marginRight: 'auto'
+      }}
+    >
+      <Modal.Header>Nouveau pouvoir</Modal.Header>
       <Modal.Content>
-        <span>TEST</span>
+      <PouvoirCreator
+        onAddPouvoir={onAddPouvoir}
+        validationErrorMessage={newActeurValidationErrorMessage}
+        pouvoirOptions={pouvoirOptions}
+        acteurSelect={acteurSelect}
+      />
       </Modal.Content>
     </Modal>
 
@@ -105,6 +122,7 @@ export default function CardBoard(props){
 
 CardBoard.propTypes = {
   onAddActeur: PropTypes.func.isRequired,
+  onAddPouvoir: PropTypes.func.isRequired,
   onShowModal: PropTypes.func.isRequired,
   onCloseModal: PropTypes.func.isRequired,
   onDeleteActeur: PropTypes.func.isRequired,
@@ -115,5 +133,7 @@ CardBoard.propTypes = {
   successMessage: PropTypes.string.isRequired,
   newActeurValidationErrorMessage: PropTypes.string.isRequired,
   itemOptions: PropTypes.array.isRequired,
+  pouvoirOptions: PropTypes.array.isRequired,
+  acteurSelect: PropTypes.number.isRequired,
 
 }
