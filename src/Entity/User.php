@@ -49,9 +49,9 @@ class User implements UserInterface, \Serializable
     private $email;
 
       /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="user", orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="Image", mappedBy="user", orphanRemoval=true)
      */
-    private $images;
+    private $image;
 
     /**
      * @ORM\Column(type="array")
@@ -234,22 +234,13 @@ class User implements UserInterface, \Serializable
     }
 
       /**
-     * @return Collection|Image[]
+     * @return Image
      */
-    public function getImages(): Collection
+    public function getImage()
     {
-        return $this->images;
+        return $this->image;
     }
 
-    public function addImage(Image $image): self
-    {
-        if (!$this->images->contains($image)) {
-            $this->images[] = $image;
-            $image->setUser($this);
-        }
-
-        return $this;
-    }
 
     public function removeImage(Image $image): self
     {
@@ -259,6 +250,19 @@ class User implements UserInterface, \Serializable
             if ($image->getUser() === $this) {
                 $image->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function setImage(?Image $image): self
+    {
+        $this->image = $image;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = $image === null ? null : $this;
+        if ($newUser !== $image->getUser()) {
+            $image->setUser($newUser);
         }
 
         return $this;

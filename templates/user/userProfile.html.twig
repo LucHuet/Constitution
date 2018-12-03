@@ -4,21 +4,20 @@
 
 {% block body %}
   <div class="user">
-
-    <h2>Votre profile</h2>
-
-    <h3>Nom d'utilisateur :
+    <div class="ui centered card">
       {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-
-        {{ app.user.username }}
-
-      {% endif %}</h3>
-
-    <h3>Photo de profile</h3>
-
-    {% for image in user.images %}
-    <img src="{{ vich_uploader_asset(image, 'imageFile') }}">
-    {% endfor %}
+        <div class="image">
+            {% if user.image is not null %}
+              <img src="{{ vich_uploader_asset(user.image, 'imageFile') }}">
+            {% endif %}
+        </div>
+        <div class="content">
+          <a class="center aligned header">
+            {{ app.user.username }}
+          </a>
+        </div>
+        {% endif %}
+    </div>
 
     {{ form_start(form) }}
       {{ form_widget(form) }}

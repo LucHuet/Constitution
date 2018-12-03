@@ -26,61 +26,60 @@
     <h1 class="ui header">Bonjour {{ app.user.username }}</h1>
 
     <div class="ui right aligned grid">
-      <div class="left floated right aligned six wide column">
-        <div class="ui segment">
-          <h2 class="ui header column">
-            <i class="address card icon"></i>
-            <div class="content">
-              Mon compte
-              <div class="sub header">
-                <a class="menu-sous-item" href="{{ path('user_profile') }}">Modifier mon profile</a>
-              </div>
-            </div>
-          </h2>
-        </div>
-      </div>
 
-      <div class="right floated left aligned six wide column">
-        <div class="ui segment">
-          <h2 class="ui header column">
-            <i class="eye icon"></i>
+      <div class="left floated right aligned six wide column">
+        <a class="menu-sous-item" href="{{ path('user_profile') }}">
+          <div class="ui segment">
+            <h2 class="ui header column">
+              <i class="address card icon"></i>
               <div class="content">
-                Mes parties
-                <div class="sub header">
-                  <a class="menu-sous-item" href="{{ path('partie_liste') }}">Voir mes parties</a>
-                </div>
+                Voir mon profile
               </div>
             </h2>
           </div>
+        </a>
+      </div>
+
+
+      <div class="right floated left aligned six wide column">
+        <a class="menu-sous-item" href="{{ path('partie_liste') }}">
+          <div class="ui segment">
+            <h2 class="ui header column">
+              <i class="edit icon"></i>
+                <div class="content">
+                  Voir mes parties
+                </div>
+              </h2>
+            </div>
+          </a>
         </div>
       </div>
 
       <div class="ui right aligned grid">
         <div class="left floated right aligned six wide column">
-          <div class="ui segment">
-            <h2 class="ui header column">
-              <i class="edit icon"></i>
-              <div class="content">
-                Mes parties
-                <div class="sub header">
-                  <a class="menu-sous-item" href="{{ path('partie_new') }}">Créer une nouvelle partie</a></div>
-              </div>
-            </h2>
-          </div>
-        </div>
-
-        <div class="right floated left aligned six wide column">
-          <div class="ui segment">
-            <h2 class="ui header column">
-              <i class="toggle off icon"></i>
+          <a class="menu-sous-item" href="{{ path('partie_new') }}">
+            <div class="ui segment">
+              <h2 class="ui header column">
+                <i class="plus icon"></i>
                 <div class="content">
-                  Déconnexion
-                  <div class="sub header">
-                    <a class="menu-sous-item" href="{{ path('logout') }}">Se déconnecter</a>
-                  </div>
+                  Créer une partie
                 </div>
               </h2>
             </div>
+          </a>
+        </div>
+
+        <div class="right floated left aligned six wide column">
+          <a class="menu-sous-item" href="{{ path('logout') }}">
+            <div class="ui segment">
+              <h2 class="ui header column">
+                <i class="sign-out icon"></i>
+                  <div class="content">
+                    Se déconnecter
+                  </div>
+                </h2>
+              </div>
+            </a>
           </div>
         </div>
     {% endif %}

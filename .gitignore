@@ -17,6 +17,7 @@
 /node_modules/
 /yarn.lock/
 /public/build/
+/public/profile/
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
