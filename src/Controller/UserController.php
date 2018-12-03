@@ -22,6 +22,10 @@ class UserController extends AbstractController
         ->getRepository(Image::class)
         ->findOneByUser($user);
 
+    if($image == null){
+      $image = new Image();
+    }
+
     $form = $this->createForm(ImageType::class, $image);
     $form->handleRequest($request);
 
