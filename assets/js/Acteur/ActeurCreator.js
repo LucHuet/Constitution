@@ -54,9 +54,12 @@ export default class ActeurCreator extends Component{
 
   }
 
+
   render(){
     const { nombreActeurError } = this.state;
     const { validationErrorMessage, itemOptions } = this.props;
+
+
     return (
       <div>
           <form onSubmit={this.handleFormSubmit}>

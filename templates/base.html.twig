@@ -7,61 +7,71 @@
 
     {% block stylesheets %}
       <link rel="stylesheet" href="{{asset('build/layout.css')}}">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"/>
     {% endblock %}
 
 </head>
 <body>
 
 {% block header %}
-  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-          <div class="navbar-header">
-              <a class="navbar-brand" href="" data-toggle="tooltip" data-placement="bottom" title="Créez votre Constitution">Constitution</a>
-          </div>
-          <div class="navbar-nav">
-            {% if app.user %}
-               {% if app.session.get('partieCourante') is not null %}
-                   <a class="navbar-brand" href="{{ path('partie_show', {'id':app.session.get('partieCourante').id}) }}">Partie en cours : {{app.session.get('partieCourante').nom}}</a>
-                   <a class="navbar-brand" href="{{ path('partie_liste') }}">Changer de partie</a>
-               {% endif %}
-            {% endif %}
-            {% if not app.user %}
-               <a href="{{ path('login') }}"> <class="button">Login</a>
-            {% endif %}
-          </div>
-          <div class="navbar-collapse collapse">
-              {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                  <ul class="nav navbar-nav navbar-right">
-                      <li class="drop-down">
-                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="fa fa-user"></span> <strong>{{ app.user.username }}</strong> <span class="caret"></span></a>
-                          <ul class="dropdown-menu">
-                              <li>
-                                  <a href="{{ path('partie_new') }}">
-                                      <span class="fa fa-child"></span>
-                                      Nouvelle partie
-                              </li>
-                              <li>
-                                  <a href="{{ path('logout') }}">
-                                      <span class="fa fa-sign-out"></span>
-                                      Se déconnecter
-                                  </a>
-                              </li>
-                          </ul>
-                      </li>
-                  </ul>
-              {% else %}
-                  <ul class="nav navbar-nav navbar-right">
-                      <li>
-                          <a href="{{ path('user_registration') }}">
-                              S'enregistrer
-                          </a>
-                      </li>
-                  </ul>
-              {% endif %}
-
-          </div>
-          <!--/.navbar-collapse -->
+  <div class="ui stackable top fixed menu">
+      <div class="item menu-logo">
+          <a href="{{ path('index') }}" data-toggle="tooltip" data-placement="bottom" title="Créez votre Constitution">Constitution</a>
       </div>
+        {% if app.user %}
+           {% if app.session.get('partieCourante') is not null %}
+           <div class="item">
+               <a href="{{ path('partie_show', {'id':app.session.get('partieCourante').id}) }}">Partie en cours : {{app.session.get('partieCourante').nom}}</a>
+           </div>
+           <div class="item">
+               <a href="{{ path('partie_liste') }}">Changer de partie</a>
+           </div>
+           {% endif %}
+        {% endif %}
+
+
+          {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+          <div class="right menu">
+                <div class="ui simple dropdown item">
+                  <strong>{{ app.user.username }}</strong>
+                  <i class="dropdown icon"></i>
+                  <div class="menu">
+                    <div class="item">
+                      <a href="{{ path('partie_new') }}">
+                        <i class="icon plus"></i>
+                        Nouvelle partie</div>
+                    <div class="item"><a href="{{ path('logout') }}">
+                        <i class="icon sign-out"></i>
+                        Se déconnecter
+                    </a></div>
+
+                  </div>
+                </div>
+
+            </div>
+          {% else %}
+          <div class="right menu">
+            {% if not app.user %}
+              <div class="item">
+                <a href="{{ path('login') }}">
+                  <i class="icon sign-in"></i>
+                  Login
+                </a>
+              </div>
+            {% endif %}
+            <div class="item">
+              <a href="{{ path('user_registration') }}">
+                  <i class="icon edit"></i>
+                  S'enregistrer
+              </a>
+              </div>
+              </div>
+
+          {% endif %}
+
+      </div>
+    </div>
+      <!--/.navbar-collapse -->
   </div>
 {% endblock %}
 
@@ -69,9 +79,6 @@
   <div class="row content">
     {% block leftmenu %}
       <div class="col-sm-2 sidenav">
-        <p><a href="#">Link</a></p>
-        <p><a href="#">Link</a></p>
-        <p><a href="#">Link</a></p>
       </div>
     {% endblock %}
     {% for type, messages in app.session.flashbag.all() %}
@@ -87,12 +94,6 @@
     </div>
     {% block rightmenu %}
     <div class="col-sm-2 sidenav">
-      <div class="well">
-        <p>ADS</p>
-      </div>
-      <div class="well">
-        <p>ADS</p>
-      </div>
     </div>
     {% endblock %}
   </div>

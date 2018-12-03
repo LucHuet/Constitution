@@ -1,11 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Partie{% endblock %}
+{% block title %}Nouvelle partie{% endblock %}
 
 {% block body %}
-    <h1>Create new Partie</h1>
-
+<div class="ui raised very padded text container segment">
+  <h2 class="ui header">Créer une nouvelle partie</h2>
+  <div class="ui form">
+    <div class="fields">
     {{ include('partie/_form.html.twig') }}
-
-    <a href="{{ path('partie_liste') }}">back to list</a>
+  </div>
+</div>
+</div>
 {% endblock %}

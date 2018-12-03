@@ -1,4 +1,19 @@
 {{ form_start(form) }}
+  <div class="field">
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+  </div>
+  <br>
+  <div class="row">
+    <button type="submit" class="ui basic button">
+      <i class="icon save"></i>
+      Enregistrer
+    </button>
+    <a href="{{ path('partie_liste') }}">
+      <button class="ui basic button">
+        <i class="icon angle left"></i>
+        Liste des parties
+      </button>
+    </a>
+  </div>
+
 {{ form_end(form) }}
