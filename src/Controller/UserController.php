@@ -17,22 +17,22 @@ class UserController extends AbstractController
   public function profile(Request $request){
 
     $user = $this->getUser();
-    dump($user->getImage());
 
-        $image = new Image();
-        $form = $this->createForm(ImageType::class, $image);
-        $form->handleRequest($request);
+    $image= $this->getDoctrine()
+        ->getRepository(Image::class)
+        ->findOneByUser($user);
 
-        if($form->isSubmitted() && $form->isValid()) {
-          $image->setUser($user);
-          dump($image);
-          //dump($user);
-          $em = $this->getDoctrine()->getManager();
-          $em->persist($image);
-          $em->flush();
+    $form = $this->createForm(ImageType::class, $image);
+    $form->handleRequest($request);
 
-          return $this->redirectToRoute('user_profile');
-        }
+    if($form->isSubmitted() && $form->isValid()) {
+      $image->setUser($user);
+      $em = $this->getDoctrine()->getManager();
+      $em->persist($image);
+      $em->flush();
+
+      return $this->redirectToRoute('user_profile');
+    }
 
 
     return $this->render('user/userProfile.html.twig', array("user"=>$user, 'form' => $form->createView()));

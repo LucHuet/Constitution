@@ -254,4 +254,17 @@ class User implements UserInterface, \Serializable
 
         return $this;
     }
+
+    public function setImage(?Image $image): self
+    {
+        $this->image = $image;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = $image === null ? null : $this;
+        if ($newUser !== $image->getUser()) {
+            $image->setUser($newUser);
+        }
+
+        return $this;
+    }
 }
