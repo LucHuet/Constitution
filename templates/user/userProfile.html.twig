@@ -4,6 +4,7 @@
 
 {% block body %}
   <div class="user">
+    <h2 class="ui header centered">Votre profil</h2>
     <div class="ui centered card">
       {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
         <div class="image">
@@ -17,14 +18,14 @@
           </a>
         </div>
         {% endif %}
+        <div class="extra content">
+          <a href="{{ path('update_profile') }}">
+            <span class="right floated cogs">
+              <i class="cogs icon"></i>
+              Modifier le profil
+            </span>
+          </a>
+        </div>
     </div>
-
-    {{ form_start(form) }}
-      {{ form_widget(form) }}
-      <button class="btn">{{ button_label|default('Save') }}</button>
-    {{ form_end(form) }}
-
-
-
   </div>
 {% endblock %}

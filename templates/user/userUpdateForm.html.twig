@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier votre profil{% endblock %}
+
+{% block body %}
+
+  <div class="ui raised very padded text container segment">
+    <h2 class="ui header">Modifier mon profil</h2><br>
+    <div class="ui form">
+      <div class="fields">
+        {{ form_start(form) }}
+        <div class="field">
+            {{ form_row(form.username) }}
+        </div>
+        <div class="field">
+          {{ form_widget(form.image) }}
+        </div>
+          <br>
+            <button type="submit" class="ui basic button">
+              <i class="icon edit"></i>
+              Enregistrer
+            </button>
+          {{ form_end(form) }}
+        </div>
+      </div>
+  </div>
+
+{% endblock %}

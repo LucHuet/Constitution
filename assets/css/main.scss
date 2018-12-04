@@ -10,6 +10,7 @@ body{
 
 h1.ui.header{
   color: #404040;
+  margin-bottom: 25px!important;
 }
 
 h2.ui.header{
@@ -27,10 +28,6 @@ img {
 
 .index-page{
   text-align: center;
-}
-
-h1.ui.header{
-  margin-bottom: 25px!important;
 }
 
 .ui.header:first-child, .ui.header:last-child{
