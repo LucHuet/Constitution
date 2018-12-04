@@ -92,18 +92,6 @@ class Pouvoir
         return $this;
     }
 
-    public function getIsControle(): ?bool
-    {
-        return $this->isControle;
-    }
-
-    public function setIsControle(bool $isControle): self
-    {
-        $this->isControle = $isControle;
-
-        return $this;
-    }
-
     public function getNom(): ?string
     {
         return $this->nom;

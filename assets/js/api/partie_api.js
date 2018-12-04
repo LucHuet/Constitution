@@ -49,3 +49,10 @@ export function createActeur(acteur){
     body: JSON.stringify(acteur),
   })
 }
+
+export function createPouvoir(pouvoir){
+  return fetchJson('http://localhost:8000/pouvoir/', {
+    method: 'POST',
+    body: JSON.stringify(pouvoir),
+  })
+}

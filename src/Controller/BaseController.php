@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Api\ActeurApiModel;
+use App\Api\PouvoirPartieApiModel;
 use App\Entity\ActeurPartie;
+use App\Entity\PouvoirPartie;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,6 +20,7 @@ class BaseController extends Controller
      */
     protected function createApiResponse($data, $statusCode = 200)
     {
+      dump($data);
         $json = $this->get('serializer')
             ->serialize($data, 'json');
 
@@ -77,6 +80,22 @@ class BaseController extends Controller
         $selfUrl = $this->generateUrl(
             'acteur_partie',
             ['id' => $acteurPartie->getId()]
+        );
+        $model->addLink('_self', $selfUrl);
+
+        return $model;
+    }
+
+    protected function createPouvoirPartieApiModel(PouvoirPartie $pouvoirPartie)
+    {
+        $model = new PouvoirPartieApiModel();
+        $model->id = $pouvoirPartie->getId();
+        $model->nom = $pouvoirPartie->getNom();
+        $model->pouvoir = $pouvoirPartie->getPouvoir()->getId();
+
+        $selfUrl = $this->generateUrl(
+            'pouvoir_partie_show',
+            ['id' => $pouvoirPartie->getId()]
         );
         $model->addLink('_self', $selfUrl);
 

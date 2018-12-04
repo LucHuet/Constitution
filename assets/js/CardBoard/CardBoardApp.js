@@ -3,7 +3,7 @@ import CardBoard from './CardBoard';
 //permet de définit le type de props
 import PropTypes from 'prop-types';
 import interact from 'interactjs';
-import { getActeurs, deleteActeur, createActeur } from '../api/acteur_api.js';
+import { getActeurs, deleteActeur, createActeur, createPouvoir } from '../api/partie_api.js';
 import Sortable from './Sortable.js';
 
 //le mot clé export permet de dire qu'on pourra utiliser
@@ -147,9 +147,10 @@ export default class CardBoardApp extends Component {
 
       const newPouvoir = {
         nom: nom,
-        typeActeur : typePouvoir,
-        acteur: acteurSelect
+        pouvoir : typePouvoir,
+        acteurPossedant: acteurSelect
       };
+
       console.log(newPouvoir);
 
       /*this.setState({
@@ -159,32 +160,17 @@ export default class CardBoardApp extends Component {
 
       const newState = {
         isSavingNewActeur: false,
-      }
+      }*/
 
-      createActeur(newActeur)
+      createPouvoir(newPouvoir)
       //l'ajout n'as pas d'erreur
-        .then(acteur => {
-          //prevstate est la liste des acteurs originale
-          this.setState(prevState =>{
-            //déclaration d'une nouvelle liste d'acteursJson
-            //qui est la liste de base + le nouvel acteur
-            const newActeurs = [...prevState.acteurs, acteur];
-
-            return {
-              //on remet isSavingNewActeur à false
-              ...newState,
-              acteurs: newActeurs,
-              newActeurValidationErrorMessage: '',
-              showModal: false
-            };
-
-          });
-          this.setSuccessMessage('Acteur enregistré !');
-          this.state.sortable.setPositions(true);
-
+        .then(pouvoir => {
+          console.log("create Pouvoir : ", pouvoir);
+          this.setSuccessMessage('Pouvoir enregistré !');
+          this.setState({showModal: false});
         })
         //il y a une erreur dans l'ajout
-        .catch(error=> {
+        .catch(error=> {/*
           error.response.json().then(errorsData => {
             const errors = errorsData.errors;
             const firstError = errors[Object.keys(errors)[0]];
@@ -193,8 +179,8 @@ export default class CardBoardApp extends Component {
               ...newState,
               newActeurValidationErrorMessage: firstError,
             });
-          })
-        })*/
+          })*/
+        })
   }
 
   handleShowModal(acteurId){
