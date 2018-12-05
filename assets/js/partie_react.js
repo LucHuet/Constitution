@@ -3,10 +3,10 @@ import React from 'react';
 import { render } from 'react-dom';
 import CardBoardApp from './CardBoard/CardBoardApp';
 
+console.log({...window.PARTIE_APP_PROPS});
 render(
   <CardBoardApp
-    {...window.ACTEUR_APP_PROPS}
-    {...window.POUVOIR_APP_PROPS}
+    {...window.PARTIE_APP_PROPS}
   />,
   document.getElementById('cardBoard-app')
 );

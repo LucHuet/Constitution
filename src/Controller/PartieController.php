@@ -107,23 +107,20 @@ class PartieController extends BaseController
           return $this->redirectToRoute($this->checkStep->checkPartie($partieCourante));
         }
 
-        $acteursAppProps = [
+        $partieAppProps = [
             'itemOptions' => [],
-        ];
-
-        $pouvoirsAppProps = [
-            'itemOptions' => [],
+            'pouvoirOptions' => [],
         ];
 
         foreach ($acteurRepository->findAll() as $acteur) {
-            $acteursAppProps['itemOptions'][] = [
+            $partieAppProps['itemOptions'][] = [
                 'id' => $acteur->getId(),
                 'text' => $acteur->getType(),
             ];
         }
 
         foreach ($pouvoirRepository->findAll() as $pouvoir) {
-            $pouvoirsAppProps['pouvoirOptions'][] = [
+            $partieAppProps['pouvoirOptions'][] = [
                 'id' => $pouvoir->getId(),
                 'text' => $pouvoir->getNom(),
             ];
@@ -132,8 +129,7 @@ class PartieController extends BaseController
         return $this->render('partie/partiePagePrincipale.html.twig', [
           'partieCourante' => $partieCourante,
           'pouvoir_parties' => $pouvoirPartieRepository->findBy(['partie' => $partieCourante]),
-          'acteursAppProps' => $acteursAppProps,
-          'pouvoirAppProps' => $pouvoirsAppProps
+          'partieAppProps' => $partieAppProps
         ]);
     }
 

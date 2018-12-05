@@ -24,6 +24,7 @@ export default class CardBoardApp extends Component {
       newActeurValidationErrorMessage: '',
       showModal:false,
       acteurSelect:0,
+      modalType:"",
       //sorter
       item_width: 0,
       item_height: 0,
@@ -165,7 +166,6 @@ export default class CardBoardApp extends Component {
       createPouvoir(newPouvoir)
       //l'ajout n'as pas d'erreur
         .then(pouvoir => {
-          console.log("create Pouvoir : ", pouvoir);
           this.setSuccessMessage('Pouvoir enregistré !');
           this.setState({showModal: false});
         })
@@ -183,9 +183,10 @@ export default class CardBoardApp extends Component {
         })
   }
 
-  handleShowModal(acteurId){
+  handleShowModal(modalType, acteurId=0){
     this.setState({
       showModal: true,
+      modalType:modalType,
       acteurSelect:acteurId
     });
   }
@@ -193,6 +194,7 @@ export default class CardBoardApp extends Component {
   handleCloseModal(acteurId){
     this.setState({
       showModal: false,
+      modalType:"",
       acteurSelect:0
     });
   }
