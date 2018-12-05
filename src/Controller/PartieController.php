@@ -9,6 +9,7 @@ use App\Form\PartieType;
 use App\Repository\PartieRepository;
 use App\Repository\ActeurRepository;
 use App\Repository\PouvoirRepository;
+use App\Repository\DesignationRepository;
 use App\Repository\ActeurPartieRepository;
 use App\Repository\PouvoirPartieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -94,6 +95,7 @@ class PartieController extends BaseController
       Partie $partieCourante,
       PouvoirPartieRepository $pouvoirPartieRepository,
       ActeurRepository $acteurRepository,
+      DesignationRepository $designationRepository,
       PouvoirRepository $pouvoirRepository
     ): Response
     {
@@ -110,6 +112,8 @@ class PartieController extends BaseController
         $partieAppProps = [
             'itemOptions' => [],
             'pouvoirOptions' => [],
+            'designationOptions' => [],
+            'acteursPartiesOptions' => [],
         ];
 
         foreach ($acteurRepository->findAll() as $acteur) {
@@ -125,6 +129,22 @@ class PartieController extends BaseController
                 'text' => $pouvoir->getNom(),
             ];
         }
+
+        foreach ($partieCourante->getActeurParties() as $acteursPartie) {
+            $partieAppProps['acteursPartiesOptions'][] = [
+                'id' => $acteursPartie->getId(),
+                'text' => $acteursPartie->getNom(),
+            ];
+        }
+
+        foreach ($designationRepository->findAll() as $designation) {
+            $partieAppProps['designationOptions'][] = [
+                'id' => $designation->getId(),
+                'text' => $designation->getNom(),
+            ];
+        }
+
+
 
         return $this->render('partie/partiePagePrincipale.html.twig', [
           'partieCourante' => $partieCourante,

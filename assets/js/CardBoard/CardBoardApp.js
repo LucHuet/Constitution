@@ -3,7 +3,7 @@ import CardBoard from './CardBoard';
 //permet de définit le type de props
 import PropTypes from 'prop-types';
 import interact from 'interactjs';
-import { getActeurs, deleteActeur, createActeur, createPouvoir } from '../api/partie_api.js';
+import { getActeurs, deleteActeur, createActeur, createPouvoir, createDesignation } from '../api/partie_api.js';
 import Sortable from './Sortable.js';
 
 //le mot clé export permet de dire qu'on pourra utiliser
@@ -45,6 +45,7 @@ export default class CardBoardApp extends Component {
     //et pas à la méthode.
     this.handleAddActeur = this.handleAddActeur.bind(this);
     this.handleAddPouvoir = this.handleAddPouvoir.bind(this);
+    this.handleAddDesignation = this.handleAddDesignation.bind(this);
     this.handleShowModal = this.handleShowModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handleDeleteActeur = this.handleDeleteActeur.bind(this);
@@ -154,32 +155,30 @@ export default class CardBoardApp extends Component {
 
       console.log(newPouvoir);
 
-      /*this.setState({
-        isSavingNewActeur: true
-      });
-
-
-      const newState = {
-        isSavingNewActeur: false,
-      }*/
-
       createPouvoir(newPouvoir)
       //l'ajout n'as pas d'erreur
         .then(pouvoir => {
           this.setSuccessMessage('Pouvoir enregistré !');
           this.setState({showModal: false});
         })
-        //il y a une erreur dans l'ajout
-        .catch(error=> {/*
-          error.response.json().then(errorsData => {
-            const errors = errorsData.errors;
-            const firstError = errors[Object.keys(errors)[0]];
+  }
 
-            this.setState({
-              ...newState,
-              newActeurValidationErrorMessage: firstError,
-            });
-          })*/
+  handleAddDesignation(nom, typeDesignation, acteurDesigne, acteurSelect){
+
+      const newDesignation = {
+        nom: nom,
+        designation : typeDesignation,
+        acteurDesigne : acteurDesigne,
+        acteurDesignant: acteurSelect
+      };
+
+      console.log(newDesignation);
+
+      createDesignation(newDesignation)
+      //l'ajout n'as pas d'erreur
+        .then(pouvoir => {
+          this.setSuccessMessage('Désignation enregistréé !');
+          this.setState({showModal: false});
         })
   }
 
@@ -238,6 +237,7 @@ export default class CardBoardApp extends Component {
         {...this.state}
         onAddActeur={this.handleAddActeur}
         onAddPouvoir={this.handleAddPouvoir}
+        onAddDesignation={this.handleAddDesignation}
         onShowModal={this.handleShowModal}
         onCloseModal={this.handleCloseModal}
         onDeleteActeur = {this.handleDeleteActeur}
@@ -250,9 +250,13 @@ CardBoardApp.propTypes = {
   //permet de mettre par defaut les type de items option de props
   itemOptions:PropTypes.array,
   pouvoirOptions:PropTypes.array,
+  designationOptions:PropTypes.array,
+  acteursPartiesOptions:PropTypes.array,
 };
 
 CardBoardApp.defaultProps = {
   itemOptions:[],
   pouvoirOptions:[],
+  designationOptions:[],
+  acteursPartiesOptions:[],
 };

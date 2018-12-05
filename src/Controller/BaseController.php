@@ -6,6 +6,7 @@ use App\Api\ActeurApiModel;
 use App\Api\PouvoirPartieApiModel;
 use App\Entity\ActeurPartie;
 use App\Entity\PouvoirPartie;
+use App\Entity\DesignationPartie;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -96,6 +97,22 @@ class BaseController extends Controller
         $selfUrl = $this->generateUrl(
             'pouvoir_partie_show',
             ['id' => $pouvoirPartie->getId()]
+        );
+        $model->addLink('_self', $selfUrl);
+
+        return $model;
+    }
+
+    protected function createDesignationPartieApiModel(DesignationPartie $designationPartie)
+    {
+        $model = new PouvoirPartieApiModel();
+        $model->id = $designationPartie->getId();
+        $model->nom = $designationPartie->getNom();
+        $model->designation = $designationPartie->getDesignation()->getId();
+
+        $selfUrl = $this->generateUrl(
+            'designation_partie_show',
+            ['id' => $designationPartie->getId()]
         );
         $model->addLink('_self', $selfUrl);
 

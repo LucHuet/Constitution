@@ -56,3 +56,10 @@ export function createPouvoir(pouvoir){
     body: JSON.stringify(pouvoir),
   })
 }
+
+export function createDesignation(designation){
+  return fetchJson('http://localhost:8000/designation/', {
+    method: 'POST',
+    body: JSON.stringify(designation),
+  })
+}

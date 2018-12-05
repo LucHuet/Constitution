@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
-class ActeurPartieDataTransformer implements DataTransformerInterface
+class ActeurPartieDataArrayTransformer implements DataTransformerInterface
 {
     private $entityManager;
 
@@ -62,6 +62,6 @@ class ActeurPartieDataTransformer implements DataTransformerInterface
             ));
         }
 
-        return $acteurPartie;
+        return [$acteurPartie];
     }
 }

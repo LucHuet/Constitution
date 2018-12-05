@@ -15,13 +15,13 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use App\Form\DataTransformer\ActeurPartieDataTransformer;
+use App\Form\DataTransformer\ActeurPartieDataArrayTransformer;
 
 class PouvoirPartieType extends AbstractType
 {
     private $transformer;
 
-    public function __construct(ActeurPartieDataTransformer $transformer)
+    public function __construct(ActeurPartieDataArrayTransformer $transformer)
     {
         $this->transformer = $transformer;
     }

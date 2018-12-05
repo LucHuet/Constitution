@@ -10,13 +10,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use App\Entity\Partie;
 use App\Service\CheckStepService;
 
 /**
- * @Route("/designation/partie")
+ * @Route("/designation")
  */
-class DesignationPartieController extends AbstractController
+class DesignationPartieController extends BaseController
 {
     /**
      * @Route("/", name="designation_partie_index", methods="GET")
@@ -33,6 +34,61 @@ class DesignationPartieController extends AbstractController
         $partiCourante = $session->get('partieCourante');
 
         return $this->render('designation_partie/index.html.twig', ['designation_parties' => $designationPartieRepository->findBy(['partie' => $partiCourante])]);
+    }
+
+    /**
+     * @Route("/", name="designation_partie_new_api", methods="POST")
+     * @Method("POST")
+     */
+    public function createDesignationPartie(Request $request): Response
+    {
+
+        //recupération de la partie courante
+        $session = new Session();
+        $partieCourante = $session->get('partieCourante');
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+
+
+        $data = json_decode($request->getContent(), true);
+        if ($data === null) {
+            throw new BadRequestHttpException('Invalid JSON');
+        }
+
+
+        $form = $this->createForm(DesignationPartieType::class, null, [
+          'csrf_protection' => false
+        ]);
+
+        $form->submit($data, false);
+        dump($form->getData());
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromForm($form);
+
+            return $this->createApiResponse([
+                'errors' => $errors
+            ], 400);
+        }
+
+        /** @var PouvoirPartie $pouvoirPartie */
+        $designationPartie = $form->getData();
+        $em = $this->getDoctrine()->getManager();
+        $partieCourante = $em->merge($partieCourante);
+        $designationPartie->setPartie($partieCourante);
+        $em->persist($designationPartie);
+        $em->flush();
+
+        $apiModel = $this->createDesignationPartieApiModel($designationPartie);
+
+        $response = $this->createApiResponse($apiModel);
+
+        $response->headers->set(
+            'Location',
+            $this->generateUrl('pouvoir_partie_show', ['id' => $designationPartie->getId()])
+        );
+
+        return $response;
+
     }
 
     /**
@@ -110,7 +166,7 @@ class DesignationPartieController extends AbstractController
     {
       if($this->checkStep->checkDesignation($designationPartie) != null){
         return $this->redirectToRoute($this->checkStep->checkDesignation($designationPartie));
-      }           
+      }
         $session = new Session();
         $partieCourante = $session->get('partieCourante');
         if ($this->isCsrfTokenValid('delete'.$designationPartie->getId(), $request->request->get('_token'))) {

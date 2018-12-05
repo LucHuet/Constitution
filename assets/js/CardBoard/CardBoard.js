@@ -2,6 +2,7 @@ import React from 'react';
 import Card from './Card';
 import ActeurCreator from '../Acteur/ActeurCreator';
 import PouvoirCreator from '../Pouvoir/PouvoirCreator';
+import DesignationCreator from '../Designation/DesignationCreator';
 import PropTypes from 'prop-types';
 import { Modal, Button, Icon} from 'semantic-ui-react';
 
@@ -13,6 +14,7 @@ export default function CardBoard(props){
     acteurs,
     onAddActeur,
     onAddPouvoir,
+    onAddDesignation,
     onShowModal,
     onCloseModal,
     onDeleteActeur,
@@ -22,6 +24,8 @@ export default function CardBoard(props){
     newActeurValidationErrorMessage,
     itemOptions,
     pouvoirOptions,
+    designationOptions,
+    acteursPartiesOptions,
     showModal,
     modalType,
     acteurSelect,
@@ -56,7 +60,13 @@ export default function CardBoard(props){
       modalContent = "nouveau contrôle";
       break;
     case 'designation':
-      modalContent = "nouvelle désignation";
+    modalContent =       <DesignationCreator
+            onAddDesignation={onAddDesignation}
+            validationErrorMessage={newActeurValidationErrorMessage}
+            designationOptions={designationOptions}
+            acteursPartiesOptions={acteursPartiesOptions}
+            acteurSelect={acteurSelect}
+          /> ;
       break;
   }
 
@@ -120,6 +130,7 @@ export default function CardBoard(props){
 CardBoard.propTypes = {
   onAddActeur: PropTypes.func.isRequired,
   onAddPouvoir: PropTypes.func.isRequired,
+  onAddDesignation: PropTypes.func.isRequired,
   onShowModal: PropTypes.func.isRequired,
   onCloseModal: PropTypes.func.isRequired,
   onDeleteActeur: PropTypes.func.isRequired,
@@ -131,6 +142,8 @@ CardBoard.propTypes = {
   newActeurValidationErrorMessage: PropTypes.string.isRequired,
   itemOptions: PropTypes.array.isRequired,
   pouvoirOptions: PropTypes.array.isRequired,
+  designationOptions: PropTypes.array.isRequired,
+  acteursPartiesOptions: PropTypes.array.isRequired,
   acteurSelect: PropTypes.number.isRequired,
   modalType: PropTypes.string.isRequired,
 

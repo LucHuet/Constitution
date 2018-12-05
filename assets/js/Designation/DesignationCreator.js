@@ -48,7 +48,7 @@ export default class DesignationCreator extends Component{
 
   render(){
 
-    const { validationErrorMessage, designationOptions,  acteursDesignesOptions} = this.props;
+    const { validationErrorMessage, designationOptions,  acteursPartiesOptions} = this.props;
 
 
     return (
@@ -69,7 +69,7 @@ export default class DesignationCreator extends Component{
           <Form.Field>
             <label htmlFor="acteurDesigne" className="required">Acteur designe</label>
             <select id="acteurDesigne" ref={this.acteurDesigne} required="required">
-              {acteursDesignesOptions.map(acteurDesigne => {
+              {acteursPartiesOptions.map(acteurDesigne => {
                 return <option value={acteurDesigne.id} key={acteurDesigne.id}>{acteurDesigne.text}</option>
               } )}
             </select>
@@ -87,6 +87,6 @@ DesignationCreator.propTypes = {
   onAddDesignation: PropTypes.func.isRequired,
   validationErrorMessage: PropTypes.string.isRequired,
   designationOptions: PropTypes.array.isRequired,
-  acteursDesignesOptions: PropTypes.array.isRequired,
+  acteursPartiesOptions: PropTypes.array.isRequired,
   acteurSelect: PropTypes.number.isRequired,
 };
