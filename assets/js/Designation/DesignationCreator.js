@@ -15,8 +15,9 @@ export default class DesignationCreator extends Component{
 
     //ref permettent d'accéder à des élements du dom
     //permet de facilement récupérer les valeurs des variables
-    this.nomPouvoir = React.createRef();
-    this.typePouvoir = React.createRef();
+    this.nomDesignation = React.createRef();
+    this.typeDesignation = React.createRef();
+    this.acteurDesigne = React.createRef();
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
@@ -25,62 +26,67 @@ export default class DesignationCreator extends Component{
     event.preventDefault();
 
     //fait appel au props de l'objet
-    const {onAddPouvoir, acteurSelect} = this.props;
+    const {onAddDesignation, acteurSelect} = this.props;
 
-    const nomPouvoir = this.nomPouvoir.current;
-    const typePouvoir = this.typePouvoir.current;
+    const nomDesignation = this.nomDesignation.current;
+    const typeDesignation = this.typeDesignation.current;
+    const acteurDesigne = this.acteurDesigne.current;
 
-    onAddPouvoir(
-      nomPouvoir.value,
-      typePouvoir.options[typePouvoir.selectedIndex].value,
+    onAddDesignation(
+      nomDesignation.value,
+      typeDesignation.options[typeDesignation.selectedIndex].value,
+      acteurDesigne.options[acteurDesigne.selectedIndex].value,
       acteurSelect
     );
 
     //réinitialisation des données
-    nomPouvoir.value = '';
-    typePouvoir.selectedIndex = 0;
+    nomDesignation.value = '';
+    typeDesignation.selectedIndex = 0;
+    acteurDesigne.selectedIndex = 0;
   }
 
 
   render(){
 
-    const { validationErrorMessage, pouvoirOptions } = this.props;
+    const { validationErrorMessage, designationOptions,  acteursDesignesOptions} = this.props;
 
 
     return (
       <div>
-          <Form onSubmit={this.handleFormSubmit}>
-            {validationErrorMessage && (
-              <div className="alert alert-danger">
-              {validationErrorMessage}
-              </div>
-            )}
-                <Form.Field>
-                  <label htmlFor="nom" className="required">Quel nom pour votre pouvoir ?</label>
-                  <input type="text" id="nom" ref={this.nomPouvoir} required="required" maxLength="255" />
-                </Form.Field>
-                {' '}
-                <Form.Field>
-                  <label htmlFor="typePouvoir" className="required">Quel pouvoir ajouter ?</label>
-                  <select id="typePouvoir" ref={this.typePouvoir}>
-                    {pouvoirOptions.map(option => {
-                      return <option value={option.id} key={option.id}>{option.text}</option>
-                    } )}
-                  </select>
-                </Form.Field>
-              {' '}
-              <Button type="submit" className="btn-primary">
-                Sauvegarder
-              </Button>
-          </Form>
+      <Form onSubmit={this.handleFormSubmit}>
+          <Form.Field>
+            <label htmlFor="nom" className="required">Nom</label>
+            <input type="text" id="nom" ref={this.nomDesignation} required="required" maxLength="255" />
+          </Form.Field>
+          <Form.Field>
+            <label htmlFor="designation" className="required">Designation</label>
+            <select id="designation" ref={this.typeDesignation} required="required">
+              {designationOptions.map(designation => {
+                return <option value={designation.id} key={designation.id}>{designation.text}</option>
+              } )}
+            </select>
+          </Form.Field>
+          <Form.Field>
+            <label htmlFor="acteurDesigne" className="required">Acteur designe</label>
+            <select id="acteurDesigne" ref={this.acteurDesigne} required="required">
+              {acteursDesignesOptions.map(acteurDesigne => {
+                return <option value={acteurDesigne.id} key={acteurDesigne.id}>{acteurDesigne.text}</option>
+              } )}
+            </select>
+          </Form.Field>
+          <Button type="submit" className="btn-primary">
+            Sauvegarder
+          </Button>
+      </Form>
       </div>
     );
   }
 }
 
 DesignationCreator.propTypes = {
-  onAddPouvoir: PropTypes.func.isRequired,
+  onAddDesignation: PropTypes.func.isRequired,
   validationErrorMessage: PropTypes.string.isRequired,
-  pouvoirOptions: PropTypes.array.isRequired,
+  designationOptions: PropTypes.array.isRequired,
+  acteursDesignesOptions: PropTypes.array.isRequired,
   acteurSelect: PropTypes.number.isRequired,
 };

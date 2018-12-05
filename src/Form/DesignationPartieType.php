@@ -66,4 +66,9 @@ class DesignationPartieType extends AbstractType
             'data_class' => DesignationPartie::class,
         ]);
     }
+
+    public function getBlockPrefix()
+    {
+      return '';
+    }
 }
