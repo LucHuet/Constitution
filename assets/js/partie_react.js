@@ -4,6 +4,7 @@ import { render } from 'react-dom';
 import CardBoardApp from './CardBoard/CardBoardApp';
 
 render(
+
   <CardBoardApp
     {...window.ACTEUR_APP_PROPS}
   />,
