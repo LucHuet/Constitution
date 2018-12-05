@@ -49,7 +49,7 @@ class User implements UserInterface, \Serializable
     private $email;
 
       /**
-     * @ORM\OneToOne(targetEntity="Image", mappedBy="user", orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="Image", mappedBy="user", orphanRemoval=true, cascade={"persist"})
      */
     private $image;
 
@@ -75,7 +75,7 @@ class User implements UserInterface, \Serializable
         $this->parties = new ArrayCollection();
         $this->images = new ArrayCollection();
         // may not be needed, see section on salt below
-        // $this->salt = md5(uniqid('', true));
+  // $this->salt = md5(uniqid('', true));
     }
 
     public function getSalt()

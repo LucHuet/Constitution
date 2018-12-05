@@ -22,7 +22,7 @@ class Image
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="User", inversedBy="image")
+     * @ORM\OneToOne(targetEntity="User", inversedBy="image", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -54,7 +54,6 @@ class Image
     {
         $this->image = new EmbeddedFile();
     }
-
 
 
     public function getId(): ?int
