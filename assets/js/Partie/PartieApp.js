@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
+import PartieListe from './PartieListe';
 
 export default class PartieApp extends Component {
+
+  constructor(props) {
+        super(props);
+        this.state = {
+            highlightedRowId: null
+        };
+    }
+
+  handleRowClick(partieId, event) {
+      this.setState({highlightedRowId: partieId});
+  }
+
   render() {
 
-    const parties = [
-     { id: 9, nom: 'partie 1' },
-     { id: 10, nom: 'partie 2' },
-     { id: 11, nom: 'partie 3' }
-   ];
+    const { highlightedRowId } = this.state;
 
     return (
       <div>
@@ -18,17 +27,9 @@ export default class PartieApp extends Component {
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
-          {parties.map((partie) => {
-              return (
-                  <tr key={partie.id}>
-                      <td>{partie.nom}</td>
-                      <td>...</td>
-                  </tr>
-              )
-          })};
 
-          </tbody>
+          <PartieListe highlightedRowId={highlightedRowId}/>
+
         </table>
         <form className="partie" method="post">
           <div className="field">
