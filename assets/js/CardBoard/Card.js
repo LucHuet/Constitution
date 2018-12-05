@@ -53,9 +53,6 @@ export default function Card(props) {
               <a href="#" onClick={(event => handleAjout(event, "pouvoir", acteur.id))}>
                 <i className="plus square outline icon"></i>Pouvoir
               </a>
-              <a href="#" onClick={(event => handleAjout(event,"controle", acteur.id))}>
-                <i className="plus square outline icon"></i>Contrôle
-              </a>
               <a href="#" onClick={(event => handleAjout(event, "designation", acteur.id))}>
                 <i className="plus square outline icon"></i>Désignation
               </a>

@@ -10,6 +10,8 @@ class ActeurApiModel
 
     public $nombreIndividus;
 
+    public $pouvoirs;
+
     private $links = [];
 
     public function addLink($ref, $url)

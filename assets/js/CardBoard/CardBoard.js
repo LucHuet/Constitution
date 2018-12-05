@@ -56,9 +56,6 @@ export default function CardBoard(props){
               acteurSelect={acteurSelect}
             /> ;
       break;
-    case 'controle':
-      modalContent = "nouveau contrôle";
-      break;
     case 'designation':
     modalContent =       <DesignationCreator
             onAddDesignation={onAddDesignation}

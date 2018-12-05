@@ -17,7 +17,7 @@ export default class DesignationCreator extends Component{
     //permet de facilement récupérer les valeurs des variables
     this.nomDesignation = React.createRef();
     this.typeDesignation = React.createRef();
-    this.acteurDesigne = React.createRef();
+    this.acteurDesignant = React.createRef();
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
@@ -30,19 +30,19 @@ export default class DesignationCreator extends Component{
 
     const nomDesignation = this.nomDesignation.current;
     const typeDesignation = this.typeDesignation.current;
-    const acteurDesigne = this.acteurDesigne.current;
+    const acteurDesignant = this.acteurDesignant.current;
 
     onAddDesignation(
       nomDesignation.value,
       typeDesignation.options[typeDesignation.selectedIndex].value,
-      acteurDesigne.options[acteurDesigne.selectedIndex].value,
+      acteurDesignant.options[acteurDesignant.selectedIndex].value,
       acteurSelect
     );
 
     //réinitialisation des données
     nomDesignation.value = '';
     typeDesignation.selectedIndex = 0;
-    acteurDesigne.selectedIndex = 0;
+    acteurDesignant.selectedIndex = 0;
   }
 
 
@@ -67,10 +67,10 @@ export default class DesignationCreator extends Component{
             </select>
           </Form.Field>
           <Form.Field>
-            <label htmlFor="acteurDesigne" className="required">Acteur designe</label>
-            <select id="acteurDesigne" ref={this.acteurDesigne} required="required">
-              {acteursPartiesOptions.map(acteurDesigne => {
-                return <option value={acteurDesigne.id} key={acteurDesigne.id}>{acteurDesigne.text}</option>
+            <label htmlFor="acteurDesignant" className="required">Qui désigne votre acteur ?</label>
+            <select id="acteurDesignant" ref={this.acteurDesignant} required="required">
+              {acteursPartiesOptions.map(acteurDesignant => {
+                return <option value={acteurDesignant.id} key={acteurDesignant.id}>{acteurDesignant.text}</option>
               } )}
             </select>
           </Form.Field>
