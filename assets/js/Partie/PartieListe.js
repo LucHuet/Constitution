@@ -1,31 +1,29 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export default class PartieListe extends Component {
+export default function PartieListe(props) {
 
-  render() {
-    const { highlightedRowId, onRowClick } = this.props;
+  const { highlightedRowId, onRowClick, parties } = props;
 
-    const parties = [
-     { id: 22, nom: 'partie 1' },
-     { id: 10, nom: 'partie 2' },
-     { id: 11, nom: 'partie 3' }
-   ];
+ return (
+     <tbody>
 
-   console.log(parties);
+     {parties.map((partie) => (
+         <tr
+             key={partie.id}
+             className={highlightedRowId === partie.id ? 'info' : ''}
+             onClick={() => onRowClick(partie.id)}
+         >
+             <td>{partie.nom}</td>
+             <td>...</td>
+         </tr>
+     ))}
+     </tbody>
+ )
+}
 
-   return (
-           <tbody>
-           {parties.map((partie) => (
-               <tr
-                   key={partie.id}
-                   className={highlightedRowId === partie.id ? 'info' : ''}
-                   onClick={() => onRowClick(partie.id)}
-               >
-                   <td>{partie.nom}</td>
-                   <td>...</td>
-               </tr>
-           ))}
-           </tbody>
-       )
-    }
-  }
+PartieListe.propTypes = {
+    highlightedRowId: PropTypes.any,
+    onRowClick: PropTypes.func.isRequired,
+    parties: PropTypes.array.isRequired
+};

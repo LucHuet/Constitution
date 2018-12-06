@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
 import PartieListe from './PartieListe';
+import Parties from './Parties';
+import PropTypes from 'prop-types';
 
 export default class PartieApp extends Component {
 
   constructor(props) {
         super(props);
+
         this.state = {
-            highlightedRowId: null
+            highlightedRowId: null,
+            parties : [
+            { id: 22, nom: 'partie 1' },
+            { id: 10, nom: 'partie 2' },
+            { id: 11, nom: 'partie 3' }
+          ]
         };
+
         this.handleRowClick = this.handleRowClick.bind(this);
     }
 
@@ -17,41 +26,16 @@ export default class PartieApp extends Component {
 
   render() {
 
-    const { highlightedRowId } = this.state;
+    const { highlightedRowId, parties } = this.state;
 
-    return (
-      <div>
-        <table className="table table-parties">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-
-          <PartieListe highlightedRowId={highlightedRowId}
-                       onRowClick={this.handleRowClick}/>
-
-        </table>
-        <form className="partie" method="post">
-          <div className="field">
-            <div id="partie">
-              <div>
-                <label htmlFor="partie_nom" className="required">Nom</label>
-                <input type="text" id="partie_nom" name="partie[nom]" required="required" maxLength="255" />
-              </div>
-              <input type="hidden" id="partie__token" name="partie[_token]" value="5fa84MhAXvPtPgoWRDsiT8-QGo0B-sC0i1dizInLSqU" />
-            </div>
-          </div>
-
-          <div className="row">
-          <button type="submit" className="ui basic button">
-            <i className="icon save"></i>
-            Enregistrer
-          </button>
-          </div>
-        </form>
-      </div>
-      );
+    return <Parties
+              highlightedRowId={highlightedRowId}
+              onRowClick={this.handleRowClick}
+              parties={parties}/>
     }
   }
+
+  PartieApp.propTypes = {
+      highlightedRowId: PropTypes.any,
+      onRowClick: PropTypes.func.isRequired
+  };
