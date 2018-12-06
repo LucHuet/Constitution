@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 export default class PartieListe extends Component {
 
   render() {
-    const { highlightedRowId } = this.props;
+    const { highlightedRowId, onRowClick } = this.props;
 
     const parties = [
      { id: 22, nom: 'partie 1' },
@@ -19,7 +19,7 @@ export default class PartieListe extends Component {
                <tr
                    key={partie.id}
                    className={highlightedRowId === partie.id ? 'info' : ''}
-                   onClick={(event) => this.handleRowClick(partie.id, event)}
+                   onClick={() => onRowClick(partie.id)}
                >
                    <td>{partie.nom}</td>
                    <td>...</td>

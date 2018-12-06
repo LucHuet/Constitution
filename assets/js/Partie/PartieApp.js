@@ -8,6 +8,7 @@ export default class PartieApp extends Component {
         this.state = {
             highlightedRowId: null
         };
+        this.handleRowClick = this.handleRowClick.bind(this);
     }
 
   handleRowClick(partieId, event) {
@@ -28,7 +29,8 @@ export default class PartieApp extends Component {
             </tr>
           </thead>
 
-          <PartieListe highlightedRowId={highlightedRowId}/>
+          <PartieListe highlightedRowId={highlightedRowId}
+                       onRowClick={this.handleRowClick}/>
 
         </table>
         <form className="partie" method="post">
