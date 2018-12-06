@@ -33,7 +33,9 @@
           {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
           <div class="right menu">
                 <div class="ui simple dropdown item">
-                  <strong>{{ app.user.username }}</strong>
+                  <a href="{{ path('user_profile')}}">
+                    <strong>{{ app.user.username }}</strong>
+                  </a>
                   <i class="dropdown icon"></i>
                   <div class="menu">
                     <div class="item">

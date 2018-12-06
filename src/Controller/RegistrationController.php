@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\UserType;
+use App\Form\UserUpdateType;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,5 +69,36 @@ class RegistrationController extends AbstractController
            'last_username' => $lastUsername,
            'error'         => $error,
        ));
+   }
+
+   /**
+    * @Route("/updateProfile", name="update_profile", methods="GET|POST")
+    */
+   public function updateProfile(Request $request){
+
+     $user = $this->getUser();
+     $password = $user->getPassword();
+     dump($password);
+     $user->setPlainPassword($password);
+
+     $form = $this->createForm(UserUpdateType::class, $user);
+
+     $form->handleRequest($request);
+
+     if ($form->isSubmitted() && $form->isValid())
+     {
+       dump($form);
+         $entityManager = $this->getDoctrine()->getManager();
+         $entityManager->persist($user);
+         $entityManager->flush();
+
+         return $this->redirectToRoute('user_profile');
+
+     }
+
+     return $this->render(
+         'user/userUpdateForm.html.twig',
+         array('user' => $user, 'form' => $form->createView())
+     );
    }
 }
