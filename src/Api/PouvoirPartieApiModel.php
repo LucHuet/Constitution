@@ -2,15 +2,13 @@
 
 namespace App\Api;
 
-class ActeurApiModel
+class PouvoirPartieApiModel
 {
     public $id;
 
     public $nom;
 
-    public $nombreIndividus;
-
-    public $pouvoirs;
+    public $pouvoir;
 
     private $links = [];
 
