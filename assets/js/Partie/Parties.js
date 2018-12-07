@@ -4,7 +4,15 @@ import PropTypes from 'prop-types';
 
 export default function Parties(props) {
 
-  const { highlightedRowId, onRowClick, parties } = props;
+  const { highlightedRowId, onRowClick, parties, onNewItemSubmit } = props;
+
+  function handleFormSubmit(event) {
+        event.preventDefault();
+        console.log('I love when a good form submits!');
+        console.log(event.target.elements.namedItem('partieNom').value);
+
+        onNewItemSubmit('Nom partie : ', event.target.elements.namedItem('partieNom').value)
+    }
 
   return (
     <div>
@@ -21,12 +29,12 @@ export default function Parties(props) {
                      parties={parties}/>
 
       </table>
-      <form className="partie" method="post">
+      <form className="partie" method="post" onSubmit={handleFormSubmit}>
         <div className="field">
           <div id="partie">
             <div>
               <label htmlFor="partie_nom" className="required">Nom</label>
-              <input type="text" id="partie_nom" name="partie[nom]" required="required" maxLength="255" />
+              <input type="text" id="partie_nom" name="partieNom" required="required" maxLength="255" />
             </div>
             <input type="hidden" id="partie__token" name="partie[_token]" value="5fa84MhAXvPtPgoWRDsiT8-QGo0B-sC0i1dizInLSqU" />
           </div>
@@ -46,5 +54,6 @@ export default function Parties(props) {
 Parties.propTypes = {
     highlightedRowId: PropTypes.any,
     onRowClick: PropTypes.func.isRequired,
-    parties: PropTypes.array.isRequired
+    parties: PropTypes.array.isRequired,
+    onNewItemSubmit: PropTypes.func.isRequired
 };

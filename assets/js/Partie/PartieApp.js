@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PartieListe from './PartieListe';
 import Parties from './Parties';
 import PropTypes from 'prop-types';
 
@@ -11,9 +10,9 @@ export default class PartieApp extends Component {
         this.state = {
             highlightedRowId: null,
             parties : [
-            { id: 22, nom: 'partie 1' },
-            { id: 10, nom: 'partie 2' },
-            { id: 11, nom: 'partie 3' }
+            { id: 1, nom: 'partie 1' },
+            { id: 2, nom: 'partie 2' },
+            { id: 3, nom: 'partie 3' }
           ]
         };
 
@@ -24,14 +23,19 @@ export default class PartieApp extends Component {
       this.setState({highlightedRowId: partieId});
   }
 
+  handleNewItemSubmit(itemName,partieNom) {
+        event.preventDefault();
+    }
+
   render() {
-
-    const { highlightedRowId, parties } = this.state;
-
-    return <Parties
-              highlightedRowId={highlightedRowId}
-              onRowClick={this.handleRowClick}
-              parties={parties}/>
+    return (
+      <Parties
+          {...this.props}
+          {...this.state}
+          onRowClick={this.handleRowClick}
+          onNewItemSubmit={this.handleNewItemSubmit}
+      />
+      )
     }
   }
 
