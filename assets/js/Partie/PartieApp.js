@@ -17,14 +17,21 @@ export default class PartieApp extends Component {
         };
 
         this.handleRowClick = this.handleRowClick.bind(this);
+        this.handleNewItemSubmit = this.handleNewItemSubmit.bind(this);
     }
 
   handleRowClick(partieId, event) {
       this.setState({highlightedRowId: partieId});
   }
 
-  handleNewItemSubmit(itemName,partieNom) {
-        event.preventDefault();
+  handleNewItemSubmit(partieNom) {
+        const parties = this.state.parties;
+        const newPartie = {
+          id:'TODO-id',
+          partieNom: partieNom
+        };
+        parties.push(newPartie);
+        this.setState({parties: parties});
     }
 
   render() {
