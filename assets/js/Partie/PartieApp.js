@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Parties from './Parties';
 import PropTypes from 'prop-types';
+import uuid from 'uuid/v4';
 
 export default class PartieApp extends Component {
 
@@ -10,28 +11,29 @@ export default class PartieApp extends Component {
         this.state = {
             highlightedRowId: null,
             parties : [
-            { id: 1, nom: 'partie 1' },
-            { id: 2, nom: 'partie 2' },
-            { id: 3, nom: 'partie 3' }
+            { id: uuid(), nom: 'partie 1' },
+            { id: uuid(), nom: 'partie 2' },
+            { id: uuid(), nom: 'partie 3' }
           ]
         };
 
         this.handleRowClick = this.handleRowClick.bind(this);
-        this.handleNewItemSubmit = this.handleNewItemSubmit.bind(this);
+        this.handleAddPartie = this.handleAddPartie.bind(this);
     }
 
   handleRowClick(partieId, event) {
       this.setState({highlightedRowId: partieId});
   }
 
-  handleNewItemSubmit(partieNom) {
-        const parties = this.state.parties;
-        const newPartie = {
-          id:'TODO-id',
-          partieNom: partieNom
-        };
-        parties.push(newPartie);
-        this.setState({parties: parties});
+  handleAddPartie(nom) {
+      const newPartie = {
+        id: uuid(),
+        nom: nom
+      };
+      this.setState(prevState => {
+        const newParties = [...prevState.parties, newPartie];
+        return {parties: newParties};
+      })
     }
 
   render() {
@@ -40,7 +42,7 @@ export default class PartieApp extends Component {
           {...this.props}
           {...this.state}
           onRowClick={this.handleRowClick}
-          onNewItemSubmit={this.handleNewItemSubmit}
+          onAddPartie={this.handleAddPartie}
       />
       )
     }

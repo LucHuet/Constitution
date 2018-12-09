@@ -12,14 +12,12 @@ export default class PartieCreator extends Component {
   handleFormSubmit(event) {
     event.preventDefault();
 
-    const { onNewItemSubmit } = this.props;
+    const { onAddPartie } = this.props;
+    const partieNomInput = this.partieNomInput.current;
 
-    const partieNomInput = this.partieNameInput.current;
+    onAddPartie(partieNomInput.value);
 
-    console.log('I love when a good form submits!');
-    console.log(event.target.elements.namedItem('partieNom').value);
-
-    onNewItemSubmit(partieNomInput.value);
+    partieNomInput.value='';
     }
 
   render(){
@@ -31,10 +29,10 @@ export default class PartieCreator extends Component {
               <label htmlFor="partie_nom" className="required">Nom</label>
               <input type="text"
                      id="partie_nom"
-                     name="partieNom"
+                     ref={this.partieNomInput}
                      required="required"
                      maxLength="255"
-                     ref={this.partieNomInput} />
+              />
             </div>
             <input type="hidden" id="partie__token" name="partie[_token]" value="5fa84MhAXvPtPgoWRDsiT8-QGo0B-sC0i1dizInLSqU" />
           </div>

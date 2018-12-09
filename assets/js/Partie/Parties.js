@@ -5,7 +5,11 @@ import PropTypes from 'prop-types';
 
 export default function Parties(props) {
 
-  const { highlightedRowId, onRowClick, parties, onNewItemSubmit } = props;
+  const { highlightedRowId,
+          onRowClick,
+          parties,
+          onAddPartie
+        } = props;
 
   return (
     <div>
@@ -22,7 +26,7 @@ export default function Parties(props) {
                      parties={parties}/>
 
       </table>
-      <PartieCreator  onNewItemSubmit={onNewItemSubmit}/>
+      <PartieCreator onAddPartie={onAddPartie}/>
     </div>
   );
 }
@@ -31,5 +35,5 @@ Parties.propTypes = {
     highlightedRowId: PropTypes.any,
     onRowClick: PropTypes.func.isRequired,
     parties: PropTypes.array.isRequired,
-    onNewItemSubmit: PropTypes.func.isRequired
+    onAddPartie: PropTypes.func.isRequired
 };
