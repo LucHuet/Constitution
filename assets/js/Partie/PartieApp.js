@@ -19,6 +19,7 @@ export default class PartieApp extends Component {
 
         this.handleRowClick = this.handleRowClick.bind(this);
         this.handleAddPartie = this.handleAddPartie.bind(this);
+        this.handleDeletePartie = this.handleDeletePartie.bind(this);
     }
 
   handleRowClick(partieId, event) {
@@ -36,6 +37,14 @@ export default class PartieApp extends Component {
       })
     }
 
+    handleDeletePartie(id){
+      this.setState((prevState) => {
+        return{
+          parties: this.state.parties.filter(partie => partie.id !== id)
+        };
+      });
+    }
+
   render() {
     return (
       <Parties
@@ -43,6 +52,7 @@ export default class PartieApp extends Component {
           {...this.state}
           onRowClick={this.handleRowClick}
           onAddPartie={this.handleAddPartie}
+          onDeletePartie={this.handleDeletePartie}
       />
       )
     }

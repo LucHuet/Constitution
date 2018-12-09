@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 
 export default function PartieListe(props) {
 
-  const { highlightedRowId, onRowClick, parties } = props;
+ const { highlightedRowId, onRowClick, parties, onDeletePartie } = props;
+ const handleDeleteClick = function(event, partieId){
+   event.preventDefault();
+
+   onDeletePartie(partieId);
+ }
 
  return (
      <tbody>
@@ -15,7 +20,11 @@ export default function PartieListe(props) {
              onClick={() => onRowClick(partie.id)}
          >
              <td>{partie.nom}</td>
-             <td>...</td>
+             <td>
+               <a href="#" onClick={(event) => handleDeleteClick(event, partie.id)}>
+                <i className="trash icon"></i>
+               </a>
+             </td>
          </tr>
      ))}
      </tbody>
@@ -25,5 +34,6 @@ export default function PartieListe(props) {
 PartieListe.propTypes = {
     highlightedRowId: PropTypes.any,
     onRowClick: PropTypes.func.isRequired,
-    parties: PropTypes.array.isRequired
+    parties: PropTypes.array.isRequired,
+    onDeletePartie: PropTypes.func.isRequired
 };
