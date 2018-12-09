@@ -18,7 +18,7 @@ export default function Parties(props) {
         <thead>
           <tr>
             <th>Nom</th>
-            <th>Actions</th>
+            <th>Supprimer</th>
           </tr>
         </thead>
 
