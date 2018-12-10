@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export default function PartieListe(props) {
 
- const { highlightedRowId, onRowClick, parties, onDeletePartie, isLoaded } = props;
+ const { highlightedRowId, onRowClick, parties, onDeletePartie, isLoaded, isSavingNewPartie } = props;
 
  if (!isLoaded) {
         return (
@@ -38,6 +38,19 @@ export default function PartieListe(props) {
              </td>
          </tr>
      ))}
+     {isSavingNewPartie && (
+       <tr>
+          <td
+              colSpan="4"
+              className="text-center"
+              style={{
+                  opacity: .5
+              }}
+            >
+            Enregistrement de la partie...
+            </td>
+        </tr>
+     )}
      </tbody>
  )
 }
@@ -48,4 +61,5 @@ PartieListe.propTypes = {
     parties: PropTypes.array.isRequired,
     onDeletePartie: PropTypes.func.isRequired,
     isLoaded: PropTypes.bool.isRequired,
+    isSavingNewPartie: PropTypes.bool.isRequired,
 };

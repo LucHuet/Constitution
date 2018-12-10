@@ -8,17 +8,19 @@ import { getParties, deletePartie, createPartie } from '../api/partie_api.js';
 export default class PartieApp extends Component {
 
   constructor(props) {
-        super(props);
+    super(props);
 
-        this.state = {
-            highlightedRowId: null,
-            parties : [],
-            isLoaded: false
-        };
+    this.state = {
+        highlightedRowId: null,
+        parties : [],
+        isLoaded: false,
+        isSavingNewPartie: false,
+        successMessage: ''
+    };
 
-        this.handleRowClick = this.handleRowClick.bind(this);
-        this.handleAddPartie = this.handleAddPartie.bind(this);
-        this.handleDeletePartie = this.handleDeletePartie.bind(this);
+    this.handleRowClick = this.handleRowClick.bind(this);
+    this.handleAddPartie = this.handleAddPartie.bind(this);
+    this.handleDeletePartie = this.handleDeletePartie.bind(this);
   }
 
   componentDidMount(){
@@ -40,11 +42,18 @@ export default class PartieApp extends Component {
         nom: nom
       };
 
-  createPartie(newPartie)
+    this.setState({
+      isSavingNewPartie: true
+    });
+
+    createPartie(newPartie)
         .then(partie => {
           this.setState(prevState => {
           const newParties = [...prevState.parties, newPartie];
-          return {parties: newParties};
+          return {parties: newParties,
+                  isSavingNewPartie: false,
+                  successMessage: 'Partie créée!'
+                };
           })
         })
     ;

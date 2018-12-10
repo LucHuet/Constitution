@@ -10,11 +10,20 @@ export default function Parties(props) {
           parties,
           onAddPartie,
           onDeletePartie,
-          isLoaded
+          isLoaded,
+          isSavingNewPartie,
+          successMessage
         } = props;
 
   return (
     <div>
+
+      {successMessage && (
+        <div className="alert alert-success text-center">
+            {successMessage}
+        </div>
+      )}
+      
       <table className="table table-parties">
         <thead>
           <tr>
@@ -27,7 +36,8 @@ export default function Parties(props) {
                      onRowClick={onRowClick}
                      parties={parties}
                      onDeletePartie={onDeletePartie}
-                     isLoaded={isLoaded}/>
+                     isLoaded={isLoaded}
+                     isSavingNewPartie={isSavingNewPartie}/>
 
       </table>
       <PartieCreator onAddPartie={onAddPartie}/>
@@ -42,4 +52,6 @@ Parties.propTypes = {
     onAddPartie: PropTypes.func.isRequired,
     onDeletePartie: PropTypes.func.isRequired,
     isLoaded: PropTypes.bool.isRequired,
+    isSavingNewPartie: PropTypes.bool.isRequired,
+    successMessage: PropTypes.string.isRequired
 };
