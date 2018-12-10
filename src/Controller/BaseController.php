@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Api\ActeurApiModel;
 use App\Api\PouvoirPartieApiModel;
+use App\Api\PartieApiModel;
 use App\Entity\ActeurPartie;
 use App\Entity\PouvoirPartie;
+use App\Entity\Partie;
 use App\Entity\DesignationPartie;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
@@ -62,15 +64,22 @@ class BaseController extends Controller
         return $errors;
     }
 
-    /**
-     * Turns a RepLog into a RepLogApiModel for the API.
-     *
-     * This could be moved into a service if it needed to be
-     * re-used elsewhere.
-     *
-     * @param ActeurPartie $acteurPartie
-     * @return ActeurApiModel
-     */
+
+    protected function createPartieApiModel(Partie $partie)
+    {
+        $model = new PartieApiModel();
+        $model->id = $partie->getId();
+        $model->nom = $partie->getNom();
+
+        $selfUrl = $this->generateUrl(
+            'partie_get',
+            ['id' => $partie->getId()]
+        );
+        $model->addLink('_self', $selfUrl);
+
+        return $model;
+    }
+
     protected function createActeurApiModel(ActeurPartie $acteurPartie)
     {
         $model = new ActeurApiModel();
@@ -123,9 +132,9 @@ class BaseController extends Controller
     }
 
     /**
-     * @return RepLogApiModel[]
+     * @return ActeurApiModel[]
      */
-    protected function findAllUsersActeursModels()
+    protected function findAllUserActeursModels()
     {
         //on récupere la partie courante afin de n'afficher que les acteurs de la partie courante
         $session = new Session();
@@ -137,6 +146,26 @@ class BaseController extends Controller
         $models = [];
         foreach ($acteursPartie as $acteur) {
             $models[] = $this->createActeurApiModel($acteur);
+        }
+
+        return $models;
+    }
+
+    /**
+     * @return PartieApiModel[]
+     */
+    protected function findAllUserPartiesModels()
+    {
+
+        $utilisateurCourant = $this->getUser();
+
+        $parties = $this->getDoctrine()->getRepository(Partie::class)
+            ->findBy(['user' => $utilisateurCourant])
+        ;
+
+        $models = [];
+        foreach ($parties as $partie) {
+            $models[] = $this->createPartieApiModel($partie);
         }
 
         return $models;
