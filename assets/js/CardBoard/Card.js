@@ -35,7 +35,7 @@ export default function Card(props) {
               <a>
                 <span>Désigné par :</span>
               </a>
-              <img className="ui avatar image" src="/build/static/Politician.png"/>
+              <img className="ui avatar image" src="/build/static/chef.png"/>
             </div>
             <div className="right floated">
               <a>
@@ -45,7 +45,7 @@ export default function Card(props) {
             </div>
           </div>
           <div className="content">
-            <img className="right floated tiny ui image" src="/build/static/Politician.png"/>
+            <img className="right floated tiny ui image" src={"/build/static/"+acteur.image}/>
             <div className="header">
               <span>{acteur.nom}</span>
             </div>

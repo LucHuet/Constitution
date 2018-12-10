@@ -86,6 +86,7 @@ class BaseController extends Controller
         $model->id = $acteurPartie->getId();
         $model->nom = $acteurPartie->getNom();
         $model->nombreIndividus = $acteurPartie->getNombreIndividus();
+        $model->image = $acteurPartie->getTypeActeur()->getImage();
         foreach ($acteurPartie->getPouvoirParties() as $pouvoir) {
           $model->pouvoirs[] = $this->createPouvoirPartieApiModel($pouvoir);
         }

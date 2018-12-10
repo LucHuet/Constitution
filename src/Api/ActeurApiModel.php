@@ -10,6 +10,8 @@ class ActeurApiModel
 
     public $nombreIndividus;
 
+    public $image;
+
     public $pouvoirs;
 
     private $links = [];

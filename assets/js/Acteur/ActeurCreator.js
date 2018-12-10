@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Button from '../Components/Button';
-import {Form} from 'semantic-ui-react';
+import {Card, Form, Image} from 'semantic-ui-react';
 
 export default class ActeurCreator extends Component{
 
@@ -63,42 +63,59 @@ export default class ActeurCreator extends Component{
 
     return (
       <div>
-          <Form onSubmit={this.handleFormSubmit}>
-            {validationErrorMessage && (
-              <div className="alert alert-danger">
-              {validationErrorMessage}
-              </div>
-            )}
-                <Form.Field>
-                  <label htmlFor="nom" className="required">Nom</label>
-                  <input type="text" id="nom" ref={this.nomActeur} required="required" maxLength="255" />
-                </Form.Field>
-                {' '}
-                <div className={`form-group ${nombreActeurError ? 'has-error' : '' }`}>
-                <Form.Field>
-                  <label htmlFor="nombreIndividus">Nombre individus</label>
-                    <input
-                      type="number"
-                      id="nombreIndividus"
-                      ref={this.nombreActeur}
-                    />
-                    { nombreActeurError  && <span className="help-block">{nombreActeurError}</span>}
-                  </Form.Field>
-                {' '}
-                <Form.Field>
-                  <label htmlFor="typeActeur" className="required">Type acteur</label>
-                  <select id="typeActeur" ref={this.typeActeur}>
-                    {itemOptions.map(option => {
-                      return <option value={option.id} key={option.id}>{option.text}</option>
-                    } )}
-                  </select>
-                </Form.Field>
-              </div>
-              {' '}
-              <Button type="submit" className="btn-primary">
-                Sauvegarder
-              </Button>
-          </Form>
+
+      <Card.Group>
+      {itemOptions.map(option => {
+        return  (
+          <Card key={option.id}>
+            <Card.Content>
+              <Image floated='right' size='mini' src={'/build/static/'+option.image} />
+              <Card.Header>{option.text}</Card.Header>
+              <Card.Description>
+                {option.desc}
+              </Card.Description>
+            </Card.Content>
+          </Card>
+                )
+      } )}
+      </Card.Group>
+
+      <Form onSubmit={this.handleFormSubmit}>
+        {validationErrorMessage && (
+          <div className="alert alert-danger">
+          {validationErrorMessage}
+          </div>
+        )}
+            <Form.Field>
+              <label htmlFor="nom" className="required">Nom</label>
+              <input type="text" id="nom" ref={this.nomActeur} required="required" maxLength="255" />
+            </Form.Field>
+            {' '}
+            <div className={`form-group ${nombreActeurError ? 'has-error' : '' }`}>
+            <Form.Field>
+              <label htmlFor="nombreIndividus">Nombre individus</label>
+                <input
+                  type="number"
+                  id="nombreIndividus"
+                  ref={this.nombreActeur}
+                />
+                { nombreActeurError  && <span className="help-block">{nombreActeurError}</span>}
+              </Form.Field>
+            {' '}
+            <Form.Field>
+              <label htmlFor="typeActeur" className="required">Type acteur</label>
+              <select id="typeActeur" ref={this.typeActeur}>
+                {itemOptions.map(option => {
+                  return <option value={option.id} key={option.id}>{option.text}</option>
+                } )}
+              </select>
+            </Form.Field>
+          </div>
+          {' '}
+          <Button type="submit" className="btn-primary">
+            Sauvegarder
+          </Button>
+      </Form>
       </div>
     );
   }

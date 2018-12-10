@@ -33,10 +33,16 @@ class Acteur
      */
     private $countryDescriptions;
 
-    public function __construct($type, $description)
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
+
+    public function __construct($type, $description, $image)
     {
         $this->type = $type;
         $this->description = $description;
+        $this->image = $image;
         $this->countryDescriptions = new ArrayCollection();
     }
 
@@ -100,6 +106,18 @@ class Acteur
                 $countryDescription->setActeur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
