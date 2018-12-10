@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Api\ActeurApiModel;
+use App\Api\PouvoirPartieApiModel;
 use App\Entity\ActeurPartie;
+use App\Entity\PouvoirPartie;
+use App\Entity\DesignationPartie;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,6 +21,7 @@ class BaseController extends Controller
      */
     protected function createApiResponse($data, $statusCode = 200)
     {
+      dump($data);
         $json = $this->get('serializer')
             ->serialize($data, 'json');
 
@@ -73,10 +77,45 @@ class BaseController extends Controller
         $model->id = $acteurPartie->getId();
         $model->nom = $acteurPartie->getNom();
         $model->nombreIndividus = $acteurPartie->getNombreIndividus();
+        foreach ($acteurPartie->getPouvoirParties() as $pouvoir) {
+          $model->pouvoirs[] = $this->createPouvoirPartieApiModel($pouvoir);
+        }
 
         $selfUrl = $this->generateUrl(
             'acteur_partie',
             ['id' => $acteurPartie->getId()]
+        );
+        $model->addLink('_self', $selfUrl);
+
+        return $model;
+    }
+
+    protected function createPouvoirPartieApiModel(PouvoirPartie $pouvoirPartie)
+    {
+        $model = new PouvoirPartieApiModel();
+        $model->id = $pouvoirPartie->getId();
+        $model->nom = $pouvoirPartie->getNom();
+        $model->pouvoir = $pouvoirPartie->getPouvoir()->getId();
+
+        $selfUrl = $this->generateUrl(
+            'pouvoir_partie_show',
+            ['id' => $pouvoirPartie->getId()]
+        );
+        $model->addLink('_self', $selfUrl);
+
+        return $model;
+    }
+
+    protected function createDesignationPartieApiModel(DesignationPartie $designationPartie)
+    {
+        $model = new PouvoirPartieApiModel();
+        $model->id = $designationPartie->getId();
+        $model->nom = $designationPartie->getNom();
+        $model->designation = $designationPartie->getDesignation()->getId();
+
+        $selfUrl = $this->generateUrl(
+            'designation_partie_show',
+            ['id' => $designationPartie->getId()]
         );
         $model->addLink('_self', $selfUrl);
 

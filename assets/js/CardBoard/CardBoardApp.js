@@ -3,9 +3,7 @@ import CardBoard from './CardBoard';
 //permet de définit le type de props
 import PropTypes from 'prop-types';
 import interact from 'interactjs';
-import _ from 'lodash';
-//import uuid from 'uuid/v4';
-import { getActeurs, deleteActeur, createActeur } from '../api/acteur_api.js';
+import { getActeurs, deleteActeur, createActeur, createPouvoir, createDesignation } from '../api/partie_api.js';
 import Sortable from './Sortable.js';
 
 //le mot clé export permet de dire qu'on pourra utiliser
@@ -24,6 +22,9 @@ export default class CardBoardApp extends Component {
       isSavingNewActeur: false,
       successMessage: '',
       newActeurValidationErrorMessage: '',
+      showModal:false,
+      acteurSelect:0,
+      modalType:"",
       //sorter
       item_width: 0,
       item_height: 0,
@@ -43,8 +44,11 @@ export default class CardBoardApp extends Component {
     //bind(this) permet de faire en sorte que le this corresponde à la classe
     //et pas à la méthode.
     this.handleAddActeur = this.handleAddActeur.bind(this);
+    this.handleAddPouvoir = this.handleAddPouvoir.bind(this);
+    this.handleAddDesignation = this.handleAddDesignation.bind(this);
+    this.handleShowModal = this.handleShowModal.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handleDeleteActeur = this.handleDeleteActeur.bind(this);
-
   }
 
   //componentDidMount est une methode magique qui est automatiquement
@@ -54,6 +58,7 @@ export default class CardBoardApp extends Component {
     //then signifie qu'il n'y a pas d'erreur.
       .then((data)=>{
         //méthode qui permet de redonner une valeur à un state.
+        console.log(data);
         this.setState({
           acteurs: data,
           isLoaded: true,
@@ -118,12 +123,14 @@ export default class CardBoardApp extends Component {
               //on remet isSavingNewActeur à false
               ...newState,
               acteurs: newActeurs,
-              newActeurValidationErrorMessage: ''
+              newActeurValidationErrorMessage: '',
+              showModal: false
             };
 
           });
           this.setSuccessMessage('Acteur enregistré !');
-          this.state.sortable.setPositions();
+          this.state.sortable.setPositions(true);
+
         })
         //il y a une erreur dans l'ajout
         .catch(error=> {
@@ -138,6 +145,60 @@ export default class CardBoardApp extends Component {
           })
         })
   }
+
+  handleAddPouvoir(nom, typePouvoir, acteurSelect){
+
+      const newPouvoir = {
+        nom: nom,
+        pouvoir : typePouvoir,
+        acteurPossedant: acteurSelect
+      };
+
+      console.log(newPouvoir);
+
+      createPouvoir(newPouvoir)
+      //l'ajout n'as pas d'erreur
+        .then(pouvoir => {
+          this.setSuccessMessage('Pouvoir enregistré !');
+          this.setState({showModal: false});
+        })
+  }
+
+  handleAddDesignation(nom, typeDesignation, acteurDesignant, acteurSelect){
+
+      const newDesignation = {
+        nom: nom,
+        designation : typeDesignation,
+        acteurDesigne : acteurSelect,
+        acteurDesignant: acteurDesignant
+      };
+
+      console.log(newDesignation);
+
+      createDesignation(newDesignation)
+      //l'ajout n'as pas d'erreur
+        .then(pouvoir => {
+          this.setSuccessMessage('Désignation enregistréé !');
+          this.setState({showModal: false});
+        })
+  }
+
+  handleShowModal(modalType, acteurId=0){
+    this.setState({
+      showModal: true,
+      modalType:modalType,
+      acteurSelect:acteurId
+    });
+  }
+
+  handleCloseModal(acteurId){
+    this.setState({
+      showModal: false,
+      modalType:"",
+      acteurSelect:0
+    });
+  }
+
 
   handleDeleteActeur(id) {
     //prevstate est la liste des acteurs originale
@@ -164,7 +225,7 @@ export default class CardBoardApp extends Component {
           }
         });
         this.setSuccessMessage('Acteur supprimé !');
-        this.state.sortable.setPositions();
+        this.state.sortable.setPositions(true);
       });
 
   }
@@ -176,6 +237,10 @@ export default class CardBoardApp extends Component {
         {...this.props}
         {...this.state}
         onAddActeur={this.handleAddActeur}
+        onAddPouvoir={this.handleAddPouvoir}
+        onAddDesignation={this.handleAddDesignation}
+        onShowModal={this.handleShowModal}
+        onCloseModal={this.handleCloseModal}
         onDeleteActeur = {this.handleDeleteActeur}
       />
     )
@@ -185,8 +250,14 @@ export default class CardBoardApp extends Component {
 CardBoardApp.propTypes = {
   //permet de mettre par defaut les type de items option de props
   itemOptions:PropTypes.array,
+  pouvoirOptions:PropTypes.array,
+  designationOptions:PropTypes.array,
+  acteursPartiesOptions:PropTypes.array,
 };
 
 CardBoardApp.defaultProps = {
   itemOptions:[],
+  pouvoirOptions:[],
+  designationOptions:[],
+  acteursPartiesOptions:[],
 };

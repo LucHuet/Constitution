@@ -8,6 +8,7 @@ export default function Card(props) {
     index,
     acteur,
     onDeleteActeur,
+    onShowModal,
   } = props;
 
   const handleDeleteClick = function(event, acteurId){
@@ -18,6 +19,11 @@ export default function Card(props) {
     onDeleteActeur(acteurId);
   };
 
+  const handleAjout = function(event, modalType, acteurId){
+    event.preventDefault();
+    onShowModal( modalType, acteurId);
+  };
+
   return(
         <div
           className="card"
@@ -25,43 +31,58 @@ export default function Card(props) {
           data-id={index}
         >
           <div className="extra content">
-            <a>
-              Cet acteur a été désigné par :
-            </a>
+            <div className="left floated">
+              <a>
+                <span>Désigné par :</span>
+              </a>
+              <img className="ui avatar image" src="/build/static/Politician.png"/>
+            </div>
             <div className="right floated">
-              <i className="meh icon"></i>
-              <i className="meh icon"></i>
+              <a>
+                <span>Controlé par :</span>
+              </a>
+              <i className="university icon"></i>
             </div>
           </div>
           <div className="content">
-            <img className="right floated tiny ui image" src="/build/static/card.jpg"/>
+            <img className="right floated tiny ui image" src="/build/static/Politician.png"/>
             <div className="header">
-              {acteur.nom}
-              <a href="#" onClick={(event => handleDeleteClick(event, acteur.id))}>
-                  <span className="fa fa-trash"></span>
-              </a>
+              <span>{acteur.nom}</span>
             </div>
             <div className="meta">
-              Type acteur ?
+              <a href="#" onClick={(event => handleAjout(event, "pouvoir", acteur.id))}>
+                <i className="plus square outline icon"></i>Pouvoir
+              </a>
+              <a href="#" onClick={(event => handleAjout(event, "designation", acteur.id))}>
+                <i className="plus square outline icon"></i>Désignation
+              </a>
             </div>
             <div className="description">
-              Nombre individus : {acteur.nombreIndividus}
+              <span>Nombre individus : {acteur.nombreIndividus}</span>
               <br/>
-              <button className="right floated ui basic button">
-                <i className="icon plus"></i>
-                  Ajout pouvoir
-              </button>
+              <span>Type acteur ?</span>
+              <a href="#" onClick={(event => handleDeleteClick(event, acteur.id))}>
+                <button className="right floated ui basic button">
+                  <i className="trash icon"></i>
+                </button>
+              </a>
             </div>
           </div>
           <div className="extra content">
+          <div className="left floated">
             <a>
-              <i className="users icon"></i>
-              Cet acteur désigne :
+              <span>Désigne :</span>
             </a>
-            <div className="right floated">
-              <i className="bug icon"></i>
-              <i className="meh icon"></i>
-            </div>
+            <i className="briefcase icon"></i>
+            <i className="university icon"></i>
+          </div>
+          <div className="right floated">
+            <a>
+              <span>Contrôle :</span>
+            </a>
+            <i className="balance scale icon"></i>
+            <i className="fighter jet icon"></i>
+          </div>
           </div>
         </div>
   );
@@ -71,5 +92,6 @@ export default function Card(props) {
 Card.propTypes = {
   index: PropTypes.number,
   onDeleteActeur: PropTypes.func.isRequired,
+  onShowModal: PropTypes.func.isRequired,
   acteur: PropTypes.object,
 };

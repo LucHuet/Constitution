@@ -6,6 +6,7 @@ use App\Entity\PouvoirPartie;
 use App\Form\PouvoirPartieType;
 use App\Repository\PouvoirPartieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,7 +19,7 @@ use App\Service\CheckStepService;
 /**
  * @Route("/pouvoir")
  */
-class PouvoirPartieController extends AbstractController
+class PouvoirPartieController extends BaseController
 {
     private $checkStep;
 
@@ -46,39 +47,57 @@ class PouvoirPartieController extends AbstractController
 
     /**
      * @Route("/", name="pouvoir_partie_new", methods="POST")
+     * @Method("POST")
      */
     public function createPouvoirPartie(Request $request): Response
     {
-        if($this->checkStep->checkActeur() != null){
-          return $this->redirectToRoute($this->checkStep->checkActeur());
-        }
 
         //recupération de la partie courante
         $session = new Session();
         $partieCourante = $session->get('partieCourante');
-        $em = $this->getDoctrine()->getManager();
-        $partieCourante = $em->merge($partieCourante);
-        $pouvoirPartie = new PouvoirPartie();
-        $pouvoirPartie->setPartie($partieCourante);
 
-        $form = $this->createForm(PouvoirPartieType::class, $pouvoirPartie);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
 
 
-            $pouvoirPartie->setPartie($partieCourante);
-            $em->persist($pouvoirPartie);
-            $em->flush();
-
-            return $this->redirectToRoute('partie_show', ['id' => $partieCourante->getId()] );
+        $data = json_decode($request->getContent(), true);
+        if ($data === null) {
+            throw new BadRequestHttpException('Invalid JSON');
         }
 
-        return $this->render('pouvoir_partie/new.html.twig', [
-            'pouvoir_partie' => $pouvoirPartie,
-            'form' => $form->createView(),
-            'partieCouranteId' => $partieCourante->getId(),
+
+        $form = $this->createForm(PouvoirPartieType::class, null, [
+          'csrf_protection' => false
         ]);
+
+        $form->submit($data, false);
+        dump($form->getData());
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromForm($form);
+
+            return $this->createApiResponse([
+                'errors' => $errors
+            ], 400);
+        }
+
+        /** @var PouvoirPartie $pouvoirPartie */
+        $pouvoirPartie = $form->getData();
+        $em = $this->getDoctrine()->getManager();
+        $partieCourante = $em->merge($partieCourante);
+        $pouvoirPartie->setPartie($partieCourante);
+        $em->persist($pouvoirPartie);
+        $em->flush();
+
+        $apiModel = $this->createPouvoirPartieApiModel($pouvoirPartie);
+
+        $response = $this->createApiResponse($apiModel);
+
+        $response->headers->set(
+            'Location',
+            $this->generateUrl('pouvoir_partie_show', ['id' => $pouvoirPartie->getId()])
+        );
+
+        return $response;
+
     }
 
     /**
@@ -92,29 +111,7 @@ class PouvoirPartieController extends AbstractController
         return $this->render('pouvoir_partie/show.html.twig', ['pouvoir_partie' => $pouvoirPartie]);
     }
 
-    /**
-     * @Route("/{id}", name="pouvoir_partie_edit", methods="PUT")
-     */
-    public function editPouvoirPartie(Request $request, PouvoirPartie $pouvoirPartie): Response
-    {
-        if($this->checkStep->checkPouvoir($pouvoirPartie) != null){
-          return $this->redirectToRoute($this->checkStep->checkPouvoir($pouvoirPartie));
-        }
 
-        $form = $this->createForm(PouvoirPartieType::class, $pouvoirPartie);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('pouvoir_partie_edit', ['id' => $pouvoirPartie->getId()]);
-        }
-
-        return $this->render('pouvoir_partie/edit.html.twig', [
-            'pouvoir_partie' => $pouvoirPartie,
-            'form' => $form->createView(),
-        ]);
-    }
 
     /**
      * @Route("/{id}", name="pouvoir_partie_delete", methods="DELETE")

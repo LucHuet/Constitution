@@ -10,8 +10,9 @@
 {% block javascripts %}
 
   {{ parent() }}
+  </script>
   <script>
-    window.ACTEUR_APP_PROPS = {{acteursAppProps|json_encode|raw}}
+    window.PARTIE_APP_PROPS = {{partieAppProps|json_encode|raw}};
   </script>
   <script src="{{ asset('build/partie_react.js') }}"></script>
 {% endblock %}
