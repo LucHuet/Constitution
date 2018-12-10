@@ -85,7 +85,7 @@ class ActeurPartieController extends BaseController
      */
     public function getActeursPartie(ActeurPartieRepository $acteurPartieRepository)
     {
-        $models = $this->findAllUsersActeursModels();
+        $models = $this->findAllUserActeursModels();
         return $this->createApiResponse([
             'items' => $models
         ]);

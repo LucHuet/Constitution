@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Service\CheckStepService;
 
@@ -33,170 +34,85 @@ class PartieController extends BaseController
     }
 
     /**
-     * @Route("/liste", name="partie_liste", methods="GET")
+     * @Route("/", name="partie_list", methods="GET")
+     * @Method("GET")
      */
-    public function liste(PartieRepository $partieRepository): Response
+    public function getParties()
     {
-        // verification qu'un utilisateur est loggé
-        if($this->checkStep->checkLogin() != null){
-          return $this->redirectToRoute($this->checkStep->checkLogin());
-        }
-
-        return $this->render('partie/index.html.twig', [
-          'parties' => $partieRepository->findAll()
-        ]);
-
-    }
-
-
-    /**
-     * @Route("/new", name="partie_new", methods="GET|POST")
-     */
-    public function new(Request $request, ActeurRepository $acteurRepository): Response
-    {
-        // verification qu'un utilisateur est loggé
-        if($this->checkStep->checkLogin() != null){
-          return $this->redirectToRoute($this->checkStep->checkLogin());
-        }
-
-        $partieCourante = new Partie();
-        $form = $this->createForm(PartieType::class, $partieCourante);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $partieCourante->setUser($this->getUser());
-            $em = $this->getDoctrine()->getManager();
-            //faire en sorte que le peuple soit présent par défaut
-            $acteurPartie = new ActeurPartie();
-            //ajout de l'acteur peuple
-            $acteurPeuple = $acteurRepository->findOneBy(['type'=>'Peuple']);
-            $acteurPartie->setPartie($partieCourante);
-            $acteurPartie->setTypeActeur($acteurPeuple);
-            $acteurPartie->setNom($acteurPeuple->getType());
-            //persister le peuple
-            $em->persist($acteurPartie);
-            $em->persist($partieCourante);
-            $em->flush();
-            $session = new Session();
-            $session->set('partieCourante', $partieCourante);
-            return $this->redirectToRoute('partie_show', ['id' =>$partieCourante->getId()]);
-        }
-
-        return $this->render('partie/new.html.twig', [
-            'partie' => $partieCourante,
-            'form' => $form->createView(),
+        $models = $this->findAllUserPartiesModels();
+        return $this->createApiResponse([
+            'items' => $models
         ]);
     }
 
     /**
-     * @Route("/{id}", name="partie_show", methods="GET")
+     * @Route("/{id}", name="partie_get" , methods="GET")
+     * @Method("GET")
      */
-    public function show(
-      Partie $partieCourante,
-      PouvoirPartieRepository $pouvoirPartieRepository,
-      ActeurRepository $acteurRepository,
-      DesignationRepository $designationRepository,
-      PouvoirRepository $pouvoirRepository
-    ): Response
+    public function getPartie(Partie $partie)
     {
+        $apiModel = $this->createPartieApiModel($partie);
 
-
-        $session = new Session();
-        $session->set('partieCourante', $partieCourante);
-
-        // verification de la partie courante
-        if($this->checkStep->checkPartie($partieCourante) != null){
-          return $this->redirectToRoute($this->checkStep->checkPartie($partieCourante));
-        }
-
-        $partieAppProps = [
-            'itemOptions' => [],
-            'pouvoirOptions' => [],
-            'designationOptions' => [],
-            'acteursPartiesOptions' => [],
-        ];
-
-        foreach ($acteurRepository->findAll() as $acteur) {
-            $partieAppProps['itemOptions'][] = [
-                'id' => $acteur->getId(),
-                'text' => $acteur->getType(),
-            ];
-        }
-
-        foreach ($pouvoirRepository->findAll() as $pouvoir) {
-            $partieAppProps['pouvoirOptions'][] = [
-                'id' => $pouvoir->getId(),
-                'text' => $pouvoir->getNom(),
-            ];
-        }
-
-        foreach ($partieCourante->getActeurParties() as $acteursPartie) {
-            $partieAppProps['acteursPartiesOptions'][] = [
-                'id' => $acteursPartie->getId(),
-                'text' => $acteursPartie->getNom(),
-            ];
-        }
-
-        foreach ($designationRepository->findAll() as $designation) {
-            $partieAppProps['designationOptions'][] = [
-                'id' => $designation->getId(),
-                'text' => $designation->getNom(),
-            ];
-        }
-
-
-
-        return $this->render('partie/partiePagePrincipale.html.twig', [
-          'partieCourante' => $partieCourante,
-          'pouvoir_parties' => $pouvoirPartieRepository->findBy(['partie' => $partieCourante]),
-          'partieAppProps' => $partieAppProps
-        ]);
-    }
-
-
-    /**
-     * @Route("/{id}/edit", name="partie_edit", methods="GET|POST")
-     */
-    public function edit(Request $request, Partie $partieCourante): Response
-    {
-        // verification de la partie courante
-        if($this->checkStep->checkLogin($partieCourante) != null){
-          return $this->redirectToRoute($this->checkStep->checkLogin($partieCourante));
-        }
-
-        $form = $this->createForm(PartieType::class, $partieCourante);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('partie_edit', ['id' => $partieCourante->getId()]);
-        }
-
-        return $this->render('partie/edit.html.twig', [
-            'partie' => $partieCourante,
-            'form' => $form->createView(),
-        ]);
+        return $this->createApiResponse($apiModel);
     }
 
     /**
-     * @Route("/{id}", name="partie_delete", methods="DELETE")
+     * @Route("/", name="partie_new", methods="POST", options={"expose"=true})
+     * @Method("POST")
      */
-    public function delete(Request $request, Partie $partieCourante): Response
+    public function createPartie(Request $request)
     {
-        // verification de la partie courante
-        if($this->checkStep->checkLogin($partieCourante) != null){
-          return $this->redirectToRoute($this->checkStep->checkLogin($partieCourante));
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+        $data = json_decode($request->getContent(), true);
+        if ($data === null) {
+            throw new BadRequestHttpException('Invalid JSON');
         }
 
-        if ($this->isCsrfTokenValid('delete'.$partieCourante->getId(), $request->request->get('_token'))) {
-            $session = new Session();
-            $session->remove('partieCourante');
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($partieCourante);
-            $em->flush();
+        $form = $this->createForm(PartieType::class, null, [
+          'csrf_protection' => false
+        ]);
+
+        $form->submit($data);
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromForm($form);
+
+            return $this->createApiResponse([
+                'errors' => $errors
+            ], 400);
         }
 
-        return $this->redirectToRoute('partie_liste');
+        /** @var Partie $partie */
+        $partie = $form->getData();
+        $em = $this->getDoctrine()->getManager();
+        $partie->setUser($this->getUser());
+        $em->persist($partie);
+        $em->flush();
+
+        $apiModel = $this->createPartieApiModel($partie);
+
+        $response = $this->createApiResponse($apiModel);
+        //$response = new Response(null, 204);
+        // setting the Location header... it's a best-practice
+        $response->headers->set(
+            'Location',
+            $this->generateUrl('partie_get', ['id' => $partie->getId()])
+        );
+
+        return $response;
     }
+
+    /**
+     * @Route("/{id}", name="acteur_partie_delete", methods="DELETE")
+     */
+    public function deletePartie(Partie $partie)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($partie);
+        $em->flush();
+        return new Response(null, 204);
+    }
+
+
 }
