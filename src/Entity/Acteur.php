@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,9 +23,21 @@ class Acteur
      */
     private $type;
 
-    public function __construct($type)
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $description;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CountryDescription", mappedBy="acteur", orphanRemoval=true, cascade={"persist"})
+     */
+    private $countryDescriptions;
+
+    public function __construct($type, $description)
     {
         $this->type = $type;
+        $this->description = $description;
+        $this->countryDescriptions = new ArrayCollection();
     }
 
     public function __toString()
@@ -44,6 +58,49 @@ class Acteur
     public function setType(string $type): self
     {
         $this->type = $type;
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CountryDescription[]
+     */
+    public function getCountryDescriptions(): Collection
+    {
+        return $this->countryDescriptions;
+    }
+
+    public function addCountryDescription(CountryDescription $countryDescription): self
+    {
+        if (!$this->countryDescriptions->contains($countryDescription)) {
+            $this->countryDescriptions[] = $countryDescription;
+            $countryDescription->setActeur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCountryDescription(CountryDescription $countryDescription): self
+    {
+        if ($this->countryDescriptions->contains($countryDescription)) {
+            $this->countryDescriptions->removeElement($countryDescription);
+            // set the owning side to null (unless already changed)
+            if ($countryDescription->getActeur() === $this) {
+                $countryDescription->setActeur(null);
+            }
+        }
+
         return $this;
     }
 

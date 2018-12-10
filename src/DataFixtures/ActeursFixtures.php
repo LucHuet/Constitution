@@ -2,6 +2,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Acteur;
+use App\Entity\CountryDescription;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -11,25 +12,40 @@ class ActeursFixtures extends Fixture
     {
       $acteurs = [];
       $acteurs[] = new Acteur(
-        "Groupe d'individus",
-        0,
-        0,
-        0
+        "Chef d'état",
+        "Le chef d'État est la personne qui exerce l'autorité suprême d'un Etat, qui représente l'ensemble de la nation dans le pays et dans les relations internationales."
       );
       $acteurs[] = new Acteur(
         "Peuple",
-        0,
-        3,
-        4
+        "Le peuple, un peuple l'ensemble des personnes soumises aux mêmes lois et qui forment une nation."
       );
       $acteurs[] = new Acteur(
-        "Autorité Indépendante",
-        3,
-        2,
-        1
+        "Parlement",
+        "Assemblée ou ensemble des chambres qui détiennent le pouvoir législatif."
+      );
+
+      $acteurs[] = new Acteur(
+        "Gouvernement",
+        "Le gouvernement est l'organe (personnes ou services) investi du pouvoir exécutif afin de diriger un Etat."
+      );
+
+      $acteurs[] = new Acteur(
+        "Institution Judiciaire",
+        "Ensemble des juridictions nationales (tribunaux, cours, conseils) chargées de juger les litiges des personne privées et des personnes publiques, et de sanctionner les auteurs d'infractions à la loi pénale."
+      );
+
+      $acteurs[] = new Acteur(
+        "Conseil",
+        "Réunion de personnes qui délibèrent, donnent leur avis sur des affaires publiques."
+      );
+
+      $acteurs[] = new Acteur(
+        "Acteur personnalisé",
+        "Un acteur dont vous décidez de la forme sans aide."
       );
 
       foreach ($acteurs as $acteur) {
+            $acteur->addCountryDescription(new CountryDescription("France", "Description de l'acteur ".$acteur->getType()." à completer."));
             $manager->persist($acteur);
       }
 
