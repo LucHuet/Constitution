@@ -3,7 +3,18 @@ import PropTypes from 'prop-types';
 
 export default function PartieListe(props) {
 
- const { highlightedRowId, onRowClick, parties, onDeletePartie } = props;
+ const { highlightedRowId, onRowClick, parties, onDeletePartie, isLoaded } = props;
+
+ if (!isLoaded) {
+        return (
+            <tbody>
+                <tr>
+                    <td colSpan="4" className="text-center">Loading...</td>
+                </tr>
+            </tbody>
+        );
+    }
+
  const handleDeleteClick = function(event, partieId){
    event.preventDefault();
 
@@ -35,5 +46,6 @@ PartieListe.propTypes = {
     highlightedRowId: PropTypes.any,
     onRowClick: PropTypes.func.isRequired,
     parties: PropTypes.array.isRequired,
-    onDeletePartie: PropTypes.func.isRequired
+    onDeletePartie: PropTypes.func.isRequired,
+    isLoaded: PropTypes.bool.isRequired,
 };

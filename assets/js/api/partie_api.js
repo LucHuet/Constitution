@@ -63,3 +63,26 @@ export function createDesignation(designation){
     body: JSON.stringify(designation),
   })
 }
+
+/**
+ * Returns a promise where the data is the rep log collection
+ *
+ * @return {Promise<Response>}
+ */
+export function getParties(){
+  return fetchJson('/partie/')
+    .then(data => data.items);
+}
+
+export function deletePartie(id) {
+    return fetchJson(`/partie/${id}`, {
+        method: 'DELETE'
+    });
+}
+
+export function createPartie(partie) {
+    return fetchJson('/partie/', {
+        method: 'POST',
+        body: JSON.stringify(partie),
+    });
+}

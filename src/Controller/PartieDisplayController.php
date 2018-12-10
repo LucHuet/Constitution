@@ -113,5 +113,4 @@ class PartieDisplayController extends BaseController
           'partieAppProps' => $partieAppProps
         ]);
     }
-
 }

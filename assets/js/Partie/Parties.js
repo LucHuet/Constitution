@@ -9,7 +9,8 @@ export default function Parties(props) {
           onRowClick,
           parties,
           onAddPartie,
-          onDeletePartie
+          onDeletePartie,
+          isLoaded
         } = props;
 
   return (
@@ -25,7 +26,8 @@ export default function Parties(props) {
         <PartieListe highlightedRowId={highlightedRowId}
                      onRowClick={onRowClick}
                      parties={parties}
-                     onDeletePartie={onDeletePartie}/>
+                     onDeletePartie={onDeletePartie}
+                     isLoaded={isLoaded}/>
 
       </table>
       <PartieCreator onAddPartie={onAddPartie}/>
@@ -38,5 +40,6 @@ Parties.propTypes = {
     onRowClick: PropTypes.func.isRequired,
     parties: PropTypes.array.isRequired,
     onAddPartie: PropTypes.func.isRequired,
-    onDeletePartie: PropTypes.func.isRequired
+    onDeletePartie: PropTypes.func.isRequired,
+    isLoaded: PropTypes.bool.isRequired,
 };
