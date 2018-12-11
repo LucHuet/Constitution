@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Parties from './Parties';
 import PropTypes from 'prop-types';
-//import uuid from 'uuid/v4';
+
 import { getParties, createPartie, deletePartie } from '../api/partie_api.js';
 
 export default class PartieApp extends Component {
@@ -17,6 +17,7 @@ export default class PartieApp extends Component {
         successMessage: ''
     };
 
+    this.successMessageTimeoutHandle = 0;
     this.handleRowClick = this.handleRowClick.bind(this);
     this.handleAddPartie = this.handleAddPartie.bind(this);
     this.handleDeletePartie = this.handleDeletePartie.bind(this);
@@ -24,13 +25,17 @@ export default class PartieApp extends Component {
 
   componentDidMount(){
     getParties()
-        .then((data) => {
-          this.setState({
-            parties : data,
-            isLoaded: true
-          })
-        });
+      .then((data) => {
+        this.setState({
+          parties : data,
+          isLoaded: true
+        })
+      });
   }
+
+  componentWillUnmount() {
+       clearTimeout(this.successMessageTimeoutHandle);
+   }
 
   handleRowClick(partieId, event) {
       this.setState({highlightedRowId: partieId});
@@ -51,20 +56,34 @@ export default class PartieApp extends Component {
           const newParties = [...prevState.parties, newPartie];
           return {parties: newParties,
                   isSavingNewPartie: false,
-                  successMessage: 'Partie créée!'
                 };
-          })
+          });
+          this.setSuccessMessage('Partie créée!');
         })
     ;
   }
 
-    handleDeletePartie(id){
-      this.setState((prevState) => {
-        return{
-          parties: this.state.parties.filter(partie => partie.id !== id)
-        };
-      });
-    }
+  handleDeletePartie(id){
+    this.setState((prevState) => {
+      return{
+        parties: this.state.parties.filter(partie => partie.id !== id)
+      };
+    });
+  }
+
+  setSuccessMessage(message) {
+    this.setState({
+        successMessage: message
+    });
+    clearTimeout(this.successMessageTimeoutHandle);
+    this.successMessageTimeoutHandle = setTimeout(() => {
+        this.setState({
+            successMessage: ''
+        });
+        this.successMessageTimeoutHandle = 0;
+    }, 3000)
+  }
+
 
   render() {
     return (
