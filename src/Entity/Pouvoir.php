@@ -13,8 +13,7 @@ class Pouvoir
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id", type="integer", nullable=false))
      */
     private $id;
 
@@ -35,27 +34,32 @@ class Pouvoir
     private $type;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $groupePouvoir;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pouvoir")
      */
     private $pouvoirParent;
 
 
     public function __construct(
+      $id,
       $nom,
       $description,
-      $type
+      $type,
+      $pouvoirParent = null
       )
     {
       $this
+      ->setId($id)
       ->setNom($nom)
       ->setDescription($description)
       ->setType($type)
       ;
+      if($pouvoirParent != null)
+      {
+        $this->setPouvoirParent($pouvoirParent);
+      }
+      $this->pouvoirsSup = new ArrayCollection();
+      $this->pouvoirsBase = new ArrayCollection();
+      $this->pouvoirSupp = new ArrayCollection();
     }
 
     public function __toString()
@@ -66,6 +70,13 @@ class Pouvoir
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getDescription(): ?string
@@ -100,18 +111,6 @@ class Pouvoir
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getGroupePouvoir(): ?string
-    {
-        return $this->groupePouvoir;
-    }
-
-    public function setGroupePouvoir(?string $groupePouvoir): self
-    {
-        $this->groupePouvoir = $groupePouvoir;
 
         return $this;
     }

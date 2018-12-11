@@ -58,7 +58,6 @@ export default class CardBoardApp extends Component {
     //then signifie qu'il n'y a pas d'erreur.
       .then((data)=>{
         //méthode qui permet de redonner une valeur à un state.
-        console.log(data);
         this.setState({
           acteurs: data,
           isLoaded: true,
@@ -154,8 +153,6 @@ export default class CardBoardApp extends Component {
         acteurPossedant: acteurSelect
       };
 
-      console.log(newPouvoir);
-
       createPouvoir(newPouvoir)
       //l'ajout n'as pas d'erreur
         .then(pouvoir => {
@@ -172,8 +169,6 @@ export default class CardBoardApp extends Component {
         acteurDesigne : acteurSelect,
         acteurDesignant: acteurDesignant
       };
-
-      console.log(newDesignation);
 
       createDesignation(newDesignation)
       //l'ajout n'as pas d'erreur

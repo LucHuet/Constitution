@@ -45,11 +45,12 @@ export default function CardBoard(props){
     case 'acteur':
     modalContent =       <ActeurCreator
       onAddActeur={onAddActeur}
+      onShowModal={onShowModal}
       validationErrorMessage={newActeurValidationErrorMessage}
       itemOptions={itemOptions}
     /> ;
       break;
-      case 'acteurChef':
+      case 'Chef d\'état':
       modalContent =       <ActeurChefCreator
           onShowModal={onShowModal}
       /> ;
@@ -114,13 +115,9 @@ export default function CardBoard(props){
     <Modal
       onClose={onCloseModal}
       open={showModal}
-      style = {{
-        marginTop: 'auto',
-        marginLeft: 'auto',
-        marginRight: 'auto'
-      }}
+      size='large'
     >
-      <Modal.Content scrolling>
+      <Modal.Content>
        {modalContent}
       </Modal.Content>
     </Modal>

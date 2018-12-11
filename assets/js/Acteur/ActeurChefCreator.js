@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Header, Image, Container, Divider, Segment, Flag, Icon } from 'semantic-ui-react'
+import { Header, Image, Container, Divider, Segment, Flag, Icon, Button } from 'semantic-ui-react'
 
 export default function ActeurChefCreator(props) {
 
@@ -9,9 +9,12 @@ export default function ActeurChefCreator(props) {
     onShowModal,
   } = props;
 
-  const handleAjout = function(event, modalType, acteurId){
-    event.preventDefault();
-    onShowModal( modalType, acteurId);
+  const handleBack = function(modalType){
+    onShowModal( modalType );
+  };
+
+  const handleSave = function(){
+    console.log("Ajout à FAIRE");
   };
 
   return(
@@ -78,6 +81,11 @@ export default function ActeurChefCreator(props) {
       <Divider />
       QUI - QUOI
     </Segment>
+    <Divider />
+
+      <Button onClick={() => handleBack('acteur')}>Retour</Button>
+
+      <Button onClick={() => handleSave()}>Sauvegarder</Button>
   </Container>
   </div>
   );

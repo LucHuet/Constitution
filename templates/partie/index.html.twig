@@ -16,9 +16,6 @@
         {% for partie in app.user.parties %}
             <tr>
                 <td><a href="{{ path('partie_show', {'id': partie.id}) }}">{{ partie.nom }}</a></td>
-                <td>
-                    <a href="{{ path('partie_edit', {'id': partie.id}) }}">Modifier votre partie</a>
-                </td>
             </tr>
         {% else %}
             <tr>

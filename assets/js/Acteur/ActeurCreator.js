@@ -20,6 +20,7 @@ export default class ActeurCreator extends Component{
     this.typeActeur = React.createRef();
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.handleAjout = this.handleAjout.bind(this);
   }
 
   handleFormSubmit(event){
@@ -55,6 +56,13 @@ export default class ActeurCreator extends Component{
 
   }
 
+  handleAjout(event, modalType){
+    console.log(modalType);
+    const {onShowModal} = this.props;
+    event.preventDefault();
+    onShowModal( modalType);
+  }
+
 
   render(){
     const { nombreActeurError } = this.state;
@@ -67,7 +75,8 @@ export default class ActeurCreator extends Component{
       <Card.Group>
       {itemOptions.map(option => {
         return  (
-          <Card key={option.id}>
+          <Card key={option.id} onClick={(event => this.handleAjout(event,option.text))}>
+
             <Card.Content>
               <Image floated='right' size='mini' src={'/build/static/'+option.image} />
               <Card.Header>{option.text}</Card.Header>
@@ -75,6 +84,7 @@ export default class ActeurCreator extends Component{
                 {option.desc}
               </Card.Description>
             </Card.Content>
+
           </Card>
                 )
       } )}
@@ -125,4 +135,5 @@ ActeurCreator.propTypes = {
   onAddActeur: PropTypes.func.isRequired,
   validationErrorMessage: PropTypes.string.isRequired,
   itemOptions: PropTypes.array.isRequired,
+  onShowModal: PropTypes.func.isRequired,
 };
