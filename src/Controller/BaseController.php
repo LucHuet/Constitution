@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Api\ActeurApiModel;
 use App\Api\PouvoirPartieApiModel;
 use App\Api\PartieApiModel;
+use App\Api\PouvoirApiModel;
 use App\Entity\ActeurPartie;
 use App\Entity\PouvoirPartie;
 use App\Entity\Partie;
+use App\Entity\Pouvoir;
 use App\Entity\DesignationPartie;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
@@ -74,6 +76,28 @@ class BaseController extends Controller
         $selfUrl = $this->generateUrl(
             'partie_get',
             ['id' => $partie->getId()]
+        );
+        $model->addLink('_self', $selfUrl);
+
+        return $model;
+    }
+
+    protected function createPouvoirApiModel(Pouvoir $pouvoir)
+    {
+        $model = new PouvoirApiModel();
+        $model->id = $pouvoir->getId();
+        $model->nom = $pouvoir->getNom();
+        $model->description = $pouvoir->getDescription();
+        $model->type = $pouvoir->getType();
+        if($pouvoir->getPouvoirParent() != null)
+        {
+        $model->pouvoirParent = $pouvoir->getPouvoirParent()->getId();
+        }
+
+
+        $selfUrl = $this->generateUrl(
+            'pouvoir_get',
+            ['id' => $pouvoir->getId()]
         );
         $model->addLink('_self', $selfUrl);
 
@@ -167,6 +191,23 @@ class BaseController extends Controller
         $models = [];
         foreach ($parties as $partie) {
             $models[] = $this->createPartieApiModel($partie);
+        }
+
+        return $models;
+    }
+
+    /**
+     * @return PartieApiModel[]
+     */
+    protected function findAllPouvoirsModels()
+    {
+
+        $pouvoirs = $this->getDoctrine()->getRepository(Pouvoir::class)
+            ->findAll();
+
+        $models = [];
+        foreach ($pouvoirs as $pouvoir) {
+            $models[] = $this->createPouvoirApiModel($pouvoir);
         }
 
         return $models;
