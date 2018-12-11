@@ -64,11 +64,15 @@ export default class PartieApp extends Component {
   }
 
   handleDeletePartie(id){
-    this.setState((prevState) => {
-      return{
-        parties: this.state.parties.filter(partie => partie.id !== id)
-      };
-    });
+    deletePartie(id)
+      .then(() => {
+        this.setState((prevState) => {
+          return{
+            parties: this.state.parties.filter(partie => partie.id !== id)
+          };
+        });
+          this.setSuccessMessage('La partie a été supprimée.');
+      });
   }
 
   setSuccessMessage(message) {

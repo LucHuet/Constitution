@@ -1,18 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button, Header, Image, Modal } from 'semantic-ui-react'
 
 export default function PartieListe(props) {
 
  const { highlightedRowId, onRowClick, parties, onDeletePartie, isLoaded, isSavingNewPartie } = props;
 
  if (!isLoaded) {
-        return (
-            <tbody>
-                <tr>
-                    <td colSpan="4" className="text-center">Loading...</td>
-                </tr>
-            </tbody>
-        );
+      return (
+          <tbody>
+              <tr>
+                  <td colSpan="4" className="text-center">Loading...</td>
+              </tr>
+          </tbody>
+      );
     }
 
  const handleDeleteClick = function(event, partieId){
