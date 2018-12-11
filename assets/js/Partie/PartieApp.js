@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import Parties from './Parties';
 import PropTypes from 'prop-types';
-import uuid from 'uuid/v4';
-
-import { getParties, deletePartie, createPartie } from '../api/partie_api.js';
+//import uuid from 'uuid/v4';
+import { getParties, createPartie, deletePartie } from '../api/partie_api.js';
 
 export default class PartieApp extends Component {
 
@@ -60,7 +59,6 @@ export default class PartieApp extends Component {
   }
 
     handleDeletePartie(id){
-      deletePartie(id);
       this.setState((prevState) => {
         return{
           parties: this.state.parties.filter(partie => partie.id !== id)

@@ -23,7 +23,7 @@ export default function Parties(props) {
             {successMessage}
         </div>
       )}
-      
+
       <table className="table table-parties">
         <thead>
           <tr>
