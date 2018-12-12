@@ -1,6 +1,5 @@
 import React from 'react';
 import PartieListe from './PartieListe';
-import PartieCreator from './PartieCreator';
 import PropTypes from 'prop-types';
 
 export default function Parties(props) {
@@ -40,13 +39,13 @@ export default function Parties(props) {
                              onRowClick={onRowClick}
                              parties={parties}
                              onDeletePartie={onDeletePartie}
+                             onAddPartie={onAddPartie}
                              isLoaded={isLoaded}
                              isSavingNewPartie={isSavingNewPartie}/>
 
               </table>
             </div>
             <br/>
-      <PartieCreator onAddPartie={onAddPartie}/>
     </div>
   );
 }
