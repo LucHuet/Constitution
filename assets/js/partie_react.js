@@ -3,7 +3,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import CardBoardApp from './CardBoard/CardBoardApp';
 
-console.log({...window.PARTIE_APP_PROPS});
 render(
   <CardBoardApp
     {...window.PARTIE_APP_PROPS}

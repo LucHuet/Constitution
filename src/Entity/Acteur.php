@@ -33,11 +33,23 @@ class Acteur
      */
     private $countryDescriptions;
 
-    public function __construct($type, $description)
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Pouvoir")
+     */
+    private $pouvoirsBase;
+
+    public function __construct($type, $description, $image)
     {
         $this->type = $type;
         $this->description = $description;
+        $this->image = $image;
         $this->countryDescriptions = new ArrayCollection();
+        $this->pouvoirsBase = new ArrayCollection();
     }
 
     public function __toString()
@@ -99,6 +111,44 @@ class Acteur
             if ($countryDescription->getActeur() === $this) {
                 $countryDescription->setActeur(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Pouvoir[]
+     */
+    public function getPouvoirsBase(): Collection
+    {
+        return $this->pouvoirsBase;
+    }
+
+    public function addPouvoirsBase(Pouvoir $pouvoirsBase): self
+    {
+        if (!$this->pouvoirsBase->contains($pouvoirsBase)) {
+            $this->pouvoirsBase[] = $pouvoirsBase;
+        }
+
+        return $this;
+    }
+
+    public function removePouvoirsBase(Pouvoir $pouvoirsBase): self
+    {
+        if ($this->pouvoirsBase->contains($pouvoirsBase)) {
+            $this->pouvoirsBase->removeElement($pouvoirsBase);
         }
 
         return $this;

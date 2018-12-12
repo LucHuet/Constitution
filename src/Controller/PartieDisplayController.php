@@ -50,7 +50,7 @@ class PartieDisplayController extends BaseController
     }
 
     /**
-     * @Route("/{id}", name="partie_show", methods="GET")
+     * @Route("/{id<\d+>}", name="partie_show", methods="GET")
      */
     public function show(
       Partie $partieCourante,
@@ -81,6 +81,8 @@ class PartieDisplayController extends BaseController
             $partieAppProps['itemOptions'][] = [
                 'id' => $acteur->getId(),
                 'text' => $acteur->getType(),
+                'desc' => $acteur->getDescription(),
+                'image' => $acteur->getImage(),
             ];
         }
 
@@ -111,6 +113,45 @@ class PartieDisplayController extends BaseController
           'partieCourante' => $partieCourante,
           'pouvoir_parties' => $pouvoirPartieRepository->findBy(['partie' => $partieCourante]),
           'partieAppProps' => $partieAppProps
+        ]);
+    }
+
+    /**
+     * @Route("/new", name="partie_display_new", methods="GET|POST")
+     */
+    public function new(Request $request, ActeurRepository $acteurRepository): Response
+    {
+        // verification qu'un utilisateur est loggé
+        if($this->checkStep->checkLogin() != null){
+          return $this->redirectToRoute($this->checkStep->checkLogin());
+        }
+
+        $partieCourante = new Partie();
+        $form = $this->createForm(PartieType::class, $partieCourante);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $partieCourante->setUser($this->getUser());
+            $em = $this->getDoctrine()->getManager();
+            //faire en sorte que le peuple soit présent par défaut
+            $acteurPartie = new ActeurPartie();
+            //ajout de l'acteur peuple
+            $acteurPeuple = $acteurRepository->findOneBy(['type'=>'Peuple']);
+            $acteurPartie->setPartie($partieCourante);
+            $acteurPartie->setTypeActeur($acteurPeuple);
+            $acteurPartie->setNom($acteurPeuple->getType());
+            //persister le peuple
+            $em->persist($acteurPartie);
+            $em->persist($partieCourante);
+            $em->flush();
+            $session = new Session();
+            $session->set('partieCourante', $partieCourante);
+            return $this->redirectToRoute('partie_show', ['id' =>$partieCourante->getId()]);
+        }
+
+        return $this->render('partie/new.html.twig', [
+            'partie' => $partieCourante,
+            'form' => $form->createView(),
         ]);
     }
 
