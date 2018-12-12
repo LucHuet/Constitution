@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Button from '../Components/Button';
-import {Form} from 'semantic-ui-react';
+import {Form, List} from 'semantic-ui-react';
 import { getPouvoirs } from '../api/partie_api.js';
+import PouvoirMenuDisplay from '../Components/PouvoirMenuDisplay'
 
 
 export default class PouvoirCreator extends Component{
@@ -16,6 +17,8 @@ export default class PouvoirCreator extends Component{
       listePouvoirs: [],
     };
 
+
+
     //ref permettent d'accéder à des élements du dom
     //permet de facilement récupérer les valeurs des variables
     this.nomPouvoir = React.createRef();
@@ -23,6 +26,11 @@ export default class PouvoirCreator extends Component{
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleGetPouvoir = this.handleGetPouvoir.bind(this);
+
+  }
+
+  componentDidMount(){
+    this.handleGetPouvoir();
   }
 
   handleFormSubmit(event){
@@ -45,7 +53,8 @@ export default class PouvoirCreator extends Component{
     typePouvoir.selectedIndex = 0;
   }
 
-  handleDisplayPouvoir(){
+  handleGetPouvoir(){
+
     if(!(this.state.listePouvoirs.length > 0))
     {
     getPouvoirs()
@@ -57,22 +66,19 @@ export default class PouvoirCreator extends Component{
         });
       });
     }
+
   }
 
-
   render(){
-    this.handleDisplayPouvoir();
 
     const { validationErrorMessage, pouvoirOptions } = this.props;
 
 
     return (
       <div>
-      {this.state.listePouvoirs.map(pouvoir => {
-        return <option value={pouvoir.id} key={pouvoir.id}>{pouvoir.text}</option>
-      } )}
-
-
+      <PouvoirMenuDisplay
+        tree = {this.state.listePouvoirs}
+      />
           <Form onSubmit={this.handleFormSubmit}>
             {validationErrorMessage && (
               <div className="alert alert-danger">
