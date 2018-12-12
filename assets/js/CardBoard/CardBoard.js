@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from './Card';
 import ActeurCreator from '../Acteur/ActeurCreator';
+import ActeurChefCreator from '../Acteur/ActeurChefCreator';
 import PouvoirCreator from '../Pouvoir/PouvoirCreator';
 import DesignationCreator from '../Designation/DesignationCreator';
 import PropTypes from 'prop-types';
@@ -44,10 +45,16 @@ export default function CardBoard(props){
     case 'acteur':
     modalContent =       <ActeurCreator
       onAddActeur={onAddActeur}
+      onShowModal={onShowModal}
       validationErrorMessage={newActeurValidationErrorMessage}
       itemOptions={itemOptions}
     /> ;
       break;
+      case 'Chef d\'état':
+      modalContent =       <ActeurChefCreator
+          onShowModal={onShowModal}
+      /> ;
+        break;
     case 'pouvoir':
       modalContent =       <PouvoirCreator
               onAddPouvoir={onAddPouvoir}
@@ -108,13 +115,8 @@ export default function CardBoard(props){
     <Modal
       onClose={onCloseModal}
       open={showModal}
-      style = {{
-        marginTop: 'auto',
-        marginLeft: 'auto',
-        marginRight: 'auto'
-      }}
+      size='large'
     >
-      <Modal.Header>Nouvel élement</Modal.Header>
       <Modal.Content>
        {modalContent}
       </Modal.Content>

@@ -2,17 +2,17 @@
 
 namespace App\Api;
 
-class ActeurApiModel
+class PouvoirApiModel
 {
     public $id;
 
     public $nom;
 
-    public $nombreIndividus;
+    public $description;
 
-    public $image;
+    public $type;
 
-    public $pouvoirs;
+    public $pouvoirParent;
 
     private $links = [];
 

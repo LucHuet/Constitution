@@ -43,6 +43,11 @@ export function deleteActeur(id) {
   });
 }
 
+export function getPouvoirs(){
+  return fetchJson('/pouvoir/').
+    then(data => data.items);
+}
+
 export function createActeur(acteur){
   return fetchJson('http://localhost:8000/acteur/', {
     method: 'POST',
@@ -50,7 +55,7 @@ export function createActeur(acteur){
   })
 }
 
-export function createPouvoir(pouvoir){
+export function createPouvoirPartie(pouvoir){
   return fetchJson('http://localhost:8000/pouvoir/', {
     method: 'POST',
     body: JSON.stringify(pouvoir),

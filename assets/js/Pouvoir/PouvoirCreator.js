@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Button from '../Components/Button';
 import {Form} from 'semantic-ui-react';
+import { getPouvoirs } from '../api/partie_api.js';
+
 
 export default class PouvoirCreator extends Component{
 
@@ -10,7 +12,8 @@ export default class PouvoirCreator extends Component{
     super(props);
 
     this.state = {
-      nombreActeurError: ''
+      nombreActeurError: '',
+      listePouvoirs: [],
     };
 
     //ref permettent d'accéder à des élements du dom
@@ -19,6 +22,7 @@ export default class PouvoirCreator extends Component{
     this.typePouvoir = React.createRef();
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.handleGetPouvoir = this.handleGetPouvoir.bind(this);
   }
 
   handleFormSubmit(event){
@@ -41,14 +45,34 @@ export default class PouvoirCreator extends Component{
     typePouvoir.selectedIndex = 0;
   }
 
+  handleDisplayPouvoir(){
+    if(!(this.state.listePouvoirs.length > 0))
+    {
+    getPouvoirs()
+    //then signifie qu'il n'y a pas d'erreur.
+      .then((data)=>{
+        //méthode qui permet de redonner une valeur à un state.
+        this.setState({
+          listePouvoirs: data,
+        });
+      });
+    }
+  }
+
 
   render(){
+    this.handleDisplayPouvoir();
 
     const { validationErrorMessage, pouvoirOptions } = this.props;
 
 
     return (
       <div>
+      {this.state.listePouvoirs.map(pouvoir => {
+        return <option value={pouvoir.id} key={pouvoir.id}>{pouvoir.text}</option>
+      } )}
+
+
           <Form onSubmit={this.handleFormSubmit}>
             {validationErrorMessage && (
               <div className="alert alert-danger">
