@@ -3,7 +3,7 @@ import CardBoard from './CardBoard';
 //permet de définit le type de props
 import PropTypes from 'prop-types';
 import interact from 'interactjs';
-import { getActeurs, deleteActeur, createActeur, createPouvoir, createDesignation } from '../api/partie_api.js';
+import { getActeurs, deleteActeur, createActeur, createPouvoirPartie, createDesignation } from '../api/partie_api.js';
 import Sortable from './Sortable.js';
 
 //le mot clé export permet de dire qu'on pourra utiliser
@@ -153,7 +153,7 @@ export default class CardBoardApp extends Component {
         acteurPossedant: acteurSelect
       };
 
-      createPouvoir(newPouvoir)
+      createPouvoirPartie(newPouvoir)
       //l'ajout n'as pas d'erreur
         .then(pouvoir => {
           this.setSuccessMessage('Pouvoir enregistré !');
