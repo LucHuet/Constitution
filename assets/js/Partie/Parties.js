@@ -16,30 +16,36 @@ export default function Parties(props) {
         } = props;
 
   return (
-    <div>
+      <div>
+        <div className="ui raised very padded text container segment">
+          <h2 className="ui header centered"> Liste de vos parties </h2>
+          <br/>
+            {successMessage && (
+              <div className="ui success message">
+                <div className="header">
+                    {successMessage}
+                </div>
+              </div>
+            )}
 
-      {successMessage && (
-        <div className="alert alert-success text-center">
-            {successMessage}
-        </div>
-      )}
+              <table className="ui very basic collapsing celled table parties-table">
+                <thead>
+                  <tr>
+                    <th><h3 className="ui header">Nom de la partie</h3></th>
+                    <th><h3 className="ui header">Supprimer</h3></th>
+                  </tr>
+                </thead>
 
-      <table className="table table-parties">
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Supprimer</th>
-          </tr>
-        </thead>
+                <PartieListe highlightedRowId={highlightedRowId}
+                             onRowClick={onRowClick}
+                             parties={parties}
+                             onDeletePartie={onDeletePartie}
+                             isLoaded={isLoaded}
+                             isSavingNewPartie={isSavingNewPartie}/>
 
-        <PartieListe highlightedRowId={highlightedRowId}
-                     onRowClick={onRowClick}
-                     parties={parties}
-                     onDeletePartie={onDeletePartie}
-                     isLoaded={isLoaded}
-                     isSavingNewPartie={isSavingNewPartie}/>
-
-      </table>
+              </table>
+            </div>
+            <br/>
       <PartieCreator onAddPartie={onAddPartie}/>
     </div>
   );

@@ -22,18 +22,18 @@ export default class PartieCreator extends Component {
 
   render(){
     return (
-  
-<div className="ui raised very padded text container segment">
-  <h2 className="ui header centered">Nouvelle partie</h2>
+
+<div>
+  <h2 className="ui centered header">Nouvelle partie</h2>
+  <br/>
   <form className="partie" method="post" onSubmit={this.handleFormSubmit}>
     <div id="partie">
       <div className="ui form">
-        <div className="inline fields">
-
-          <div className="three wide field">
-            <label htmlFor="partie_nom" className="required">Nom de la partie</label>
+        <div className="inline fields parties-form">
+          <div className="two wide field">
+            <h3 className="ui header"><label htmlFor="partie_nom" className="required">Nom de la partie </label></h3>
           </div>
-          <div className="three wide field">
+          <div className="five wide field">
               <input type="text"
                 id="partie_nom"
                 ref={this.partieNomInput}
@@ -42,7 +42,7 @@ export default class PartieCreator extends Component {
               />
             </div>
             <input type="hidden" id="partie__token" name="partie[_token]" value="5fa84MhAXvPtPgoWRDsiT8-QGo0B-sC0i1dizInLSqU" />
-            <div className="five wide field">
+            <div className="two wide field">
               <button type="submit" className="ui basic button">
                 <i className="icon save"></i>
                 Enregistrer
@@ -60,4 +60,5 @@ export default class PartieCreator extends Component {
 
 PartieCreator.propTypes = {
     onNewItemSubmit: PropTypes.func.isRequired,
+    onAddPartie: PropTypes.func.isRequired,
 };
