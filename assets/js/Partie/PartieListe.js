@@ -31,7 +31,7 @@ export default function PartieListe(props) {
              className={highlightedRowId === partie.id ? 'info' : ''}
              onClick={() => onRowClick(partie.id)}
          >
-             <td>{partie.nom}</td>
+             <td><a href="{{partie_get}}">{partie.nom}</a></td>
              <td>
                <a href="#" onClick={(event) => handleDeleteClick(event, partie.id)}>
                 <i className="trash icon"></i>
