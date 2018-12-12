@@ -8,6 +8,10 @@ body{
   padding-top: 100px!important;
 }
 
+footer{
+  text-align: center;
+}
+
 h1.ui.header{
   color: #404040;
   margin-bottom: 25px!important;
@@ -108,4 +112,12 @@ img {
         border-color: #53A3CD;
     }
 
+}
+
+.ui.table.parties-table{
+  margin: auto;
+}
+
+.ui.form .inline.fields.parties-form{
+  justify-content: center;
 }
