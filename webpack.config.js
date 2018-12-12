@@ -10,6 +10,8 @@ Encore
 
     .createSharedEntry('layout', './assets/js/layout.js')
     .addEntry('partie_react', './assets/js/partie_react.js')
+    .addEntry('liste_partie_react', './assets/js/liste_partie_react.js')
+
 
     .enableBuildNotifications()
     // fixes modules that expect jQuery to be global
