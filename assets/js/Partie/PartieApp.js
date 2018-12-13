@@ -10,11 +10,11 @@ export default class PartieApp extends Component {
     super(props);
 
     this.state = {
-        highlightedRowId: null,
-        parties : [],
-        isLoaded: false,
-        isSavingNewPartie: false,
-        successMessage: ''
+      highlightedRowId: null,
+      parties : [],
+      isLoaded: false,
+      isSavingNewPartie: false,
+      successMessage: ''
     };
 
     this.successMessageTimeoutHandle = 0;
