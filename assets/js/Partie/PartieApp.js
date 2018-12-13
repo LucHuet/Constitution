@@ -15,7 +15,6 @@ export default class PartieApp extends Component {
       isSavingNewPartie: false,
       successMessage: ''
     };
-
     this.successMessageTimeoutHandle = 0;
     this.handleAddPartie = this.handleAddPartie.bind(this);
     this.handleDeletePartie = this.handleDeletePartie.bind(this);
@@ -24,11 +23,14 @@ export default class PartieApp extends Component {
   componentDidMount(){
     getParties()
       .then((data) => {
+        console.log(data);
         this.setState({
           parties : data,
-          isLoaded: true
-        })
+          isLoaded: true,
+        });
+        console.log(this.state.parties);
       });
+
   }
 
   componentWillUnmount() {

@@ -28,7 +28,7 @@ export default function Parties(props) {
             <table className="ui very basic collapsing celled table parties-table">
               <thead>
                 <tr>
-                  <th><h3 className="ui header">Nom de la partie</h3></th>
+                {parties.length === 0 ? <th><h3 className="ui header">Créer votre partie</h3></th> : <th><h3 className="ui header">Nom de la partie</h3></th>}
                   <th></th>
                 </tr>
               </thead>
@@ -52,5 +52,5 @@ Parties.propTypes = {
     onDeletePartie: PropTypes.func.isRequired,
     isLoaded: PropTypes.bool.isRequired,
     isSavingNewPartie: PropTypes.bool.isRequired,
-    successMessage: PropTypes.string.isRequired
+    successMessage: PropTypes.string.isRequired,
 };
