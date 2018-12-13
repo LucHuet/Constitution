@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 
 export default function Parties(props) {
 
-  const { highlightedRowId,
-          onRowClick,
-          parties,
+  const { parties,
           onAddPartie,
           onDeletePartie,
           isLoaded,
@@ -35,9 +33,7 @@ export default function Parties(props) {
                 </tr>
               </thead>
 
-              <PartieListe highlightedRowId={highlightedRowId}
-                           onRowClick={onRowClick}
-                           parties={parties}
+              <PartieListe parties={parties}
                            onDeletePartie={onDeletePartie}
                            onAddPartie={onAddPartie}
                            isLoaded={isLoaded}
@@ -51,8 +47,6 @@ export default function Parties(props) {
 }
 
 Parties.propTypes = {
-    highlightedRowId: PropTypes.any,
-    onRowClick: PropTypes.func.isRequired,
     parties: PropTypes.array.isRequired,
     onAddPartie: PropTypes.func.isRequired,
     onDeletePartie: PropTypes.func.isRequired,
