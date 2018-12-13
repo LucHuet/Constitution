@@ -10,12 +10,12 @@ export default class PartieCreator extends Component {
   }
 
   handleFormSubmit() {
+    event.preventDefault();
     const { onAddPartie } = this.props;
     const partieNomInput = this.partieNomInput.current;
 
     onAddPartie(partieNomInput.value);
-
-    this.partieNomInput.value='';
+    partieNomInput.value='';
     }
 
   render(){
@@ -44,6 +44,5 @@ export default class PartieCreator extends Component {
 }
 
 PartieCreator.propTypes = {
-    onNewItemSubmit: PropTypes.func.isRequired,
     onAddPartie: PropTypes.func.isRequired,
 };
