@@ -10,9 +10,6 @@ export default class PartieCreator extends Component {
   }
 
   handleFormSubmit() {
-    console.log("handleFormSubmit");
-
-
     const { onAddPartie } = this.props;
     const partieNomInput = this.partieNomInput.current;
 
@@ -22,24 +19,25 @@ export default class PartieCreator extends Component {
     }
 
   render(){
-    return (<tr className="ui form">
-              <td>
-              <div className="field">
-                  <input type="text"
-                    id="partie_nom"
-                    ref={this.partieNomInput}
-                    required="required"
-                    maxLength="255"
-                    placeholder="Nom de la nouvelle partie"
-                  />
-                </div>
-              </td>
-              <td>
-                <input type="hidden" id="partie__token" name="partie[_token]" value="5fa84MhAXvPtPgoWRDsiT8-QGo0B-sC0i1dizInLSqU" />
-                <button onClick={() => {this.handleFormSubmit()}}>
-                  <i className="icon save"></i>
-                </button>
-              </td>
+    return (
+      <tr className="ui form">
+        <td>
+        <div className="field">
+          <input type="text"
+            id="partie_nom"
+            ref={this.partieNomInput}
+            required="required"
+            maxLength="255"
+            placeholder="Nom de la nouvelle partie"
+          />
+        </div>
+        </td>
+        <td>
+          <input type="hidden" id="partie__token" name="partie[_token]" value="5fa84MhAXvPtPgoWRDsiT8-QGo0B-sC0i1dizInLSqU" />
+          <a href="#" onClick={() => {this.handleFormSubmit()}}>
+            <i className="icon save"></i>
+          </a>
+        </td>
       </tr>
     );
   }

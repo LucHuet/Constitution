@@ -27,25 +27,25 @@ export default function Parties(props) {
               </div>
             )}
 
-              <table className="ui very basic collapsing celled table parties-table">
-                <thead>
-                  <tr>
-                    <th><h3 className="ui header">Nom de la partie</h3></th>
-                    <th><h3 className="ui header">Supprimer</h3></th>
-                  </tr>
-                </thead>
+            <table className="ui very basic collapsing celled table parties-table">
+              <thead>
+                <tr>
+                  <th><h3 className="ui header">Nom de la partie</h3></th>
+                  <th></th>
+                </tr>
+              </thead>
 
-                <PartieListe highlightedRowId={highlightedRowId}
-                             onRowClick={onRowClick}
-                             parties={parties}
-                             onDeletePartie={onDeletePartie}
-                             onAddPartie={onAddPartie}
-                             isLoaded={isLoaded}
-                             isSavingNewPartie={isSavingNewPartie}/>
+              <PartieListe highlightedRowId={highlightedRowId}
+                           onRowClick={onRowClick}
+                           parties={parties}
+                           onDeletePartie={onDeletePartie}
+                           onAddPartie={onAddPartie}
+                           isLoaded={isLoaded}
+                           isSavingNewPartie={isSavingNewPartie}/>
 
-              </table>
-            </div>
-            <br/>
+            </table>
+          </div>
+        <br/>
     </div>
   );
 }
