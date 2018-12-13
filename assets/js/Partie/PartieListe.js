@@ -28,16 +28,16 @@ export default function PartieListe(props) {
 
      {parties.map((partie) => (
          <tr
-             key={partie.id}
-             className={highlightedRowId === partie.id ? 'info' : ''}
-             onClick={() => onRowClick(partie.id)}
+           key={partie.id}
+           className={highlightedRowId === partie.id ? 'info' : ''}
+           onClick={() => onRowClick(partie.id)}
          >
-             <td><a href={"/partieDisplay/" + partie.id}>{partie.nom}</a></td>
-             <td>
-               <a href="#" onClick={(event) => handleDeleteClick(event, partie.id)}>
-                <i className="trash icon"></i>
-               </a>
-             </td>
+           <td><a href={"/partieDisplay/" + partie.id}>{partie.nom}</a></td>
+           <td>
+             <a href="#" onClick={(event) => handleDeleteClick(event, partie.id)}>
+              <i className="trash icon"></i>
+             </a>
+           </td>
          </tr>
      ))}
 
