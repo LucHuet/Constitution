@@ -8,7 +8,6 @@ framework:
     # Remove or comment this section to explicitly disable session support.
     session:
         handler_id: ~
-
     #esi: true
     #fragments: true
     php_errors:
