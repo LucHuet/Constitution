@@ -198,14 +198,11 @@ export default class CardBoardApp extends Component {
         this.setState((prevState) => {
           //déclaration d'une nouvelle liste d'acteursJson
           //qui est la liste de base + le nouvel acteur
-          console.log(0, prevState.pouvoirsSelection);
-
           return {
             pouvoirsSelectionTest : pouvoirId,
             pouvoirsSelection: [...prevState.pouvoirsSelection, pouvoirId],
           };
         });
-        console.log(1, this.state.pouvoirsSelection, this.state.pouvoirsSelectionTest);
       }
       console.log(2, this.state.pouvoirsSelection, this.state.pouvoirsSelectionTest);
   }

@@ -27,7 +27,7 @@ export default class PouvoirMenuDisplay extends Component {
           className={pouvoirsSelection.includes(pouvoir.id) ? 'ui info message' : ''}
           >
           {espaceAvant}  {pouvoir.nom}
-          </div><br/>
+          </div>
           <PouvoirMenuDisplay pouvoirsSelection={pouvoirsSelection} onClickPouvoir={onClickPouvoir} tree = {tree} parent = {pouvoir.id} level = {level + 1} />
         </span>
       )
