@@ -18,6 +18,7 @@ export default class CardBoardApp extends Component {
     //variables qui peuvent être modifiées.
     this.state = {
       acteurs: [],
+      pouvoirsSelection: [],
       isLoaded: false,
       isSavingNewActeur: false,
       successMessage: '',
@@ -49,6 +50,7 @@ export default class CardBoardApp extends Component {
     this.handleShowModal = this.handleShowModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handleDeleteActeur = this.handleDeleteActeur.bind(this);
+    this.handlePouvoirClick = this.handlePouvoirClick.bind(this);
   }
 
   //componentDidMount est une methode magique qui est automatiquement
@@ -91,6 +93,8 @@ export default class CardBoardApp extends Component {
       this.successMessageTimemoutHandle =  0;
     }, 3000);
   }
+
+
 
   handleAddActeur(nom, nombreIndividus, typeActeur){
 
@@ -178,6 +182,35 @@ export default class CardBoardApp extends Component {
         })
   }
 
+  handlePouvoirClick(pouvoirId) {
+    //permet à highlightedRowId de prendre la valeur de l'id de la ligne sur laquelle on clique
+      //this.setState({highlightedRowId:pouvoirId});
+      if(this.state.pouvoirsSelection.includes(pouvoirId))
+      {
+        this.setState((prevState) => {
+          return {
+            pouvoirsSelectionTest : pouvoirId,
+            pouvoirsSelection: prevState.pouvoirsSelection.filter(id => id != pouvoirId)
+          }
+        });
+      }else {
+
+        this.setState((prevState) => {
+          //déclaration d'une nouvelle liste d'acteursJson
+          //qui est la liste de base + le nouvel acteur
+          console.log(0, prevState.pouvoirsSelection);
+
+          return {
+            pouvoirsSelectionTest : pouvoirId,
+            pouvoirsSelection: [...prevState.pouvoirsSelection, pouvoirId],
+          };
+        });
+        console.log(1, this.state.pouvoirsSelection, this.state.pouvoirsSelectionTest);
+      }
+      console.log(2, this.state.pouvoirsSelection, this.state.pouvoirsSelectionTest);
+  }
+
+
   handleShowModal(modalType, acteurId=0){
     this.setState({
       showModal: true,
@@ -233,6 +266,7 @@ export default class CardBoardApp extends Component {
         {...this.state}
         onAddActeur={this.handleAddActeur}
         onAddPouvoir={this.handleAddPouvoir}
+        onClickPouvoir={this.handlePouvoirClick}
         onAddDesignation={this.handleAddDesignation}
         onShowModal={this.handleShowModal}
         onCloseModal={this.handleCloseModal}

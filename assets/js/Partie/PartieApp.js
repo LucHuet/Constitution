@@ -41,6 +41,8 @@ export default class PartieApp extends Component {
       this.setState({highlightedRowId: partieId});
   }
 
+
+
   handleAddPartie(nom) {
       const newPartie = {
         nom: nom
