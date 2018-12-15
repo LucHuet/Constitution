@@ -81,20 +81,19 @@ class PartieController extends BaseController
             ], 400);
         }
 
-        $peuple = new ActeurPartie();
-        $peuple->setTypeActeur($acteurRepository->findOneBy(['type' => 'Peuple']));
-        $peuple->setNombreIndividus(1);
-        $peuple->setNom('Le peuple');
-        dump($peuple);
-
         /** @var Partie $partie */
         $partie = $form->getData();
         $em = $this->getDoctrine()->getManager();
         $partie->setUser($this->getUser());
+
+        $peuple = new ActeurPartie();
+        $peuple->setTypeActeur($acteurRepository->findOneBy(['type' => 'Peuple']));
         $peuple->setPartie($partie);
+        $peuple->setNombreIndividus(1);
+        $peuple->setNom('Le peuple');
+        $em->persist($peuple);
+
         $partie->addActeurParty($peuple);
-        dump($partie);
-        dump($peuple);
         $em->persist($partie);
         $em->flush();
 
