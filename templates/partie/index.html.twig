@@ -3,33 +3,15 @@
 {% block title %}Partie index{% endblock %}
 
 {% block body %}
-    <h1 class="ui header">Liste des parties</h1>
+  <div id="partie-app">
+  </div>
+{% endblock %}
 
-    <table class="table table-parties">
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for partie in app.user.parties %}
-            <tr>
-                <td><a href="{{ path('partie_show', {'id': partie.id}) }}">{{ partie.nom }}</a></td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">Pas de partie en cours</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <p>
-      <a href="{{ path('partie_new') }}">
-        <button class="ui basic button">
-          <i class="icon plus"></i>
-          Nouvelle partie
-        </button>
-      </a>
-    </p>
+{% block javascripts %}
+
+  {{ parent() }}
+  <script>
+    window.PARTIE_APP_PROPS
+  </script>
+  <script src="{{ asset('build/liste_partie_react.js') }}"></script>
 {% endblock %}

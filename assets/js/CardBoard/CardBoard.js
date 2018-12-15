@@ -19,6 +19,7 @@ export default function CardBoard(props){
     onShowModal,
     onCloseModal,
     onDeleteActeur,
+    onClickPouvoir,
     isLoaded,
     isSavingNewActeur,
     successMessage,
@@ -30,6 +31,7 @@ export default function CardBoard(props){
     showModal,
     modalType,
     acteurSelect,
+    pouvoirsSelection,
   } = props;
 
 
@@ -57,7 +59,9 @@ export default function CardBoard(props){
         break;
     case 'pouvoir':
       modalContent =       <PouvoirCreator
+              pouvoirsSelection={pouvoirsSelection}
               onAddPouvoir={onAddPouvoir}
+              onClickPouvoir = {onClickPouvoir}
               validationErrorMessage={newActeurValidationErrorMessage}
               pouvoirOptions={pouvoirOptions}
               acteurSelect={acteurSelect}
@@ -129,11 +133,13 @@ export default function CardBoard(props){
 CardBoard.propTypes = {
   onAddActeur: PropTypes.func.isRequired,
   onAddPouvoir: PropTypes.func.isRequired,
+  onClickPouvoir: PropTypes.func.isRequired,
   onAddDesignation: PropTypes.func.isRequired,
   onShowModal: PropTypes.func.isRequired,
   onCloseModal: PropTypes.func.isRequired,
   onDeleteActeur: PropTypes.func.isRequired,
   acteurs: PropTypes.array.isRequired,
+  pouvoirsSelection: PropTypes.array.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   isSavingNewActeur: PropTypes.bool.isRequired,
   showModal: PropTypes.bool.isRequired,

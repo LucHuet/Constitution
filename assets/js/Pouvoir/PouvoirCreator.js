@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Button from '../Components/Button';
-import {Form, List} from 'semantic-ui-react';
+import {Form, Table} from 'semantic-ui-react';
 import { getPouvoirs } from '../api/partie_api.js';
 import PouvoirMenuDisplay from '../Components/PouvoirMenuDisplay'
 
@@ -71,14 +71,19 @@ export default class PouvoirCreator extends Component{
 
   render(){
 
-    const { validationErrorMessage, pouvoirOptions } = this.props;
-
+    const { validationErrorMessage, pouvoirOptions, onClickPouvoir, pouvoirsSelection} = this.props;
 
     return (
       <div>
-      <PouvoirMenuDisplay
-        tree = {this.state.listePouvoirs}
-      />
+      <div className="pouvoir">
+          <PouvoirMenuDisplay
+            onClickPouvoir={onClickPouvoir}
+            pouvoirsSelection={pouvoirsSelection}
+            tree={this.state.listePouvoirs}
+          />
+          <Button onClick={() => this.handleFormSubmit()}>Sauvegarder</Button>
+      </div>
+
           <Form onSubmit={this.handleFormSubmit}>
             {validationErrorMessage && (
               <div className="alert alert-danger">
@@ -110,7 +115,9 @@ export default class PouvoirCreator extends Component{
 
 PouvoirCreator.propTypes = {
   onAddPouvoir: PropTypes.func.isRequired,
+  onClickPouvoir : PropTypes.func.isRequired,
   validationErrorMessage: PropTypes.string.isRequired,
   pouvoirOptions: PropTypes.array.isRequired,
+  pouvoirsSelection: PropTypes.array.isRequired,
   acteurSelect: PropTypes.number.isRequired,
 };

@@ -8,44 +8,29 @@ export default class PouvoirMenuDisplay extends Component {
     //super(props) permet d'appeler le constructeur parent
     super(props);
 
+    this.levelCheck = this.levelCheck.bind(this);
   }
 
   levelCheck(pouvoir){
 
-    const {tree, parent, level} = this.props
+    const {tree, parent, level, onClickPouvoir, pouvoirsSelection} = this.props
+
+    let espaceAvant = ' * '.repeat(level);
 
     if(pouvoir.pouvoirParent == parent)
     {
-      switch (level) {
-      case 1:
       return (
         <span>
-          <List.Item key={pouvoir.id} as='li'>{pouvoir.nom}</List.Item>
-          <PouvoirMenuDisplay tree = {tree} parent = {pouvoir.id} level = {level + 1} />
-        </span>
-        )
-      case 2:
-      return (
-        <span>
-          <List.Item key={pouvoir.id} as='li'> - {pouvoir.nom}</List.Item>
-          <PouvoirMenuDisplay tree = {tree} parent = {pouvoir.id} level = {level + 1} />
+          <div
+          onClick={()=> onClickPouvoir(pouvoir.id)}
+          key={pouvoir.id}
+          className={pouvoirsSelection.includes(pouvoir.id) ? 'ui info message' : ''}
+          >
+          {espaceAvant}  {pouvoir.nom}
+          </div>
+          <PouvoirMenuDisplay pouvoirsSelection={pouvoirsSelection} onClickPouvoir={onClickPouvoir} tree = {tree} parent = {pouvoir.id} level = {level + 1} />
         </span>
       )
-      case 3:
-      return (
-        <span>
-          <List.Item key={pouvoir.id} as='li'> - - {pouvoir.nom}</List.Item>
-          <PouvoirMenuDisplay tree = {tree} parent = {pouvoir.id} level = {level + 1} />
-        </span>
-      )
-      case 4:
-      return (
-        <span>
-          <List.Item key={pouvoir.id} as='li'> - - - {pouvoir.nom}</List.Item>
-          <PouvoirMenuDisplay tree = {tree} parent = {pouvoir.id} level = {level + 1} />
-        </span>
-      )
-      }
     }
 
   }
@@ -55,11 +40,13 @@ export default class PouvoirMenuDisplay extends Component {
     const { tree, parent,  level} = this.props
 
     return (
-      tree.map((pouvoir) => (
-        <div key={pouvoir.id}>
-        {this.levelCheck(pouvoir)}
+
+        <div>
+        {tree.map((pouvoir) => (
+          this.levelCheck(pouvoir)
+        ))}
         </div>
-      ))
+
     )
 
   }
@@ -67,6 +54,8 @@ export default class PouvoirMenuDisplay extends Component {
 }
 
 PouvoirMenuDisplay.propTypes = {
+  onClickPouvoir : PropTypes.func.isRequired,
+  pouvoirsSelection: PropTypes.array.isRequired,
   tree: PropTypes.array,
   parent: PropTypes.number,
   level: PropTypes.number,
