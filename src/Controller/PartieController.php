@@ -60,7 +60,7 @@ class PartieController extends BaseController
      * @Route("/", name="partie_new", methods="POST", options={"expose"=true})
      * @Method("POST")
      */
-    public function createPartie(Request $request)
+    public function createPartie(Request $request, ActeurPartieRepository $acteurPartieRepository, ActeurRepository $acteurRepository)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $data = json_decode($request->getContent(), true);
@@ -85,6 +85,15 @@ class PartieController extends BaseController
         $partie = $form->getData();
         $em = $this->getDoctrine()->getManager();
         $partie->setUser($this->getUser());
+
+        $peuple = new ActeurPartie();
+        $peuple->setTypeActeur($acteurRepository->findOneBy(['type' => 'Peuple']));
+        $peuple->setPartie($partie);
+        $peuple->setNombreIndividus(1);
+        $peuple->setNom('Le peuple');
+        $em->persist($peuple);
+
+        $partie->addActeurParty($peuple);
         $em->persist($partie);
         $em->flush();
 
