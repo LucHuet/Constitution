@@ -10,15 +10,12 @@ export default class PartieApp extends Component {
     super(props);
 
     this.state = {
-        highlightedRowId: null,
-        parties : [],
-        isLoaded: false,
-        isSavingNewPartie: false,
-        successMessage: ''
+      parties : [],
+      isLoaded: false,
+      isSavingNewPartie: false,
+      successMessage: ''
     };
-
     this.successMessageTimeoutHandle = 0;
-    this.handleRowClick = this.handleRowClick.bind(this);
     this.handleAddPartie = this.handleAddPartie.bind(this);
     this.handleDeletePartie = this.handleDeletePartie.bind(this);
   }
@@ -26,22 +23,19 @@ export default class PartieApp extends Component {
   componentDidMount(){
     getParties()
       .then((data) => {
+        console.log(data);
         this.setState({
           parties : data,
-          isLoaded: true
-        })
+          isLoaded: true,
+        });
+        console.log(this.state.parties);
       });
+
   }
 
   componentWillUnmount() {
        clearTimeout(this.successMessageTimeoutHandle);
    }
-
-  handleRowClick(partieId, event) {
-      this.setState({highlightedRowId: partieId});
-  }
-
-
 
   handleAddPartie(nom) {
       const newPartie = {
@@ -52,11 +46,18 @@ export default class PartieApp extends Component {
       isSavingNewPartie: true
     });
 
+    const newState = {
+      isSavingNewPartie:false,
+    }
+
     createPartie(newPartie)
         .then(partie => {
           this.setState(prevState => {
-          const newParties = [...prevState.parties, newPartie];
-          return {parties: newParties,
+
+          const newParties = [...prevState.parties, partie];
+          return {
+                  ...newState,
+                  parties: newParties,
                   isSavingNewPartie: false,
                 };
           });
@@ -105,6 +106,5 @@ export default class PartieApp extends Component {
   }
 
   PartieApp.propTypes = {
-      highlightedRowId: PropTypes.any,
-      onRowClick: PropTypes.func.isRequired
+      highlightedRowId: PropTypes.any
   };

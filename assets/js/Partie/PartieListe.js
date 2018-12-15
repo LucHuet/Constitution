@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import PartieCreator from './PartieCreator';
 import { Button, Header, Image, Modal } from 'semantic-ui-react'
 
 export default function PartieListe(props) {
 
- const { highlightedRowId, onRowClick, parties, onDeletePartie, isLoaded, isSavingNewPartie } = props;
+ const { parties, onDeletePartie, isLoaded, isSavingNewPartie, onAddPartie } = props;
 
  if (!isLoaded) {
       return (
@@ -27,18 +28,20 @@ export default function PartieListe(props) {
 
      {parties.map((partie) => (
          <tr
-             key={partie.id}
-             className={highlightedRowId === partie.id ? 'info' : ''}
-             onClick={() => onRowClick(partie.id)}
-         >
-             <td><a href={"/partieDisplay/" + partie.id}>{partie.nom}</a></td>
-             <td>
-               <a href="#" onClick={(event) => handleDeleteClick(event, partie.id)}>
-                <i className="trash icon"></i>
-               </a>
-             </td>
+           key={partie.id}
+          >
+           <td><a href={"/partieDisplay/" + partie.id}>{partie.nom}</a></td>
+           <td>
+             <a href="#" onClick={(event) => handleDeleteClick(event, partie.id)}>
+              <i className="trash icon"></i>
+             </a>
+           </td>
          </tr>
      ))}
+
+
+    <PartieCreator onAddPartie={onAddPartie}/>
+
      {isSavingNewPartie && (
        <tr>
           <td
@@ -57,10 +60,9 @@ export default function PartieListe(props) {
 }
 
 PartieListe.propTypes = {
-    highlightedRowId: PropTypes.any,
-    onRowClick: PropTypes.func.isRequired,
     parties: PropTypes.array.isRequired,
     onDeletePartie: PropTypes.func.isRequired,
+    onAddPartie: PropTypes.func.isRequired,
     isLoaded: PropTypes.bool.isRequired,
     isSavingNewPartie: PropTypes.bool.isRequired,
 };

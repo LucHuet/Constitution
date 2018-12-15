@@ -50,6 +50,8 @@ class User implements UserInterface, \Serializable
 
       /**
      * @ORM\OneToOne(targetEntity="Image", mappedBy="user", orphanRemoval=true, cascade={"persist"})
+     * @Assert\Valid
+     *
      */
     private $image;
 
