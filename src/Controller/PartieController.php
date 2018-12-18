@@ -19,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Service\CheckStepService;
+use App\Controller\Base\BaseController;
 
 /**
  * @Route("/partie")

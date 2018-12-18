@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use App\Entity\Partie;
 use App\Service\CheckStepService;
+use App\Controller\Base\BaseController;
 
 /**
  * @Route("/designation")

@@ -5,7 +5,7 @@ namespace App\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Pouvoir;
-
+use App\Controller\Base\BaseController;
 
 /**
  * @Route("/pouvoir")

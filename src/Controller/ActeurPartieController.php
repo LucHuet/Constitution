@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Entity\Partie;
 use App\Service\CheckStepService;
+use App\Controller\Base\BaseController;
 
 /**
  * @Route("/acteur")
