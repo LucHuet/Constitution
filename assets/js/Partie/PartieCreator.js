@@ -9,7 +9,7 @@ export default class PartieCreator extends Component {
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
-  handleFormSubmit() {
+  handleFormSubmit(event) {
     event.preventDefault();
     const { onAddPartie } = this.props;
     const partieNomInput = this.partieNomInput.current;
@@ -34,7 +34,7 @@ export default class PartieCreator extends Component {
         </td>
         <td>
           <input type="hidden" id="partie__token" name="partie[_token]" value="5fa84MhAXvPtPgoWRDsiT8-QGo0B-sC0i1dizInLSqU" />
-          <a href="#" onClick={() => {this.handleFormSubmit()}}>
+          <a href="#" onClick={this.handleFormSubmit}>
             <i className="icon save"></i>
           </a>
         </td>
