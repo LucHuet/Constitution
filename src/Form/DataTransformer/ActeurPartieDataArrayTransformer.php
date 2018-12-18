@@ -35,7 +35,7 @@ class ActeurPartieDataArrayTransformer implements DataTransformerInterface
      * Transforms a string (number) to an object (issue).
      *
      * @param  string $id
-     * @return PouvoirPartie|null
+     * @return ActeurPartie|null
      * @throws TransformationFailedException if object (issue) is not found.
      */
     public function reverseTransform($id)
