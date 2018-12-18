@@ -34,8 +34,8 @@ export default class PartieCreator extends Component {
         </td>
         <td>
           <input type="hidden" id="partie__token" name="partie[_token]" value="5fa84MhAXvPtPgoWRDsiT8-QGo0B-sC0i1dizInLSqU" />
-          <a href="#" onClick={this.handleFormSubmit}>
-            <i className="icon save"></i>
+          <a href="#" >
+            <i className="icon save" onClick={this.handleFormSubmit}></i>
           </a>
         </td>
       </tr>

@@ -27,15 +27,6 @@ export default class CardBoardApp extends Component {
       acteurSelect:0,
       modalType:"",
       //sorter
-      item_width: 0,
-      item_height: 0,
-      cols:0,
-      element: null,
-      items: null,
-      scrollable: document.body,
-      startPosition:0,
-      offset:0,
-      scrollTopStart:0,
       sortable:null,
     };
 
@@ -45,11 +36,11 @@ export default class CardBoardApp extends Component {
     //bind(this) permet de faire en sorte que le this corresponde à la classe
     //et pas à la méthode.
     this.handleAddActeur = this.handleAddActeur.bind(this);
+    this.handleDeleteActeur = this.handleDeleteActeur.bind(this);
     this.handleAddPouvoir = this.handleAddPouvoir.bind(this);
     this.handleAddDesignation = this.handleAddDesignation.bind(this);
     this.handleShowModal = this.handleShowModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
-    this.handleDeleteActeur = this.handleDeleteActeur.bind(this);
     this.handlePouvoirClick = this.handlePouvoirClick.bind(this);
   }
 
@@ -93,8 +84,6 @@ export default class CardBoardApp extends Component {
       this.successMessageTimemoutHandle =  0;
     }, 3000);
   }
-
-
 
   handleAddActeur(nom, nombreIndividus, typeActeur){
 
@@ -149,6 +138,36 @@ export default class CardBoardApp extends Component {
         })
   }
 
+  handleDeleteActeur(id) {
+    //prevstate est la liste des acteurs originale
+    this.setState((prevState) =>{
+      return {
+        //on fait une boucle qui redéfini acteur en lui retirant l'acteur dont l'id à été cliqué
+        acteurs: prevState.acteurs.map(acteur => {
+          if (acteur.id !== id){
+            return acteur;
+          }
+          //permet de mettre isDeleting : true pour l'acteur qui se fait supprimer
+          return {...acteur, isDeleting: true};
+        })
+      }
+    });
+
+    deleteActeur(id)
+      .then(() => {
+        // remove the rep log without mutating state
+        // filter returns a new array
+        this.setState((prevState) => {
+          return {
+            acteurs: prevState.acteurs.filter(acteur => acteur.id != id)
+          }
+        });
+        this.setSuccessMessage('Acteur supprimé !');
+        this.state.sortable.setPositions(true);
+      });
+
+  }
+
   handleAddPouvoir(nom, typePouvoir, acteurSelect){
 
       const newPouvoir = {
@@ -182,6 +201,22 @@ export default class CardBoardApp extends Component {
         })
   }
 
+  handleShowModal(modalType, acteurId=0){
+    this.setState({
+      showModal: true,
+      modalType:modalType,
+      acteurSelect:acteurId
+    });
+  }
+
+  handleCloseModal(acteurId){
+    this.setState({
+      showModal: false,
+      modalType:"",
+      acteurSelect:0
+    });
+  }
+
   handlePouvoirClick(pouvoirId) {
     //permet à highlightedRowId de prendre la valeur de l'id de la ligne sur laquelle on clique
       //this.setState({highlightedRowId:pouvoirId});
@@ -207,53 +242,6 @@ export default class CardBoardApp extends Component {
       console.log(2, this.state.pouvoirsSelection, this.state.pouvoirsSelectionTest);
   }
 
-
-  handleShowModal(modalType, acteurId=0){
-    this.setState({
-      showModal: true,
-      modalType:modalType,
-      acteurSelect:acteurId
-    });
-  }
-
-  handleCloseModal(acteurId){
-    this.setState({
-      showModal: false,
-      modalType:"",
-      acteurSelect:0
-    });
-  }
-
-
-  handleDeleteActeur(id) {
-    //prevstate est la liste des acteurs originale
-    this.setState((prevState) =>{
-      return {
-        //on fait une boucle qui redéfini acteur en lui retirant l'acteur dont l'id à été cliqué
-        acteurs: prevState.acteurs.map(acteur => {
-          if (acteur.id !== id){
-            return acteur;
-          }
-          //permet de mettre isDeleting : true pour l'acteur qui se fait supprimer
-          return {...acteur, isDeleting: true};
-        })
-      }
-    });
-
-    deleteActeur(id)
-      .then(() => {
-        // remove the rep log without mutating state
-        // filter returns a new array
-        this.setState((prevState) => {
-          return {
-            acteurs: prevState.acteurs.filter(acteur => acteur.id != id)
-          }
-        });
-        this.setSuccessMessage('Acteur supprimé !');
-        this.state.sortable.setPositions(true);
-      });
-
-  }
 
   render(){
 
