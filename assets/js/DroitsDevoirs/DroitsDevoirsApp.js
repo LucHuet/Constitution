@@ -11,9 +11,11 @@ export default class DroitsDevoirsApp extends Component {
     this.state = {
       droitsDevoirs : [],
       addedRowId:null,
+      droitsDevoirsReferenceShow:false,
       };
 
     this.handleRowClick = this.handleRowClick.bind(this);
+    this.handleDroitsDevoirsReferenceListe = this.handleDroitsDevoirsReferenceListe.bind(this);
 
   }
 
@@ -36,19 +38,27 @@ export default class DroitsDevoirsApp extends Component {
       this.setState({addedRowId:droitDevoirId});
   }
 
+  handleDroitsDevoirsReferenceListe(){
+    this.setState((prevState)=>({
+      droitsDevoirsReferenceShow: !prevState.droitsDevoirsReferenceShow
+    }))
+  }
+
   render() {
     return (
       <div>
+      <button className="ui basic button" onClick={this.handleDroitsDevoirsReferenceListe}>
+        <i className="icon plus"></i>
+        Droits et devoirs
+      </button>
+      {!this.state.droitsDevoirsReferenceShow &&
         <DroitsDevoirs
             {...this.props}
             {...this.state}
             onRowClick={this.handleRowClick}
         />
-        <br/>
-        <button className="ui basic button">
-          <i className="icon plus"></i>
-          Droits et devoirs
-        </button>
+      }
+
       </div>
     )
   }

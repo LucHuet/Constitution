@@ -1,4 +1,5 @@
 import React from 'react';
+import DroitsDevoirsReferenceListe from './DroitsDevoirsReferenceListe';
 import DroitsDevoirsListe from './DroitsDevoirsListe';
 import PropTypes from 'prop-types';
 
@@ -12,16 +13,28 @@ export default function DroitsDevoirs(props) {
 
   return (
     <div>
-      <h3 className="ui header"> Liste des droits et devoirs </h3>
-      <br/>
+      <div className = "droitsDevoirsRefernceListe">
+        <h3 className="ui header"> Liste des droits et devoirs </h3>
+        <br/>
+          <table>
+
+            <DroitsDevoirsReferenceListe
+              droitsDevoirs={droitsDevoirs}
+              onRowClick={onRowClick}
+              addedRowId={addedRowId}/>
+
+          </table>
+        </div>
+        <br/>
+        
+        <h3 className="ui header"> Droits et devoirs de la partie</h3>
         <table>
 
-          <DroitsDevoirsListe
-            droitsDevoirs={droitsDevoirs}
-            onRowClick={onRowClick}
-            addedRowId={addedRowId}/>
+          <DroitsDevoirsListe/>
 
         </table>
+
+
       </div>
   );
 }
