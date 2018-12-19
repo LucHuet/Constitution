@@ -91,3 +91,8 @@ export function createPartie(partie) {
         body: JSON.stringify(partie),
     });
 }
+
+export function getDroitsDevoirs(){
+  return fetchJson('/droitDevoir/').
+    then(data => data.items);
+}
