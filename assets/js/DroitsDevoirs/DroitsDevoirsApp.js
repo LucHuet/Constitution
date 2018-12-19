@@ -10,7 +10,11 @@ export default class DroitsDevoirsApp extends Component {
 
     this.state = {
       droitsDevoirs : [],
+      addedRowId:null,
       };
+
+    this.handleRowClick = this.handleRowClick.bind(this);
+
   }
 
 //charge les droits et devoirs avant que la page charge
@@ -27,12 +31,18 @@ export default class DroitsDevoirsApp extends Component {
 
   }
 
+  handleRowClick(droitDevoirId) {
+    //permet à highlightedRowId de prendre la valeur de l'id de la ligne sur laquelle on clique
+      this.setState({addedRowId:droitDevoirId});
+  }
+
   render() {
     return (
       <div>
         <DroitsDevoirs
             {...this.props}
             {...this.state}
+            onRowClick={this.handleRowClick}
         />
         <br/>
         <button className="ui basic button">

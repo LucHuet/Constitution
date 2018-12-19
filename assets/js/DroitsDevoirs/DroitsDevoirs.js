@@ -5,16 +5,21 @@ import PropTypes from 'prop-types';
 export default function DroitsDevoirs(props) {
 
   const {
-          droitsDevoirs
+          droitsDevoirs,
+          addedRowId,
+          onRowClick,
         } = props;
 
   return (
     <div>
-      <h3 className="ui header centered"> Liste des droits et devoirs </h3>
+      <h3 className="ui header"> Liste des droits et devoirs </h3>
       <br/>
         <table>
 
-          <DroitsDevoirsListe droitsDevoirs={droitsDevoirs}/>
+          <DroitsDevoirsListe
+            droitsDevoirs={droitsDevoirs}
+            onRowClick={onRowClick}
+            addedRowId={addedRowId}/>
 
         </table>
       </div>
@@ -23,4 +28,6 @@ export default function DroitsDevoirs(props) {
 
 DroitsDevoirs.propTypes = {
     droitsDevoirs: PropTypes.array.isRequired,
+    onRowClick: PropTypes.func.isRequired,
+    addedRowId: PropTypes.any,
 };
