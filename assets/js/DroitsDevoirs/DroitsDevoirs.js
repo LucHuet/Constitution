@@ -8,39 +8,56 @@ export default function DroitsDevoirs(props) {
   const {
           droitsDevoirs,
           addedRowId,
+          droitsDevoirsReferenceShow,
           onRowClick,
+          onShowDroitsDevoirsRefListe,
         } = props;
+
+  const handleDroitsDevoirs = function(event){
+    //évite le comportement normal du boutton
+    //exemple évite que le submit soumette la page.
+    event.preventDefault();
+
+    onShowDroitsDevoirsRefListe();
+  };
 
   return (
     <div>
-      <div className = "droitsDevoirsRefernceListe">
-        <h3 className="ui header"> Liste des droits et devoirs </h3>
-        <br/>
-          <table>
+      <button className="ui basic button" onClick={(event => handleDroitsDevoirs(event))}>
+        <i className="icon plus"></i>
+        Droits et devoirs
+      </button>
 
-            <DroitsDevoirsReferenceListe
-              droitsDevoirs={droitsDevoirs}
-              onRowClick={onRowClick}
-              addedRowId={addedRowId}/>
+      {!droitsDevoirsReferenceShow && (
+        <React.Fragment>
+          <h3 className="ui header"> Liste des droits et devoirs </h3>
+            <table>
 
-          </table>
-        </div>
-        <br/>
-        
-        <h3 className="ui header"> Droits et devoirs de la partie</h3>
-        <table>
+              <DroitsDevoirsReferenceListe
+                droitsDevoirs={droitsDevoirs}
+                onRowClick={onRowClick}
+                addedRowId={addedRowId}/>
 
-          <DroitsDevoirsListe/>
+            </table>
+          </React.Fragment>
+        )
+      }
+      <br/>
 
-        </table>
+      <h3 className="ui header"> Droits et devoirs de la partie</h3>
+      <table>
 
+        <DroitsDevoirsListe/>
 
-      </div>
+      </table>
+    </div>
   );
 }
 
 DroitsDevoirs.propTypes = {
     droitsDevoirs: PropTypes.array.isRequired,
     onRowClick: PropTypes.func.isRequired,
+    onShowDroitsDevoirsRefListe: PropTypes.func.isRequired,
+    droitsDevoirsReferenceShow: PropTypes.bool.isRequired,
     addedRowId: PropTypes.any,
 };

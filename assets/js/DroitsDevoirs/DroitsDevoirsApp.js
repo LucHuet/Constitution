@@ -23,12 +23,10 @@ export default class DroitsDevoirsApp extends Component {
   componentDidMount(){
     getDroitsDevoirs()
       .then((data) => {
-        console.log(data);
         this.setState({
           droitsDevoirs : data,
           isLoaded: true,
         });
-        console.log(this.state.droitsDevoirs);
       });
 
   }
@@ -46,20 +44,13 @@ export default class DroitsDevoirsApp extends Component {
 
   render() {
     return (
-      <div>
-      <button className="ui basic button" onClick={this.handleDroitsDevoirsReferenceListe}>
-        <i className="icon plus"></i>
-        Droits et devoirs
-      </button>
-      {!this.state.droitsDevoirsReferenceShow &&
         <DroitsDevoirs
             {...this.props}
             {...this.state}
             onRowClick={this.handleRowClick}
+            onShowDroitsDevoirsRefListe={this.handleDroitsDevoirsReferenceListe}
         />
-      }
 
-      </div>
     )
   }
 }

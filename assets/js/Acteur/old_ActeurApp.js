@@ -159,7 +159,6 @@ export default class ActeurApp extends Component {
         });
         this.setSuccessMessage('Acteur supprimé !');
       });
-
   }
 
   render(){
