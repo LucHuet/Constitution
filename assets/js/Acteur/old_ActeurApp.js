@@ -3,7 +3,7 @@ import Acteurs from './Acteurs';
 //permet de définit le type de props
 import PropTypes from 'prop-types';
 //import uuid from 'uuid/v4';
-import { getActeurs, deleteActeur, createActeur } from '../api/acteur_api.js';
+import { getActeursPartie, deleteActeurPartie, createActeur } from '../api/acteur_api.js';
 
 //le mot clé export permet de dire qu'on pourra utiliser
 //cette fonction à l'exterieur du fichier
@@ -37,7 +37,7 @@ export default class ActeurApp extends Component {
   //componentDidMount est une methode magique qui est automatiquement
   //lancée apres le render de l'app
   componentDidMount(){
-    getActeurs()
+    getActeursPartie()
     //then signifie qu'il n'y a pas d'erreur.
       .then((data)=>{
         //méthode qui permet de redonner une valeur à un state.
@@ -148,7 +148,7 @@ export default class ActeurApp extends Component {
       }
     });
 
-    deleteActeur(id)
+    deleteActeurPartie(id)
       .then(() => {
         // remove the rep log without mutating state
         // filter returns a new array

@@ -7,6 +7,7 @@ export default function ActeurChefCreator(props) {
   //on descructure les props pour en récuperer les variables
   const {
     onShowModal,
+    acteursReferenceChef
   } = props;
 
   const handleBack = function(modalType){
@@ -16,12 +17,14 @@ export default function ActeurChefCreator(props) {
   const handleSave = function(){
     console.log("Ajout à FAIRE");
   };
-
+  acteursReferenceChef.pouvoirsBase.map((pouvoirBase) => {
+    console.log(pouvoirBase.nom);
+  } );
   return(
   <div>
   <Header as='h2' icon textAlign='center'>
     <Image size='medium' circular src='/build/static/chef.png' />
-    <Header.Content>Ajout Acteur : Chef</Header.Content>
+    <Header.Content>Ajout Acteur : {acteursReferenceChef.type}</Header.Content>
   </Header>
   <br/>
   <Container textAlign='justified'>
@@ -29,25 +32,17 @@ export default function ActeurChefCreator(props) {
       <b>Description</b>
       <Divider />
       <p>
-        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-        Aenean massa strong. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
-        ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla
-        consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget,
-        arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu
-        pede link mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi.
-        Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend
-        ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra
-        nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel
-        augue. Curabitur ullamcorper ultricies nisi.
+        {acteursReferenceChef.description}
       </p>
     </Segment>
     <Segment>
       <b>Dans le monde</b>
       <Divider />
-        <Flag name='france' /> France  &nbsp;
-        <Flag name='us' />Etats Unis  &nbsp;
-        <Flag name='gb' />Grande Bretagne  &nbsp;
-        <Flag name='de' />Allemagne  &nbsp;
+      {Object.keys(acteursReferenceChef.countryDescriptions).map((countryDesc, index) => {
+        return (
+          <React.Fragment key={countryDesc}> <Flag name='france' /> {countryDesc}  &nbsp;  </React.Fragment>
+        )
+      } )}
     </Segment>
     <Segment>
       <b>Nombre de personnes : </b>
@@ -57,18 +52,11 @@ export default function ActeurChefCreator(props) {
       <Divider />
       De base :
       <p>
-      <Icon name='plus square outline' size='small' /> Pouvoir 1 <br/>
-      <Icon name='plus square outline' size='small' /> Pouvoir 1 <br/>
-      <Icon name='plus square outline' size='small' /> Pouvoir 1 <br/>
-      <Icon name='plus square outline' size='small' /> Pouvoir 1 <br/>
-      <Icon name='plus square outline' size='small' /> Pouvoir 1 <br/>
-      </p>
-      Suggerés :
-      <p>
-      <Icon name='minus square outline' size='small' /> Pouvoir 2 <br/>
-      <Icon name='minus square outline' size='small' /> Pouvoir 2 <br/>
-      <Icon name='minus square outline' size='small' /> Pouvoir 2 <br/>
-      <Icon name='minus square outline' size='small' /> Pouvoir 2 <br/>
+      {acteursReferenceChef.pouvoirsBase.map((pouvoirBase) => {
+        return (
+        <React.Fragment key={pouvoirBase.id}><Icon name='minus square outline' size='small' />{pouvoirBase.nom}<br/></React.Fragment>
+        );
+      } )}
       </p>
       Supplémentaires :
       <p>
@@ -94,4 +82,5 @@ export default function ActeurChefCreator(props) {
 //on défini les types des props
 ActeurChefCreator.propTypes = {
   onShowModal: PropTypes.func.isRequired,
+  acteursReferenceChef : PropTypes.object.isRequired,
 };

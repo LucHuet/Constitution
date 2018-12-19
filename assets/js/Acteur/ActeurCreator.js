@@ -66,22 +66,22 @@ export default class ActeurCreator extends Component{
 
   render(){
     const { nombreActeurError } = this.state;
-    const { validationErrorMessage, itemOptions } = this.props;
+    const { validationErrorMessage, acteursReference } = this.props;
 
 
     return (
       <div>
 
       <Card.Group>
-      {itemOptions.map(option => {
+      {acteursReference.map(acteurRef => {
         return  (
-          <Card key={option.id} onClick={(event => this.handleAjout(event,option.text))}>
+          <Card key={acteurRef.id} onClick={(event => this.handleAjout(event,acteurRef.type))}>
 
             <Card.Content>
-              <Image floated='right' size='mini' src={'/build/static/'+option.image} />
-              <Card.Header>{option.text}</Card.Header>
+              <Image floated='right' size='mini' src={'/build/static/'+acteurRef.image} />
+              <Card.Header>{acteurRef.type}</Card.Header>
               <Card.Description>
-                {option.desc}
+                {acteurRef.description}
               </Card.Description>
             </Card.Content>
 
@@ -115,8 +115,8 @@ export default class ActeurCreator extends Component{
             <Form.Field>
               <label htmlFor="typeActeur" className="required">Type acteur</label>
               <select id="typeActeur" ref={this.typeActeur}>
-                {itemOptions.map(option => {
-                  return <option value={option.id} key={option.id}>{option.text}</option>
+                {acteursReference.map(acteurRef => {
+                  return <option value={acteurRef.id} key={acteurRef.id}>{acteurRef.type}</option>
                 } )}
               </select>
             </Form.Field>
@@ -134,6 +134,6 @@ export default class ActeurCreator extends Component{
 ActeurCreator.propTypes = {
   onAddActeur: PropTypes.func.isRequired,
   validationErrorMessage: PropTypes.string.isRequired,
-  itemOptions: PropTypes.array.isRequired,
+  acteursReference: PropTypes.array.isRequired,
   onShowModal: PropTypes.func.isRequired,
 };

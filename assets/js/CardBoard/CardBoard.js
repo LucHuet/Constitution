@@ -12,7 +12,8 @@ import { Modal, Button, Icon} from 'semantic-ui-react';
 export default function CardBoard(props){
 
   const {
-    acteurs,
+    acteursPartie,
+    acteursReference,
     onAddActeur,
     onAddPouvoir,
     onAddDesignation,
@@ -49,12 +50,21 @@ export default function CardBoard(props){
       onAddActeur={onAddActeur}
       onShowModal={onShowModal}
       validationErrorMessage={newActeurValidationErrorMessage}
-      itemOptions={itemOptions}
+      acteursReference={acteursReference}
     /> ;
       break;
       case 'Chef d\'état':
+      var acteursReferenceChef = [];
+      acteursReference.forEach(function(acteurRef) {
+        console.log(acteurRef);
+        if(acteurRef.type == 'Chef d\'état')
+        {
+          acteursReferenceChef = acteurRef;
+        }
+      });
       modalContent =       <ActeurChefCreator
           onShowModal={onShowModal}
+          acteursReferenceChef={acteursReferenceChef}
       /> ;
         break;
     case 'pouvoir':
@@ -98,7 +108,7 @@ export default function CardBoard(props){
       )}
 
       <div id="sort1" className="ui cards" data-sortable=".card">
-      {acteurs.map((acteur, index) => (
+      {acteursPartie.map((acteur, index) => (
 
           <Card
             key = {index}
@@ -138,7 +148,8 @@ CardBoard.propTypes = {
   onShowModal: PropTypes.func.isRequired,
   onCloseModal: PropTypes.func.isRequired,
   onDeleteActeur: PropTypes.func.isRequired,
-  acteurs: PropTypes.array.isRequired,
+  acteursPartie: PropTypes.array.isRequired,
+  acteursReference: PropTypes.array.isRequired,
   pouvoirsSelection: PropTypes.array.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   isSavingNewActeur: PropTypes.bool.isRequired,

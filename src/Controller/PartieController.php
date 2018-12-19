@@ -112,7 +112,7 @@ class PartieController extends BaseController
     }
 
     /**
-     * @Route("/{id}", name="acteur_partie_delete", methods="DELETE")
+     * @Route("/{id}", name="partie_delete", methods="DELETE")
      */
     public function deletePartie(Partie $partie)
     {

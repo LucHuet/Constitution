@@ -2,19 +2,19 @@
 
 namespace App\Api;
 
-class ActeurApiModel
+class ActeurRefApiModel
 {
     public $id;
 
-    public $nom;
+    public $type;
 
-    public $nombreIndividus;
+    public $description;
+
+    public $countryDescriptions = [];
 
     public $image;
 
-    public $pouvoirs;
-
-    private $links = [];
+    public $pouvoirsBase = [];
 
     public function addLink($ref, $url)
     {

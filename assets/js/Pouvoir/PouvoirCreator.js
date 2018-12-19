@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Button from '../Components/Button';
 import {Form, Table} from 'semantic-ui-react';
-import { getPouvoirs } from '../api/partie_api.js';
+import { getPouvoirsReference } from '../api/partie_api.js';
 import PouvoirMenuDisplay from '../Components/PouvoirMenuDisplay'
 
 
@@ -57,7 +57,7 @@ export default class PouvoirCreator extends Component{
 
     if(!(this.state.listePouvoirs.length > 0))
     {
-    getPouvoirs()
+    getPouvoirsReference()
     //then signifie qu'il n'y a pas d'erreur.
       .then((data)=>{
         //méthode qui permet de redonner une valeur à un state.

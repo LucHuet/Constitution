@@ -32,28 +32,35 @@ function checkStatus(response) {
  */
  //le mot clé export permet de dire qu'on pourra utiliser
  //cette fonction à l'exterieur du fichier
-export function getActeurs(){
-  return fetchJson('/acteur/').
+export function getActeursPartie(){
+  return fetchJson('/acteurPartie/').
     then(data => data.items);
 }
 
-export function deleteActeur(id) {
-  return fetchJson(`/acteur/${id}`, {
-    method:'DELETE'
-  });
-}
-
-export function getPouvoirs(){
-  return fetchJson('/pouvoir/').
-    then(data => data.items);
-}
-
-export function createActeur(acteur){
-  return fetchJson('http://localhost:8000/acteur/', {
+export function createActeurPartie(acteur){
+  return fetchJson('http://localhost:8000/acteurPartie/', {
     method: 'POST',
     body: JSON.stringify(acteur),
   })
 }
+
+export function deleteActeurPartie(id) {
+  return fetchJson(`/acteurPartie/${id}`, {
+    method:'DELETE'
+  });
+}
+
+export function getActeursReference(){
+  return fetchJson('/acteurReference/').
+    then(data => data.items);
+}
+
+export function getPouvoirsReference(){
+  return fetchJson('/pouvoirReference/').
+    then(data => data.items);
+}
+
+
 
 export function createPouvoirPartie(pouvoir){
   return fetchJson('http://localhost:8000/pouvoir/', {
