@@ -6,8 +6,10 @@ use App\Api\ActeurApiModel;
 use App\Api\PouvoirPartieApiModel;
 use App\Api\PartieApiModel;
 use App\Api\PouvoirApiModel;
+use App\Api\DroitDevoirApiModel;
 use App\Entity\ActeurPartie;
 use App\Entity\PouvoirPartie;
+use App\Entity\DroitDevoir;
 use App\Entity\Partie;
 use App\Entity\Pouvoir;
 use App\Entity\DesignationPartie;
@@ -213,4 +215,37 @@ class BaseController extends Controller
 
         return $models;
     }
+
+    /**
+     * Methode permettant de récupérer la liste des droits et devoirs
+     * @return DroitDevoirApiModel[]
+     */
+    protected function findAllDroitsDevoirsModels()
+    {
+
+      dump('test');
+        $droitsDevoirs = $this->getDoctrine()->getRepository(DroitDevoir::class)
+            ->findAll();
+
+        $models = [];
+        foreach ($droitsDevoirs as $droitDevoir) {
+            $models[] = $this->createDroitDevoirApiModel($droitDevoir);
+        }
+
+        return $models;
+    }
+
+    protected function createDroitDevoirApiModel(DroitDevoir $droitDevoir)
+    {
+        $model = new DroitDevoirApiModel();
+        $model->id = $droitDevoir->getId();
+        $model->nom = $droitDevoir->getNom();
+
+        $selfUrl = $this->generateUrl(
+            'droits_devoirs_liste');
+        $model->addLink('_self', $selfUrl);
+
+        return $model;
+    }
+
 }
