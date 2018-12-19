@@ -1,5 +1,4 @@
 $bootstrap-sass-asset-helper: true;
-//@import './_bootstrap.scss';
 @import '~font-awesome/css/font-awesome.css';
 
 $width:33.33%;
@@ -69,8 +68,8 @@ img {
   }
 }
 
-.table-parties > tbody > tr > td > a{
-  color : #43464b;
+.parties-table > tbody > tr > td > a{
+  color : #696969;
     &:hover {
     color: #008080;
   }
@@ -120,4 +119,23 @@ img {
 
 .ui.form .inline.fields.parties-form{
   justify-content: center;
+}
+
+.levelOne
+{
+  font-weight: bold;
+  font-size: 25px;
+  margin-left: 2px;
+}
+
+.levelTwo
+{
+  font-size: 20px;
+  margin-left: 15px;
+}
+
+.levelTree
+{
+  font-size: 15px;
+  margin-left: 25px;
 }

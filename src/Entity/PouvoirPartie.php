@@ -47,11 +47,6 @@ class PouvoirPartie
     private $pouvoirDestinataire;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ConditionPouvoirPartie", mappedBy="pouvoirPartie", orphanRemoval=true)
-     */
-    private $conditionsPouvoirs;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\PouvoirPartie")
      */
     private $pouvoirControlled;
@@ -152,38 +147,6 @@ class PouvoirPartie
     public function setPouvoirDestinataire(?self $pouvoirDestinataire): self
     {
         $this->pouvoirDestinataire = $pouvoirDestinataire;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ConditionPouvoirPartie[]
-     */
-    public function getConditionsPouvoirs(): Collection
-    {
-        return $this->conditionsPouvoirs;
-    }
-
-    public function addConditionsPouvoir(ConditionPouvoirPartie $conditionsPouvoir): self
-    {
-        if (!$this->conditionsPouvoirs->contains($conditionsPouvoir)) {
-
-            $this->conditionsPouvoirs[] = $conditionsPouvoir;
-            $conditionsPouvoir->setPouvoirPartie($this);
-        }
-
-        return $this;
-    }
-
-    public function removeConditionsPouvoir(ConditionPouvoirPartie $conditionsPouvoir): self
-    {
-        if ($this->conditionsPouvoirs->contains($conditionsPouvoir)) {
-            $this->conditionsPouvoirs->removeElement($conditionsPouvoir);
-            // set the owning side to null (unless already changed)
-            if ($conditionsPouvoir->getPouvoirPartie() === $this) {
-                $conditionsPouvoir->setPouvoirPartie(null);
-            }
-        }
 
         return $this;
     }

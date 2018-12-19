@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 
 /**
@@ -31,14 +32,13 @@ class Image
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      *
      * @Vich\UploadableField(mapping="user_image", fileNameProperty="image.name", size="image.size", mimeType="image.mimeType", originalName="image.originalName", dimensions="image.dimensions")
-     *
+     * @Assert\File(maxSize="2M", maxSizeMessage="votre fichier doit être inférieur à 2Mb")
      * @var File
      */
     private $imageFile;
 
     /**
      * @ORM\Embedded(class="Vich\UploaderBundle\Entity\File")
-     *
      * @var EmbeddedFile
      */
     private $image;

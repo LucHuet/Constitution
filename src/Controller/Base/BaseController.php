@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Base;
 
 use App\Api\ActeurApiModel;
 use App\Api\PouvoirPartieApiModel;
@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
+use App\Controller\Base\BaseController;
 
 class BaseController extends Controller
 {

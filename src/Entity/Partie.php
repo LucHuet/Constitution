@@ -54,11 +54,6 @@ class Partie
      */
     private $designationParties;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ConditionPouvoirPartie", mappedBy="partie", orphanRemoval=true)
-     */
-    private $conditionPouvoirParties;
-
     public function __construct()
     {
         $this->droitDevoirs = new ArrayCollection();
@@ -66,7 +61,6 @@ class Partie
         $this->acteurParties = new ArrayCollection();
         $this->pouvoirParties = new ArrayCollection();
         $this->designationParties = new ArrayCollection();
-        $this->conditionPouvoirParties = new ArrayCollection();
     }
 
     public function __toString()
@@ -251,36 +245,4 @@ class Partie
 
         return $this;
     }
-
-    /**
-     * @return Collection|ConditionPouvoirPartie[]
-     */
-    public function getConditionPouvoirParties(): Collection
-    {
-        return $this->conditionPouvoirParties;
-    }
-
-    public function addConditionPouvoirParty(ConditionPouvoirPartie $conditionPouvoirParty): self
-    {
-        if (!$this->conditionPouvoirParties->contains($conditionPouvoirParty)) {
-            $this->conditionPouvoirParties[] = $conditionPouvoirParty;
-            $conditionPouvoirParty->setPartie($this);
-        }
-
-        return $this;
-    }
-
-    public function removeConditionPouvoirParty(ConditionPouvoirPartie $conditionPouvoirParty): self
-    {
-        if ($this->conditionPouvoirParties->contains($conditionPouvoirParty)) {
-            $this->conditionPouvoirParties->removeElement($conditionPouvoirParty);
-            // set the owning side to null (unless already changed)
-            if ($conditionPouvoirParty->getPartie() === $this) {
-                $conditionPouvoirParty->setPartie(null);
-            }
-        }
-
-        return $this;
-    }
-
 }

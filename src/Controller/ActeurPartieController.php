@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-//use App\Api\ApiRoute;
 use App\Entity\ActeurPartie;
 use App\Form\ActeurPartieType;
 use App\Repository\ActeurPartieRepository;
@@ -16,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Entity\Partie;
 use App\Service\CheckStepService;
+use App\Controller\Base\BaseController;
 
 /**
  * @Route("/acteur")
@@ -78,7 +78,6 @@ class ActeurPartieController extends BaseController
         return $response;
     }
 
-
     /**
      * @Route("/", name="acteur_partie_list", methods="GET", options={"expose"=true})
      * @Method("GET")
@@ -100,17 +99,6 @@ class ActeurPartieController extends BaseController
         $apiModel = $this->createActeurApiModel($acteurPartie);
 
         return $this->createApiResponse($apiModel);
-    }
-
-    public function getFormActeur(): Response
-    {
-        $form = $this->createForm(ActeurPartieType::class, null, [
-          'csrf_protection' => false
-        ]);
-
-        return $this->render('acteur_partie/_form.html.twig', [
-            'form' => $form->createView(),
-        ]);
     }
 
     /**

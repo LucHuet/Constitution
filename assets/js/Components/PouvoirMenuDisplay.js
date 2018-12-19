@@ -15,7 +15,18 @@ export default class PouvoirMenuDisplay extends Component {
 
     const {tree, parent, level, onClickPouvoir, pouvoirsSelection} = this.props
 
-    let espaceAvant = ' * '.repeat(level);
+    //let espaceAvant = ' * '.repeat(level);
+    var maClassDiv = '';
+
+    if(level == 1){
+      maClassDiv = "levelOne";
+    }
+    else if (level == 2){
+      maClassDiv = "levelTwo";
+    }
+    else if (level == 3){
+      maClassDiv = "levelTree";
+    }
 
     if(pouvoir.pouvoirParent == parent)
     {
@@ -24,9 +35,12 @@ export default class PouvoirMenuDisplay extends Component {
           <div
           onClick={()=> onClickPouvoir(pouvoir.id)}
           key={pouvoir.id}
-          className={pouvoirsSelection.includes(pouvoir.id) ? 'ui info message' : ''}
+          className={maClassDiv}
           >
-          {espaceAvant}  {pouvoir.nom}
+          <div>
+            <i className={pouvoirsSelection.includes(pouvoir.id) ? 'ui icon minus' : 'ui icon plus'}></i>
+            {pouvoir.nom}
+          </div>
           </div>
           <PouvoirMenuDisplay pouvoirsSelection={pouvoirsSelection} onClickPouvoir={onClickPouvoir} tree = {tree} parent = {pouvoir.id} level = {level + 1} />
         </span>
