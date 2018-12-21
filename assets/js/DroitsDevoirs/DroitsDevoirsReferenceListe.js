@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 export default function DroitsDevoirsReferenceListe(props) {
 
    const {
-      droitsDevoirs,
+      droitsDevoirsReference,
       addedRowId,
       onRowClick,
     } = props;
@@ -12,12 +12,12 @@ export default function DroitsDevoirsReferenceListe(props) {
    return (
        <tbody>
 
-       {droitsDevoirs.map((droitDevoir) => (
+       {droitsDevoirsReference.map((droitDevoirReference) => (
            <tr
-             key={droitDevoir.id}
-             onClick={()=> onRowClick(droitDevoir.id)}
+             key={droitDevoirReference.id}
+             onClick={()=> onRowClick(droitDevoirReference.id)}
             >
-             <td><i className={addedRowId === droitDevoir.id ? 'ui icon minus' : 'ui icon plus'}></i>{droitDevoir.nom}</td>
+             <td><i className={addedRowId === droitDevoirReference.id ? 'ui icon minus' : 'ui icon plus'}></i>{droitDevoirReference.nom}</td>
            </tr>
        ))}
        </tbody>
@@ -25,7 +25,7 @@ export default function DroitsDevoirsReferenceListe(props) {
   }
 
   DroitsDevoirsReferenceListe.propTypes = {
-      droitsDevoirs: PropTypes.array.isRequired,
+      droitsDevoirsReference: PropTypes.array.isRequired,
       onRowClick: PropTypes.func.isRequired,
       addedRowId: PropTypes.any,
   };

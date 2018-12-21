@@ -6,11 +6,12 @@ import PropTypes from 'prop-types';
 export default function DroitsDevoirs(props) {
 
   const {
+          droitsDevoirsReference,
           droitsDevoirs,
           addedRowId,
           droitsDevoirsReferenceShow,
           onRowClick,
-          onShowDroitsDevoirsRefListe,
+          onShowDroitsDevoirsRefListe
         } = props;
 
   const handleDroitsDevoirs = function(event){
@@ -24,20 +25,19 @@ export default function DroitsDevoirs(props) {
   return (
     <div>
       <button className="ui basic button" onClick={(event => handleDroitsDevoirs(event))}>
-        <i className="icon plus"></i>
+        <i className="icon angle down"></i>
         Droits et devoirs
       </button>
 
       {!droitsDevoirsReferenceShow && (
         <React.Fragment>
-          <h3 className="ui header"> Liste des droits et devoirs </h3>
+          <h3 className="ui header">Droits et devoirs</h3>
             <table>
-
               <DroitsDevoirsReferenceListe
-                droitsDevoirs={droitsDevoirs}
+                droitsDevoirsReference={droitsDevoirsReference}
                 onRowClick={onRowClick}
-                addedRowId={addedRowId}/>
-
+                addedRowId={addedRowId}
+                />
             </table>
           </React.Fragment>
         )
@@ -47,7 +47,8 @@ export default function DroitsDevoirs(props) {
       <h3 className="ui header"> Droits et devoirs de la partie</h3>
       <table>
 
-        <DroitsDevoirsListe/>
+        <DroitsDevoirsListe
+          droitsDevoirs={droitsDevoirs}/>
 
       </table>
     </div>
@@ -55,9 +56,10 @@ export default function DroitsDevoirs(props) {
 }
 
 DroitsDevoirs.propTypes = {
-    droitsDevoirs: PropTypes.array.isRequired,
-    onRowClick: PropTypes.func.isRequired,
-    onShowDroitsDevoirsRefListe: PropTypes.func.isRequired,
-    droitsDevoirsReferenceShow: PropTypes.bool.isRequired,
-    addedRowId: PropTypes.any,
+  droitsDevoirsReference: PropTypes.array.isRequired,
+  droitsDevoirs: PropTypes.array.isRequired,
+  onRowClick: PropTypes.func.isRequired,
+  onShowDroitsDevoirsRefListe: PropTypes.func.isRequired,
+  droitsDevoirsReferenceShow: PropTypes.bool.isRequired,
+  addedRowId: PropTypes.any,
 };

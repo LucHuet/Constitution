@@ -12,6 +12,7 @@ use App\Repository\PouvoirRepository;
 use App\Repository\DesignationRepository;
 use App\Repository\ActeurPartieRepository;
 use App\Repository\PouvoirPartieRepository;
+use App\Repository\DroitDevoirRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -124,5 +125,16 @@ class PartieController extends BaseController
         return new Response(null, 204);
     }
 
+    /**
+     * @Route("/droitDevoir/", name="droits_devoirs_partie_liste", methods="GET", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function getDroitsDevoirs(DroitDevoirRepository $DroitDevoirRepository)
+    {
+      $models = $this->findAllDroitsDevoirsModels();
+      return $this->createApiResponse([
+          'items' => $models
+      ]);
+    }
 
 }

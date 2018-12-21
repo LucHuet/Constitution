@@ -24,7 +24,7 @@ class DroitDevoir
     private $nom;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Partie", inversedBy="droitDevoirs")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Partie", inversedBy="droitDevoirs", cascade={"persist"})
      */
     private $partie;
 
