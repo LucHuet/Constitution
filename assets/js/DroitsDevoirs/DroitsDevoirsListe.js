@@ -3,14 +3,31 @@ import PropTypes from 'prop-types';
 
 export default function DroitsDevoirsListe(props) {
 
-   return (
-       <tbody>
-           <tr>
-             <td>Droits 1</td>
-           </tr>
-           <tr>
-            <td>Droits 2</td>
-           </tr>
-       </tbody>
-   )
+  const { droitsDevoirs } = props;
+
+  if(droitsDevoirs != null){
+    return (
+
+        <tbody>
+        {droitsDevoirs.map((droitsDevoirs) => (
+            <tr
+              key={droitsDevoirs.id}
+             >
+              <td>{droitsDevoirs.nom}</td>
+            </tr>
+        ))}
+        </tbody>
+    )
   }
+  else{
+    return (
+      <tbody>
+        Pas de droits et devoir dans cette partie.
+      </tbody>
+    )
+  }
+}
+
+  DroitsDevoirsListe.propTypes = {
+    droitsDevoirs: PropTypes.array.isRequired,
+  };

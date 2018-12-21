@@ -217,13 +217,11 @@ class BaseController extends Controller
     }
 
     /**
-     * Methode permettant de récupérer la liste des droits et devoirs
+     * Methode permettant de récupérer la liste des droits et devoirs de réference
      * @return DroitDevoirApiModel[]
      */
-    protected function findAllDroitsDevoirsModels()
+    protected function findAllDroitsDevoirsReferenceModels()
     {
-
-      dump('test');
         $droitsDevoirs = $this->getDoctrine()->getRepository(DroitDevoir::class)
             ->findAll();
 
@@ -232,6 +230,25 @@ class BaseController extends Controller
             $models[] = $this->createDroitDevoirApiModel($droitDevoir);
         }
 
+        return $models;
+    }
+
+    /**
+     * Methode permettant de récupérer la liste des droits et devoirs de la partie
+     * @return DroitDevoirApiModel[]
+     */
+    protected function findAllDroitsDevoirsModels()
+    {
+        $session = new Session();
+        $partieCourante = $session->get('partieCourante');
+        $em = $this->getDoctrine()->getManager();
+        $partieCourante = $em->merge($partieCourante);
+        $droitsDevoirs = $partieCourante->getDroitDevoirs();
+
+        $models = [];
+        foreach ($droitsDevoirs as $droitDevoir) {
+            $models[] = $this->createDroitDevoirApiModel($droitDevoir);
+        }
         return $models;
     }
 

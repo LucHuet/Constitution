@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import DroitsDevoirs from './DroitsDevoirs';
 
-import { getDroitsDevoirs } from '../api/partie_api.js';
+import { getDroitsDevoirsReference, addDroitDevoir, getDroitsDevoirs } from '../api/partie_api.js';
 
 export default class DroitsDevoirsApp extends Component {
 
@@ -9,7 +9,8 @@ export default class DroitsDevoirsApp extends Component {
     super(props);
 
     this.state = {
-      droitsDevoirs : [],
+      droitsDevoirsReference : [],
+      droitsDevoirs: [],
       addedRowId:null,
       droitsDevoirsReferenceShow:false,
       };
@@ -21,19 +22,26 @@ export default class DroitsDevoirsApp extends Component {
 
 //charge les droits et devoirs avant que la page charge
   componentDidMount(){
-    getDroitsDevoirs()
+    getDroitsDevoirsReference()
       .then((data) => {
         this.setState({
-          droitsDevoirs : data,
+          droitsDevoirsReference : data,
           isLoaded: true,
         });
       });
-
+    getDroitsDevoirs()
+      .then((data) => {
+        this.setState({
+          droitsDevoirs : data
+        });
+      });
   }
 
   handleRowClick(droitDevoirId) {
     //permet à highlightedRowId de prendre la valeur de l'id de la ligne sur laquelle on clique
       this.setState({addedRowId:droitDevoirId});
+      addDroitDevoir(droitDevoirId);
+
   }
 
   handleDroitsDevoirsReferenceListe(){
