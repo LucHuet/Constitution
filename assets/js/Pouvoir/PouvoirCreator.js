@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '../Components/Button';
 import {Form, Table} from 'semantic-ui-react';
 import { getPouvoirsReference } from '../api/partie_api.js';
-import PouvoirMenuDisplay from '../Components/PouvoirMenuDisplay'
+import PouvoirMenuDisplay from './PouvoirMenuDisplay'
 
 
 export default class PouvoirCreator extends Component{
@@ -26,6 +26,7 @@ export default class PouvoirCreator extends Component{
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleGetPouvoir = this.handleGetPouvoir.bind(this);
+    this.handleBack = this.handleBack.bind(this);
 
   }
 
@@ -53,6 +54,11 @@ export default class PouvoirCreator extends Component{
     typePouvoir.selectedIndex = 0;
   }
 
+  handleBack(modalType){
+    const {onShowModal} = this.props;
+    onShowModal( modalType );
+  }
+
   handleGetPouvoir(){
 
     if(!(this.state.listePouvoirs.length > 0))
@@ -71,7 +77,7 @@ export default class PouvoirCreator extends Component{
 
   render(){
 
-    const { validationErrorMessage, pouvoirOptions, onClickPouvoir, pouvoirsSelection} = this.props;
+    const { validationErrorMessage, pouvoirOptions, onClickPouvoir, pouvoirsSelection, previousModal} = this.props;
 
     return (
       <div>
@@ -81,6 +87,7 @@ export default class PouvoirCreator extends Component{
             pouvoirsSelection={pouvoirsSelection}
             tree={this.state.listePouvoirs}
           />
+          <Button onClick={() => this.handleBack(previousModal)}>Retour</Button>
           <Button onClick={() => this.handleFormSubmit()}>Sauvegarder</Button>
       </div>
 
@@ -104,6 +111,7 @@ export default class PouvoirCreator extends Component{
                   </select>
                 </Form.Field>
               {' '}
+
               <Button type="submit" className="btn-primary">
                 Sauvegarder
               </Button>
@@ -116,8 +124,10 @@ export default class PouvoirCreator extends Component{
 PouvoirCreator.propTypes = {
   onAddPouvoir: PropTypes.func.isRequired,
   onClickPouvoir : PropTypes.func.isRequired,
+  onShowModal : PropTypes.func.isRequired,
   validationErrorMessage: PropTypes.string.isRequired,
   pouvoirOptions: PropTypes.array.isRequired,
   pouvoirsSelection: PropTypes.array.isRequired,
   acteurSelect: PropTypes.number.isRequired,
+  previousModal: PropTypes.string.isRequired,
 };

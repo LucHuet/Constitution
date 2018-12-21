@@ -31,6 +31,7 @@ export default class CardBoardApp extends Component {
       showModal:false,
       acteurSelect:0,
       modalType:"",
+      previousModal:"",
       //sorter
       sortable:null,
     };
@@ -72,7 +73,6 @@ export default class CardBoardApp extends Component {
           this.setState({
             acteursReference: data,
           });
-          console.log(this.state.acteursReference);
         });
   }
 
@@ -216,11 +216,12 @@ export default class CardBoardApp extends Component {
         })
   }
 
-  handleShowModal(modalType, acteurId=0){
+  handleShowModal(modalType, acteurId=0, previousModal=""){
     this.setState({
       showModal: true,
       modalType:modalType,
-      acteurSelect:acteurId
+      acteurSelect:acteurId,
+      previousModal:previousModal,
     });
   }
 
@@ -228,7 +229,8 @@ export default class CardBoardApp extends Component {
     this.setState({
       showModal: false,
       modalType:"",
-      acteurSelect:0
+      acteurSelect:0,
+      pouvoirsSelection: []
     });
   }
 

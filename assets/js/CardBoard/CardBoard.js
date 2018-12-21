@@ -31,6 +31,7 @@ export default function CardBoard(props){
     acteursPartiesOptions,
     showModal,
     modalType,
+    previousModal,
     acteurSelect,
     pouvoirsSelection,
   } = props;
@@ -56,15 +57,17 @@ export default function CardBoard(props){
       case 'Chef d\'état':
       var acteursReferenceChef = [];
       acteursReference.forEach(function(acteurRef) {
-        console.log(acteurRef);
         if(acteurRef.type == 'Chef d\'état')
         {
           acteursReferenceChef = acteurRef;
         }
       });
       modalContent =       <ActeurChefCreator
+          onAddActeur={onAddActeur}
           onShowModal={onShowModal}
           acteursReferenceChef={acteursReferenceChef}
+          onClickPouvoir = {onClickPouvoir}
+          pouvoirsSelection={pouvoirsSelection}
       /> ;
         break;
     case 'pouvoir':
@@ -72,9 +75,11 @@ export default function CardBoard(props){
               pouvoirsSelection={pouvoirsSelection}
               onAddPouvoir={onAddPouvoir}
               onClickPouvoir = {onClickPouvoir}
+              onShowModal={onShowModal}
               validationErrorMessage={newActeurValidationErrorMessage}
               pouvoirOptions={pouvoirOptions}
               acteurSelect={acteurSelect}
+              previousModal={previousModal}
             /> ;
       break;
     case 'designation':
@@ -162,5 +167,6 @@ CardBoard.propTypes = {
   acteursPartiesOptions: PropTypes.array.isRequired,
   acteurSelect: PropTypes.number.isRequired,
   modalType: PropTypes.string.isRequired,
+  previousModal: PropTypes.string.isRequired,
 
 }

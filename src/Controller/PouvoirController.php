@@ -19,7 +19,7 @@ class PouvoirController extends BaseController
    */
   public function getPouvoirsReference()
   {
-      $models = $this->findAllPouvoirsModels();
+      $models = $this->findAllPouvoirsRefModels();
       return $this->createApiResponse([
           'items' => $models
       ]);

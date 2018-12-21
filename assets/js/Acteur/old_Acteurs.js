@@ -88,7 +88,7 @@ export default function Acteurs(props){
 
       </table>
       { /*
-      ItemOptions : ensemble des options de types acteurs 
+      ItemOptions : ensemble des options de types acteurs
     */ }
       <div className="row">
         <div className="col-md-6">

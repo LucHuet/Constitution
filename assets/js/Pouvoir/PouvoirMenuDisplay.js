@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {List} from 'semantic-ui-react';
+import {List, Icon} from 'semantic-ui-react';
 
 export default class PouvoirMenuDisplay extends Component {
 
@@ -38,7 +38,7 @@ export default class PouvoirMenuDisplay extends Component {
           className={maClassDiv}
           >
           <div>
-            <i className={pouvoirsSelection.includes(pouvoir.id) ? 'ui icon minus' : 'ui icon plus'}></i>
+            <Icon name={pouvoirsSelection.includes(pouvoir.id) ? 'minus square outline' : 'plus square outline'}/>
             {pouvoir.nom}
           </div>
           </div>

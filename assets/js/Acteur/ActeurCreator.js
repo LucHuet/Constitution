@@ -57,7 +57,6 @@ export default class ActeurCreator extends Component{
   }
 
   handleAjout(event, modalType){
-    console.log(modalType);
     const {onShowModal} = this.props;
     event.preventDefault();
     onShowModal( modalType);
