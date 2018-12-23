@@ -29,19 +29,5 @@ class DroitDevoirController extends BaseController
     ]);
   }
 
-  /**
-   * @Route("/{id}", name="droit_devoir_new", methods="POST", options={"expose"=true})
-   * @Method("POST")
-   */
-   public function addDroitDevoir(Request $request, DroitDevoir $droitDevoir){
 
-     $session = new Session();
-     $partieCourante = $session->get('partieCourante');
-     $em = $this->getDoctrine()->getManager();
-     $partieCourante = $em->merge($partieCourante);
-     $partieCourante->addDroitDevoir($droitDevoir);
-     $em->persist($partieCourante);
-     $em->flush();
-     return new Response(null, 204);
-   }
 }

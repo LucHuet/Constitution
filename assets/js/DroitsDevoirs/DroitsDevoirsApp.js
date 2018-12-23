@@ -31,6 +31,7 @@ export default class DroitsDevoirsApp extends Component {
       });
     getDroitsDevoirs()
       .then((data) => {
+        console.log("get", data);
         this.setState({
           droitsDevoirs : data
         });
@@ -38,10 +39,15 @@ export default class DroitsDevoirsApp extends Component {
   }
 
   handleRowClick(droitDevoirId) {
-    //permet à highlightedRowId de prendre la valeur de l'id de la ligne sur laquelle on clique
+    //permet à handleRowClick de prendre la valeur de l'id de la ligne sur laquelle on clique
       this.setState({addedRowId:droitDevoirId});
-      addDroitDevoir(droitDevoirId);
 
+      addDroitDevoir(droitDevoirId)
+      .then((data) => {
+        this.setState({
+          droitsDevoirs : data
+        });
+      });
   }
 
   handleDroitsDevoirsReferenceListe(){
