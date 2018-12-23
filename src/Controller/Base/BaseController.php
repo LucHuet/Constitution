@@ -222,11 +222,12 @@ class BaseController extends Controller
      */
     protected function findAllDroitsDevoirsReferenceModels()
     {
-        $droitsDevoirs = $this->getDoctrine()->getRepository(DroitDevoir::class)
+        $droitsDevoirseference = $this->getDoctrine()->getRepository(DroitDevoir::class)
             ->findAll();
 
         $models = [];
-        foreach ($droitsDevoirs as $droitDevoir) {
+
+        foreach ($droitsDevoirseference as $droitDevoir) {
             $models[] = $this->createDroitDevoirApiModel($droitDevoir);
         }
 
@@ -249,6 +250,7 @@ class BaseController extends Controller
         foreach ($droitsDevoirs as $droitDevoir) {
             $models[] = $this->createDroitDevoirApiModel($droitDevoir);
         }
+        dump($droitsDevoirs);
         return $models;
     }
 

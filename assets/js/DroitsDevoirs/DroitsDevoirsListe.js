@@ -5,6 +5,7 @@ export default function DroitsDevoirsListe(props) {
 
   const { droitsDevoirs } = props;
 
+
   if(droitsDevoirs != null){
     return (
 
@@ -13,7 +14,7 @@ export default function DroitsDevoirsListe(props) {
             <tr
               key={droitsDevoirs.id}
              >
-              <td>{droitsDevoirs.nom}</td>
+              <td><i className='ui icon minus square outline'></i>{droitsDevoirs.nom}</td>
             </tr>
         ))}
         </tbody>

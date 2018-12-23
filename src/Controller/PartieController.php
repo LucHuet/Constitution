@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Partie;
 use App\Entity\Acteur;
 use App\Entity\ActeurPartie;
+use App\Entity\DroitDevoir;
 use App\Form\PartieType;
 use App\Repository\PartieRepository;
 use App\Repository\ActeurRepository;
@@ -136,5 +137,25 @@ class PartieController extends BaseController
           'items' => $models
       ]);
     }
+
+    /**
+     * @Route("/droitDevoir/{id}", name="droit_devoir_partie_new")
+     * @Method("GET")
+     */
+     public function addDroitDevoir(Request $request, DroitDevoir $droitDevoir){
+
+       $session = new Session();
+       $partieCourante = $session->get('partieCourante');
+       $em = $this->getDoctrine()->getManager();
+       $partieCourante = $em->merge($partieCourante);
+
+       $em->persist($partieCourante);
+       $em->flush();
+
+       $models = $this->findAllDroitsDevoirsModels();
+       return $this->createApiResponse([
+           'items' => $models
+       ]);
+      }
 
 }

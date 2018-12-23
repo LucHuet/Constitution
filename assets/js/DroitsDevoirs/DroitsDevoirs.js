@@ -35,6 +35,7 @@ export default function DroitsDevoirs(props) {
             <table>
               <DroitsDevoirsReferenceListe
                 droitsDevoirsReference={droitsDevoirsReference}
+                droitsDevoirs={droitsDevoirs}
                 onRowClick={onRowClick}
                 addedRowId={addedRowId}
                 />
@@ -49,7 +50,6 @@ export default function DroitsDevoirs(props) {
 
         <DroitsDevoirsListe
           droitsDevoirs={droitsDevoirs}/>
-
       </table>
     </div>
   );

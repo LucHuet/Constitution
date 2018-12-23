@@ -118,9 +118,8 @@ export function getDroitsDevoirsReference(){
 }
 
 export function addDroitDevoir(id) {
-    return fetchJson(`/droitDevoir/${id}`, {
-        method: 'POST'
-    });
+    return fetchJson(`/partie/droitDevoir/${id}`).
+      then(data => data.items);
 }
 
 export function getDroitsDevoirs(){
