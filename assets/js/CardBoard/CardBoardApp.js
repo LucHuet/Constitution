@@ -100,12 +100,27 @@ export default class CardBoardApp extends Component {
     }, 3000);
   }
 
-  handleAddActeur(nom, nombreIndividus, typeActeur){
+  handleAddActeur(
+    nom,
+    nombreIndividus,
+    typeActeur,
+    typeDesignation,
+    acteurDesignant,
+    nomDesignation
+  ){
+
+      const newDesignation = {
+        nom: nomDesignation,
+        designation : typeDesignation,
+        //acteurDesigne : acteurSelect, ????
+        acteurDesignant: acteurDesignant
+      };
 
       const newActeurPartie = {
         nom: nom,
         nombreIndividus : nombreIndividus,
-        typeActeur : typeActeur
+        typeActeur : typeActeur,
+        designation: newDesignation
       };
 
       this.setState({

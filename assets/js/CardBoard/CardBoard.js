@@ -62,13 +62,15 @@ export default function CardBoard(props){
           acteursReferenceChef = acteurRef;
         }
       });
-      modalContent =       <ActeurChefCreator
-          onAddActeur={onAddActeur}
-          onShowModal={onShowModal}
-          acteursReferenceChef={acteursReferenceChef}
-          onClickPouvoir = {onClickPouvoir}
-          pouvoirsSelection={pouvoirsSelection}
-      /> ;
+      modalContent = <ActeurChefCreator
+                      onShowModal={onShowModal}
+                      onAddActeur={onAddActeur}
+                      onClickPouvoir = {onClickPouvoir}
+                      acteursReferenceChef={acteursReferenceChef}
+                      pouvoirsSelection={pouvoirsSelection}
+                      acteursPartiesOptions={acteursPartiesOptions}
+                      designationOptions={designationOptions}
+                     /> ;
         break;
     case 'pouvoir':
       modalContent =       <PouvoirCreator

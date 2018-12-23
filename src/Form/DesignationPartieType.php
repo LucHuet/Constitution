@@ -33,17 +33,17 @@ class DesignationPartieType extends AbstractType
             ->add('designation')
             //->add('acteurDesigne')
             //->add('acteurDesignant')
-            ->add('acteurDesigne', TextType::class, array(
+            /*->add('acteurDesigne', TextType::class, array(
                 // validation message if the data transformer fails
                 'invalid_message' => 'Ce numéro d\'acteur n\'est pas valide',
-            ))
+            ))*/
             ->add('acteurDesignant', TextType::class, array(
                 // validation message if the data transformer fails
                 'invalid_message' => 'Ce numéro d\'acteur n\'est pas valide',
             ))
         ;
-        $builder->get('acteurDesigne')
-            ->addModelTransformer($this->transformer);
+        /*$builder->get('acteurDesigne')
+            ->addModelTransformer($this->transformer);*/
         $builder->get('acteurDesignant')
             ->addModelTransformer($this->transformer);
 

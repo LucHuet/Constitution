@@ -3,7 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\ActeurPartie;
-use App\Form\ActeurPartieType;
+use App\Entity\DesignationPartie;
+use App\Form\ActeurPartieCompletType;
 use App\Repository\ActeurPartieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -44,7 +45,7 @@ class ActeurPartieController extends BaseController
             throw new BadRequestHttpException('Invalid JSON');
         }
 
-        $form = $this->createForm(ActeurPartieType::class, null, [
+        $form = $this->createForm(ActeurPartieCompletType::class, null, [
           'csrf_protection' => false
         ]);
 
@@ -56,13 +57,23 @@ class ActeurPartieController extends BaseController
                 'errors' => $errors
             ], 400);
         }
-
+        dump($form->getData());
+        $data=$form->getData();
         /** @var Acteur $acteur */
-        $acteur = $form->getData();
+        $acteur = new ActeurPartie();
         $em = $this->getDoctrine()->getManager();
         $partieCourante = $em->merge($partieCourante);
+        $acteur->setNom($data['nom']);
+        $acteur->setNombreIndividus($data['nombreIndividus']);
         $acteur->setPartie($partieCourante);
+        $typeActeur= $em->merge($data['typeActeur']);
+        $acteur->setTypeActeur($typeActeur);
+
+        $designation = $data['designation'];
+        $designation->setActeurDesigne($acteur);
+        $designation->setPartie($partieCourante);
         $em->persist($acteur);
+        $em->persist($designation);
         $em->flush();
 
         $apiModel = $this->createActeurPartieApiModel($acteur);
@@ -142,5 +153,5 @@ class ActeurPartieController extends BaseController
         $em->remove($acteurPartie);
         $em->flush();
         return new Response(null, 204);
-    }  
+    }
 }

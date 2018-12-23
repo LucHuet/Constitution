@@ -4,12 +4,13 @@ namespace App\Form;
 
 use App\Entity\ActeurPartie;
 use App\Repository\ActeurRepository;
+use App\Form\DesignationPartieType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ActeurPartieType extends AbstractType
+class ActeurPartieCompletType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -27,14 +28,15 @@ class ActeurPartieType extends AbstractType
                  },
                  'invalid_message' => 'Choisissez un type d\'acteur valide'
              ))
+            ->add('designation', DesignationPartieType::class);
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        /*$resolver->setDefaults([
             'data_class' => ActeurPartie::class,
-        ]);
+        ]);*/
     }
 
     public function getBlockPrefix()

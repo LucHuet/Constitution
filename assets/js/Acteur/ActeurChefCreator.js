@@ -9,7 +9,8 @@ export default class ActeurChefCreator extends Component {
     super(props);
 
     this.state = {
-      nombreActeurError: ''
+      nombreActeurError: '',
+      nombreIndividus: 1
     };
 
     //ref permettent d'accéder à des élements du dom
@@ -17,10 +18,15 @@ export default class ActeurChefCreator extends Component {
     this.nomActeur = React.createRef();
     this.nombreActeur = React.createRef();
     this.typeActeur = React.createRef();
+    this.typeDesignation = React.createRef();
+    this.acteurDesignant = React.createRef();
 
+
+    this.handleAjoutPouvoir = this.handleAjoutPouvoir.bind(this);
+    this.nombreIndividusChange = this.nombreIndividusChange.bind(this);
     this.handleBack = this.handleBack.bind(this);
     this.handleSave = this.handleSave.bind(this);
-    this.handleAjoutPouvoir = this.handleAjoutPouvoir.bind(this);
+
 
   }
 
@@ -38,6 +44,9 @@ export default class ActeurChefCreator extends Component {
     const nomActeur = acteursReferenceChef.type;
     const nombreActeur = this.nombreActeur.current;
     const typeActeur = acteursReferenceChef.id;
+    const typeDesignation = this.typeDesignation.current;
+    const acteurDesignant = this.acteurDesignant.current;
+    const nomDesignation = "designation test";
 
     if (nombreActeur.value <= 0) {
       this.setState({
@@ -49,7 +58,10 @@ export default class ActeurChefCreator extends Component {
     onAddActeur(
       nomActeur,
       nombreActeur.value,
-      typeActeur
+      typeActeur,
+      typeDesignation.options[typeDesignation.selectedIndex].value,
+      acteurDesignant.options[acteurDesignant.selectedIndex].value,
+      nomDesignation
     );
 
     //réinitialisation des données
@@ -66,9 +78,21 @@ export default class ActeurChefCreator extends Component {
     onShowModal( modalType, acteurId, 'Chef d\'état');
   }
 
+  nombreIndividusChange(nbIndibidus)
+  {
+    this.setState({
+      nombreIndividus: nbIndibidus
+    });
+  }
+
   render(){
 
-    const {acteursReferenceChef, pouvoirsSelection} = this.props;
+    const {
+        acteursReferenceChef,
+        pouvoirsSelection,
+        designationOptions,
+        acteursPartiesOptions
+    } = this.props;
 
     return (
     <div>
@@ -99,8 +123,13 @@ export default class ActeurChefCreator extends Component {
         <input
           type="range"
           ref={this.nombreActeur}
+          value={this.state.nombreIndividus}
           min="1" max="10"
+          onChange={(e) => {
+            this.nombreIndividusChange(+e.target.value)
+          }}
         />
+        {this.state.nombreIndividus}
       </Segment>
       <Segment>
         <b>Pouvoirs</b>
@@ -127,7 +156,18 @@ export default class ActeurChefCreator extends Component {
       <Segment>
         <b>Désignation : </b>
         <Divider />
-        QUI - QUOI
+        <label htmlFor="designation" className="required"> Designation : </label>
+        <select id="designation" ref={this.typeDesignation} required="required">
+          {designationOptions.map(designation => {
+            return <option value={designation.id} key={designation.id}>{designation.text}</option>
+          } )}
+        </select>
+        <label htmlFor="acteurDesignant" className="required"> Qui désigne votre acteur ? </label>
+        <select id="acteurDesignant" ref={this.acteurDesignant} required="required">
+          {acteursPartiesOptions.map(acteurDesignant => {
+            return <option value={acteurDesignant.id} key={acteurDesignant.id}>{acteurDesignant.text}</option>
+          } )}
+        </select>
       </Segment>
       <Divider />
 
@@ -146,4 +186,6 @@ ActeurChefCreator.propTypes = {
   acteursReferenceChef : PropTypes.object.isRequired,
   onClickPouvoir : PropTypes.func.isRequired,
   pouvoirsSelection: PropTypes.array.isRequired,
+  designationOptions: PropTypes.array.isRequired,
+  acteursPartiesOptions: PropTypes.array.isRequired,
 };
