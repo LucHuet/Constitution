@@ -23,12 +23,10 @@ export default class PartieApp extends Component {
   componentDidMount(){
     getParties()
       .then((data) => {
-        console.log(data);
         this.setState({
           parties : data,
           isLoaded: true,
         });
-        console.log(this.state.parties);
       });
 
   }

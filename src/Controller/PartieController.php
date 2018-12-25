@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Partie;
 use App\Entity\Acteur;
 use App\Entity\ActeurPartie;
+use App\Entity\DroitDevoir;
 use App\Form\PartieType;
 use App\Repository\PartieRepository;
 use App\Repository\ActeurRepository;
@@ -12,6 +13,7 @@ use App\Repository\PouvoirRepository;
 use App\Repository\DesignationRepository;
 use App\Repository\ActeurPartieRepository;
 use App\Repository\PouvoirPartieRepository;
+use App\Repository\DroitDevoirRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -124,5 +126,36 @@ class PartieController extends BaseController
         return new Response(null, 204);
     }
 
+    /**
+     * @Route("/droitDevoir/", name="droits_devoirs_partie_liste", methods="GET", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function getDroitsDevoirs(DroitDevoirRepository $DroitDevoirRepository)
+    {
+      $models = $this->findAllDroitsDevoirsModels();
+      return $this->createApiResponse([
+          'items' => $models
+      ]);
+    }
+
+    /**
+     * @Route("/droitDevoir/{id}", name="droit_devoir_partie_new")
+     * @Method("GET")
+     */
+     public function addDroitDevoir(Request $request, DroitDevoir $droitDevoir){
+
+       $session = new Session();
+       $partieCourante = $session->get('partieCourante');
+       $em = $this->getDoctrine()->getManager();
+       $partieCourante = $em->merge($partieCourante);
+
+       $em->persist($partieCourante);
+       $em->flush();
+
+       $models = $this->findAllDroitsDevoirsModels();
+       return $this->createApiResponse([
+           'items' => $models
+       ]);
+      }
 
 }

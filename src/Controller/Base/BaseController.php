@@ -7,9 +7,12 @@ use App\Api\ActeurRefApiModel;
 use App\Api\PouvoirPartieApiModel;
 use App\Api\PartieApiModel;
 use App\Api\PouvoirRefApiModel;
+use App\Api\PouvoirApiModel;
+use App\Api\DroitDevoirApiModel;
 use App\Entity\ActeurPartie;
 use App\Entity\Acteur;
 use App\Entity\PouvoirPartie;
+use App\Entity\DroitDevoir;
 use App\Entity\Partie;
 use App\Entity\Pouvoir;
 use App\Entity\DesignationPartie;
@@ -258,4 +261,56 @@ class BaseController extends Controller
 
         return $models;
     }
+
+    /**
+     * Methode permettant de récupérer la liste des droits et devoirs de réference
+     * @return DroitDevoirApiModel[]
+     */
+    protected function findAllDroitsDevoirsReferenceModels()
+    {
+        $droitsDevoirseference = $this->getDoctrine()->getRepository(DroitDevoir::class)
+            ->findAll();
+
+        $models = [];
+
+        foreach ($droitsDevoirseference as $droitDevoir) {
+            $models[] = $this->createDroitDevoirApiModel($droitDevoir);
+        }
+
+        return $models;
+    }
+
+    /**
+     * Methode permettant de récupérer la liste des droits et devoirs de la partie
+     * @return DroitDevoirApiModel[]
+     */
+    protected function findAllDroitsDevoirsModels()
+    {
+        $session = new Session();
+        $partieCourante = $session->get('partieCourante');
+        $em = $this->getDoctrine()->getManager();
+        $partieCourante = $em->merge($partieCourante);
+        $droitsDevoirs = $partieCourante->getDroitDevoirs();
+
+        $models = [];
+        foreach ($droitsDevoirs as $droitDevoir) {
+            $models[] = $this->createDroitDevoirApiModel($droitDevoir);
+        }
+        dump($droitsDevoirs);
+        return $models;
+    }
+
+    protected function createDroitDevoirApiModel(DroitDevoir $droitDevoir)
+    {
+        $model = new DroitDevoirApiModel();
+        $model->id = $droitDevoir->getId();
+        $model->nom = $droitDevoir->getNom();
+
+        $selfUrl = $this->generateUrl(
+            'droits_devoirs_liste');
+        $model->addLink('_self', $selfUrl);
+
+        return $model;
+    }
+
 }
