@@ -53,7 +53,7 @@ class ActeurPartie
     private $acteursDesignants;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Acteur")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Acteur", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $typeActeur;

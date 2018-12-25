@@ -24,13 +24,13 @@ class Partie
     private $nom;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="parties")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="parties",cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\DroitDevoir", mappedBy="partie")
+     * @ORM\ManyToMany(targetEntity="App\Entity\DroitDevoir", mappedBy="partie", cascade={"persist"})
      */
     private $droitDevoirs;
 
@@ -40,7 +40,7 @@ class Partie
     private $valeurPrincipes;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ActeurPartie", mappedBy="partie", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\ActeurPartie", mappedBy="partie", orphanRemoval=true, cascade={"persist"})
      */
     private $acteurParties;
 

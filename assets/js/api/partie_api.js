@@ -26,6 +26,10 @@ function checkStatus(response) {
 }
 
 /**
+---------- Methodes API pour les acteurs --------
+*/
+
+/**
  * Returns a promise where the data is the rep log collection
  *
  * @return {Promise<Response>}
@@ -69,12 +73,20 @@ export function createPouvoirPartie(pouvoir){
   })
 }
 
+/**
+---------- Methodes API pour les dé --------
+*/
+
 export function createDesignation(designation){
   return fetchJson('http://localhost:8000/designation/', {
     method: 'POST',
     body: JSON.stringify(designation),
   })
 }
+
+/**
+---------- Methodes API pour la partie --------
+*/
 
 /**
  * Returns a promise where the data is the rep log collection
@@ -97,4 +109,23 @@ export function createPartie(partie) {
         method: 'POST',
         body: JSON.stringify(partie),
     });
+}
+
+/**
+---------- Methodes API pour les droits devoirs --------
+*/
+
+export function getDroitsDevoirsReference(){
+  return fetchJson('/droitDevoir/').
+    then(data => data.items);
+}
+
+export function addDroitDevoir(id) {
+    return fetchJson(`/partie/droitDevoir/${id}`).
+      then(data => data.items);
+}
+
+export function getDroitsDevoirs(){
+  return fetchJson('/partie/droitDevoir/').
+    then(data => data.items);
 }
