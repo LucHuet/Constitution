@@ -2,7 +2,7 @@
 
 namespace App\Api;
 
-class PouvoirApiModel
+class PouvoirRefApiModel
 {
     public $id;
 

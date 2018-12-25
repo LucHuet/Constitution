@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\ActeurPartie;
-use App\Form\ActeurPartieType;
+use App\Entity\DesignationPartie;
+use App\Entity\PouvoirPartie;
+use App\Form\ActeurPartieCompletType;
 use App\Repository\ActeurPartieRepository;
+use App\Repository\PouvoirRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -18,7 +21,7 @@ use App\Service\CheckStepService;
 use App\Controller\Base\BaseController;
 
 /**
- * @Route("/acteur")
+ * @Route("/acteurPartie")
  */
 class ActeurPartieController extends BaseController
 {
@@ -30,10 +33,10 @@ class ActeurPartieController extends BaseController
     }
 
     /**
-     * @Route("/", name="acteur_new", methods="POST", options={"expose"=true})
+     * @Route("/", name="acteur_partie_new", methods="POST", options={"expose"=true})
      * @Method("POST")
      */
-    public function createActeur(Request $request)
+    public function createActeurPartie(Request $request, PouvoirRepository $pouvoirRepository)
     {
         $session = new Session();
         $partieCourante = $session->get('partieCourante');
@@ -44,7 +47,7 @@ class ActeurPartieController extends BaseController
             throw new BadRequestHttpException('Invalid JSON');
         }
 
-        $form = $this->createForm(ActeurPartieType::class, null, [
+        $form = $this->createForm(ActeurPartieCompletType::class, null, [
           'csrf_protection' => false
         ]);
 
@@ -57,46 +60,69 @@ class ActeurPartieController extends BaseController
             ], 400);
         }
 
+        $data=$form->getData();
         /** @var Acteur $acteur */
-        $acteur = $form->getData();
+
         $em = $this->getDoctrine()->getManager();
         $partieCourante = $em->merge($partieCourante);
+
+        $acteur = $data['acteurPartie'];
         $acteur->setPartie($partieCourante);
+
+        $designation = $data['designation'];
+        $designation->setActeurDesigne($acteur);
+        $designation->setPartie($partieCourante);
+
+        $pouvoirsId = $data['pouvoirs'];
+
+        foreach($pouvoirsId as $pouvoirId){
+          $pouvoirPartie = new PouvoirPartie();
+          $pouvoirRef = $pouvoirRepository->find($pouvoirId);
+          $pouvoirPartie->setNom($pouvoirRef->getNom());
+          $pouvoirPartie->setPartie($partieCourante);
+          $pouvoirPartie->setPouvoir($pouvoirRef);
+          $pouvoirPartie->addActeurPossedant($acteur);
+          $em->persist($pouvoirPartie);
+        }
+
         $em->persist($acteur);
+        $em->persist($designation);
         $em->flush();
 
-        $apiModel = $this->createActeurApiModel($acteur);
+        $apiModel = $this->createActeurPartieApiModel($acteur);
 
         $response = $this->createApiResponse($apiModel);
         //$response = new Response(null, 204);
         // setting the Location header... it's a best-practice
         $response->headers->set(
             'Location',
-            $this->generateUrl('acteur_partie', ['id' => $acteur->getId()])
+            $this->generateUrl('acteur_partie_get', ['id' => $acteur->getId()])
         );
 
         return $response;
     }
 
     /**
-     * @Route("/", name="acteur_partie_list", methods="GET", options={"expose"=true})
+     * @Route("/", name="acteur_partie_list", methods="GET")
      * @Method("GET")
      */
-    public function getActeursPartie(ActeurPartieRepository $acteurPartieRepository)
+    public function getActeursPartie()
     {
-        $models = $this->findAllUserActeursModels();
+        $models = $this->findAllActeursPartieModels();
         return $this->createApiResponse([
             'items' => $models
         ]);
     }
 
+
+
     /**
-     * @Route("/{id}", name="acteur_partie" , methods="GET")
+     * @Route("/{id}", name="acteur_partie_get" , methods="GET")
      * @Method("GET")
      */
     public function getActeurPartie(ActeurPartie $acteurPartie)
     {
-        $apiModel = $this->createActeurApiModel($acteurPartie);
+        $apiModel = $this->createActeurPartieApiModel($acteurPartie);
 
         return $this->createApiResponse($apiModel);
     }
@@ -104,7 +130,7 @@ class ActeurPartieController extends BaseController
     /**
      * @Route("/{id}", name="acteur_partie_edit", methods="PUT")
      */
-    public function edit(Request $request, ActeurPartie $acteurPartie): Response
+    public function editActeurPartie(Request $request, ActeurPartie $acteurPartie): Response
     {
         //on verifie que l'acteur est bien de la partie actuelle
         if ($this->checkStep->checkActeur($acteurPartie) != null) {
@@ -121,13 +147,14 @@ class ActeurPartieController extends BaseController
         }
 
         return $this->render('acteur_partie/edit.html.twig', [
-            'acteur_partie' => $acteurPartie,
+            'acteur_partie_get' => $acteurPartie,
             'form' => $form->createView(),
         ]);
     }
 
     /**
      * @Route("/{id}", name="acteur_partie_delete", methods="DELETE")
+     * @Method("DELETE")
      */
     public function deleteActeurPartie(ActeurPartie $acteurPartie)
     {

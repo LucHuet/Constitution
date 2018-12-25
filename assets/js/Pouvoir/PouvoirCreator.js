@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Button from '../Components/Button';
 import {Form, Table} from 'semantic-ui-react';
-import { getPouvoirs } from '../api/partie_api.js';
-import PouvoirMenuDisplay from '../Components/PouvoirMenuDisplay'
+import { getPouvoirsReference } from '../api/partie_api.js';
+import PouvoirMenuDisplay from './PouvoirMenuDisplay'
 
 
 export default class PouvoirCreator extends Component{
@@ -17,8 +17,6 @@ export default class PouvoirCreator extends Component{
       listePouvoirs: [],
     };
 
-
-
     //ref permettent d'accéder à des élements du dom
     //permet de facilement récupérer les valeurs des variables
     this.nomPouvoir = React.createRef();
@@ -26,6 +24,7 @@ export default class PouvoirCreator extends Component{
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleGetPouvoir = this.handleGetPouvoir.bind(this);
+    this.handleBack = this.handleBack.bind(this);
 
   }
 
@@ -53,11 +52,22 @@ export default class PouvoirCreator extends Component{
     typePouvoir.selectedIndex = 0;
   }
 
+  handleBack(modalType){
+    const {onShowModal, onCloseModal} = this.props;
+
+    if(modalType == '')
+    {
+      onCloseModal();
+      return;
+    }
+    onShowModal( modalType );
+  }
+
   handleGetPouvoir(){
 
     if(!(this.state.listePouvoirs.length > 0))
     {
-    getPouvoirs()
+    getPouvoirsReference()
     //then signifie qu'il n'y a pas d'erreur.
       .then((data)=>{
         //méthode qui permet de redonner une valeur à un state.
@@ -71,43 +81,16 @@ export default class PouvoirCreator extends Component{
 
   render(){
 
-    const { validationErrorMessage, pouvoirOptions, onClickPouvoir, pouvoirsSelection} = this.props;
+    const { validationErrorMessage, pouvoirOptions, onClickPouvoir, pouvoirsSelection, previousModal} = this.props;
 
     return (
-      <div>
       <div className="pouvoir">
           <PouvoirMenuDisplay
             onClickPouvoir={onClickPouvoir}
             pouvoirsSelection={pouvoirsSelection}
             tree={this.state.listePouvoirs}
           />
-          <Button onClick={() => this.handleFormSubmit()}>Sauvegarder</Button>
-      </div>
-
-          <Form onSubmit={this.handleFormSubmit}>
-            {validationErrorMessage && (
-              <div className="alert alert-danger">
-              {validationErrorMessage}
-              </div>
-            )}
-                <Form.Field>
-                  <label htmlFor="nom" className="required">Quel nom pour votre pouvoir ?</label>
-                  <input type="text" id="nom" ref={this.nomPouvoir} required="required" maxLength="255" />
-                </Form.Field>
-                {' '}
-                <Form.Field>
-                  <label htmlFor="typePouvoir" className="required">Quel pouvoir ajouter ?</label>
-                  <select id="typePouvoir" ref={this.typePouvoir}>
-                    {pouvoirOptions.map(option => {
-                      return <option value={option.id} key={option.id}>{option.text}</option>
-                    } )}
-                  </select>
-                </Form.Field>
-              {' '}
-              <Button type="submit" className="btn-primary">
-                Sauvegarder
-              </Button>
-          </Form>
+          <Button onClick={() => this.handleBack(previousModal)}>Ok</Button>
       </div>
     );
   }
@@ -116,8 +99,11 @@ export default class PouvoirCreator extends Component{
 PouvoirCreator.propTypes = {
   onAddPouvoir: PropTypes.func.isRequired,
   onClickPouvoir : PropTypes.func.isRequired,
+  onShowModal : PropTypes.func.isRequired,
+  onCloseModal : PropTypes.func.isRequired,
   validationErrorMessage: PropTypes.string.isRequired,
   pouvoirOptions: PropTypes.array.isRequired,
   pouvoirsSelection: PropTypes.array.isRequired,
   acteurSelect: PropTypes.number.isRequired,
+  previousModal: PropTypes.string.isRequired,
 };

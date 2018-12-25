@@ -32,6 +32,11 @@ class CountryDescription
      */
     private $description;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $countryCode;
+
     public function __construct($country, $description)
     {
         $this->country = $country;
@@ -75,6 +80,18 @@ class CountryDescription
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getCountryCode(): ?string
+    {
+        return $this->countryCode;
+    }
+
+    public function setCountryCode(string $countryCode): self
+    {
+        $this->countryCode = $countryCode;
 
         return $this;
     }

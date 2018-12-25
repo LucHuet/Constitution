@@ -26,7 +26,7 @@ class ActeurPartieType extends AbstractType
                      ->setParameter('identifier', 'Peuple');
                  },
                  'invalid_message' => 'Choisissez un type d\'acteur valide'
-             ));
+             ))
         ;
     }
 

@@ -2,11 +2,13 @@
 
 namespace App\Controller\Base;
 
-use App\Api\ActeurApiModel;
+use App\Api\ActeurPartieApiModel;
+use App\Api\ActeurRefApiModel;
 use App\Api\PouvoirPartieApiModel;
 use App\Api\PartieApiModel;
-use App\Api\PouvoirApiModel;
+use App\Api\PouvoirRefApiModel;
 use App\Entity\ActeurPartie;
+use App\Entity\Acteur;
 use App\Entity\PouvoirPartie;
 use App\Entity\Partie;
 use App\Entity\Pouvoir;
@@ -83,9 +85,9 @@ class BaseController extends Controller
         return $model;
     }
 
-    protected function createPouvoirApiModel(Pouvoir $pouvoir)
+    protected function createPouvoirRefApiModel(Pouvoir $pouvoir)
     {
-        $model = new PouvoirApiModel();
+        $model = new PouvoirRefApiModel();
         $model->id = $pouvoir->getId();
         $model->nom = $pouvoir->getNom();
         $model->description = $pouvoir->getDescription();
@@ -97,7 +99,7 @@ class BaseController extends Controller
 
 
         $selfUrl = $this->generateUrl(
-            'pouvoir_get',
+            'pouvoir_ref_get',
             ['id' => $pouvoir->getId()]
         );
         $model->addLink('_self', $selfUrl);
@@ -105,9 +107,9 @@ class BaseController extends Controller
         return $model;
     }
 
-    protected function createActeurApiModel(ActeurPartie $acteurPartie)
+    protected function createActeurPartieApiModel(ActeurPartie $acteurPartie)
     {
-        $model = new ActeurApiModel();
+        $model = new ActeurPartieApiModel();
         $model->id = $acteurPartie->getId();
         $model->nom = $acteurPartie->getNom();
         $model->nombreIndividus = $acteurPartie->getNombreIndividus();
@@ -117,8 +119,34 @@ class BaseController extends Controller
         }
 
         $selfUrl = $this->generateUrl(
-            'acteur_partie',
+            'acteur_partie_get',
             ['id' => $acteurPartie->getId()]
+        );
+        $model->addLink('_self', $selfUrl);
+
+        return $model;
+    }
+
+    protected function createActeurRefApiModel(Acteur $acteur)
+    {
+        $model = new ActeurRefApiModel();
+        $model->id = $acteur->getId();
+        $model->type = $acteur->getType();
+        $model->description = $acteur->getDescription();
+        $model->image = $acteur->getImage();
+        foreach ($acteur->getCountryDescriptions() as $countryDescription) {
+          $country ['country'] = $countryDescription->getCountry();
+          $country ['description'] = $countryDescription->getDescription();
+          $country ['code'] = $countryDescription->getCountryCode();
+          $model->countryDescriptions[$countryDescription->getCountryCode()] = $country;
+        }
+        foreach ($acteur->getPouvoirsBase() as $pouvoirBase) {
+          $model->pouvoirsBase[] = $this->createPouvoirRefApiModel($pouvoirBase);
+        }
+
+        $selfUrl = $this->generateUrl(
+            'acteur_ref_get',
+            ['id' => $acteur->getId()]
         );
         $model->addLink('_self', $selfUrl);
 
@@ -158,9 +186,26 @@ class BaseController extends Controller
     }
 
     /**
-     * @return ActeurApiModel[]
+     * @return ActeurRefApiModel[]
      */
-    protected function findAllUserActeursModels()
+    protected function findAllActeursRefModels()
+    {
+        $acteursRef = $this->getDoctrine()->getRepository(Acteur::class)
+            ->findAll()
+        ;
+
+        $models = [];
+        foreach ($acteursRef as $acteurRef) {
+            $models[] = $this->createActeurRefApiModel($acteurRef);
+        }
+
+        return $models;
+    }
+
+    /**
+     * @return ActeurPartieApiModel[]
+     */
+    protected function findAllActeursPartieModels()
     {
         //on récupere la partie courante afin de n'afficher que les acteurs de la partie courante
         $session = new Session();
@@ -171,7 +216,7 @@ class BaseController extends Controller
 
         $models = [];
         foreach ($acteursPartie as $acteur) {
-            $models[] = $this->createActeurApiModel($acteur);
+            $models[] = $this->createActeurPartieApiModel($acteur);
         }
 
         return $models;
@@ -200,7 +245,7 @@ class BaseController extends Controller
     /**
      * @return PartieApiModel[]
      */
-    protected function findAllPouvoirsModels()
+    protected function findAllPouvoirsRefModels()
     {
 
         $pouvoirs = $this->getDoctrine()->getRepository(Pouvoir::class)
@@ -208,7 +253,7 @@ class BaseController extends Controller
 
         $models = [];
         foreach ($pouvoirs as $pouvoir) {
-            $models[] = $this->createPouvoirApiModel($pouvoir);
+            $models[] = $this->createPouvoirRefApiModel($pouvoir);
         }
 
         return $models;

@@ -17,7 +17,7 @@ use App\Controller\Base\BaseController;
 
 
 /**
- * @Route("/pouvoir")
+ * @Route("/pouvoirPartie")
  */
 class PouvoirPartieController extends BaseController
 {

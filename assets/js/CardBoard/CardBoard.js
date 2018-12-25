@@ -12,7 +12,8 @@ import { Modal, Button, Icon} from 'semantic-ui-react';
 export default function CardBoard(props){
 
   const {
-    acteurs,
+    acteursPartie,
+    acteursReference,
     onAddActeur,
     onAddPouvoir,
     onAddDesignation,
@@ -30,6 +31,7 @@ export default function CardBoard(props){
     acteursPartiesOptions,
     showModal,
     modalType,
+    previousModal,
     acteurSelect,
     pouvoirsSelection,
   } = props;
@@ -49,23 +51,39 @@ export default function CardBoard(props){
       onAddActeur={onAddActeur}
       onShowModal={onShowModal}
       validationErrorMessage={newActeurValidationErrorMessage}
-      itemOptions={itemOptions}
+      acteursReference={acteursReference}
     /> ;
       break;
       case 'Chef d\'état':
-      modalContent =       <ActeurChefCreator
-          onShowModal={onShowModal}
-      /> ;
+      var acteursReferenceChef = [];
+      acteursReference.forEach(function(acteurRef) {
+        if(acteurRef.type == 'Chef d\'état')
+        {
+          acteursReferenceChef = acteurRef;
+        }
+      });
+      modalContent = <ActeurChefCreator
+                      onShowModal={onShowModal}
+                      onAddActeur={onAddActeur}
+                      onClickPouvoir = {onClickPouvoir}
+                      acteursReferenceChef={acteursReferenceChef}
+                      pouvoirsSelection={pouvoirsSelection}
+                      acteursPartiesOptions={acteursPartiesOptions}
+                      designationOptions={designationOptions}
+                     /> ;
         break;
     case 'pouvoir':
-      modalContent =       <PouvoirCreator
-              pouvoirsSelection={pouvoirsSelection}
-              onAddPouvoir={onAddPouvoir}
-              onClickPouvoir = {onClickPouvoir}
-              validationErrorMessage={newActeurValidationErrorMessage}
-              pouvoirOptions={pouvoirOptions}
-              acteurSelect={acteurSelect}
-            /> ;
+      modalContent = <PouvoirCreator
+                      pouvoirsSelection={pouvoirsSelection}
+                      onAddPouvoir={onAddPouvoir}
+                      onClickPouvoir = {onClickPouvoir}
+                      onShowModal={onShowModal}
+                      onCloseModal={onCloseModal}
+                      validationErrorMessage={newActeurValidationErrorMessage}
+                      pouvoirOptions={pouvoirOptions}
+                      acteurSelect={acteurSelect}
+                      previousModal={previousModal}
+                    /> ;
       break;
     case 'designation':
     modalContent =       <DesignationCreator
@@ -98,7 +116,7 @@ export default function CardBoard(props){
       )}
 
       <div id="sort1" className="ui cards" data-sortable=".card">
-      {acteurs.map((acteur, index) => (
+      {acteursPartie.map((acteur, index) => (
 
           <Card
             key = {index}
@@ -138,7 +156,8 @@ CardBoard.propTypes = {
   onShowModal: PropTypes.func.isRequired,
   onCloseModal: PropTypes.func.isRequired,
   onDeleteActeur: PropTypes.func.isRequired,
-  acteurs: PropTypes.array.isRequired,
+  acteursPartie: PropTypes.array.isRequired,
+  acteursReference: PropTypes.array.isRequired,
   pouvoirsSelection: PropTypes.array.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   isSavingNewActeur: PropTypes.bool.isRequired,
@@ -151,5 +170,6 @@ CardBoard.propTypes = {
   acteursPartiesOptions: PropTypes.array.isRequired,
   acteurSelect: PropTypes.number.isRequired,
   modalType: PropTypes.string.isRequired,
+  previousModal: PropTypes.string.isRequired,
 
 }

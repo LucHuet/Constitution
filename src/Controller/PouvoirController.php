@@ -8,28 +8,28 @@ use App\Entity\Pouvoir;
 use App\Controller\Base\BaseController;
 
 /**
- * @Route("/pouvoir")
+ * @Route("/pouvoirReference")
  */
 class PouvoirController extends BaseController
 {
 
   /**
-   * @Route("/", name="pouvoir_list", methods="GET")
+   * @Route("/", name="pouvoir_ref_list", methods="GET")
    * @Method("GET")
    */
-  public function getPouvoirs()
+  public function getPouvoirsReference()
   {
-      $models = $this->findAllPouvoirsModels();
+      $models = $this->findAllPouvoirsRefModels();
       return $this->createApiResponse([
           'items' => $models
       ]);
   }
 
   /**
-   * @Route("/{id}", name="pouvoir_get" , methods="GET")
+   * @Route("/{id}", name="pouvoir_ref_get" , methods="GET")
    * @Method("GET")
    */
-  public function getPouvoir(Pouvoir $pouvoir)
+  public function getPouvoirReference(Pouvoir $pouvoir)
   {
       $apiModel = $this->createPouvoirApiModel($pouvoir);
 

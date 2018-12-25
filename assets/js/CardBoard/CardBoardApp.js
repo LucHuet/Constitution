@@ -3,7 +3,11 @@ import CardBoard from './CardBoard';
 //permet de définit le type de props
 import PropTypes from 'prop-types';
 import interact from 'interactjs';
-import { getActeurs, deleteActeur, createActeur, createPouvoirPartie, createDesignation } from '../api/partie_api.js';
+import {
+    getActeursPartie, deleteActeurPartie, createActeurPartie,
+    getActeursReference,
+    createPouvoirPartie, createDesignation
+   } from '../api/partie_api.js';
 import Sortable from './Sortable.js';
 
 //le mot clé export permet de dire qu'on pourra utiliser
@@ -17,7 +21,8 @@ export default class CardBoardApp extends Component {
     //permet  d'initialiser les states donc les
     //variables qui peuvent être modifiées.
     this.state = {
-      acteurs: [],
+      acteursPartie: [],
+      acteursReference: [],
       pouvoirsSelection: [],
       isLoaded: false,
       isSavingNewActeur: false,
@@ -26,6 +31,7 @@ export default class CardBoardApp extends Component {
       showModal:false,
       acteurSelect:0,
       modalType:"",
+      previousModal:"",
       //sorter
       sortable:null,
     };
@@ -47,18 +53,27 @@ export default class CardBoardApp extends Component {
   //componentDidMount est une methode magique qui est automatiquement
   //lancée apres le render de l'app
   componentDidMount(){
-    getActeurs()
+    getActeursPartie()
     //then signifie qu'il n'y a pas d'erreur.
       .then((data)=>{
         //méthode qui permet de redonner une valeur à un state.
         this.setState({
-          acteurs: data,
+          acteursPartie: data,
           isLoaded: true,
         });
         this.setState({
           sortable : new Sortable(document.querySelector('#sort1'), null)
         });
       });
+
+      getActeursReference()
+      //then signifie qu'il n'y a pas d'erreur.
+        .then((data)=>{
+          //méthode qui permet de redonner une valeur à un state.
+          this.setState({
+            acteursReference: data,
+          });
+        });
   }
 
   //componentWillUnmount est une methode magique qui est automatiquement
@@ -85,13 +100,35 @@ export default class CardBoardApp extends Component {
     }, 3000);
   }
 
-  handleAddActeur(nom, nombreIndividus, typeActeur){
+  handleAddActeur(
+    nom,
+    nombreIndividus,
+    typeActeur,
+    typeDesignation,
+    acteurDesignant,
+    nomDesignation
+  ){
 
-      const newActeur = {
+      const newDesignation = {
+        nom: nomDesignation,
+        designation : typeDesignation,
+        //acteurDesigne : acteurSelect, ????
+        acteurDesignant: acteurDesignant
+      };
+
+      const newPouvoirs = this.state.pouvoirsSelection;
+
+      const newActeurPartie = {
         nom: nom,
         nombreIndividus : nombreIndividus,
-        typeActeur : typeActeur
+        typeActeur : typeActeur,
       };
+
+      const newActeurPartieComplet = {
+        acteurPartie : newActeurPartie,
+        pouvoirs: newPouvoirs,
+        designation: newDesignation
+      }
 
       this.setState({
         isSavingNewActeur: true
@@ -102,19 +139,19 @@ export default class CardBoardApp extends Component {
         isSavingNewActeur: false,
       }
 
-      createActeur(newActeur)
+      createActeurPartie(newActeurPartieComplet)
       //l'ajout n'as pas d'erreur
-        .then(acteur => {
+        .then(acteurPartie => {
           //prevstate est la liste des acteurs originale
           this.setState(prevState =>{
             //déclaration d'une nouvelle liste d'acteursJson
             //qui est la liste de base + le nouvel acteur
-            const newActeurs = [...prevState.acteurs, acteur];
+            const newActeursPartie = [...prevState.acteursPartie, acteurPartie];
 
             return {
               //on remet isSavingNewActeur à false
               ...newState,
-              acteurs: newActeurs,
+              acteursPartie: newActeursPartie,
               newActeurValidationErrorMessage: '',
               showModal: false
             };
@@ -139,27 +176,27 @@ export default class CardBoardApp extends Component {
   }
 
   handleDeleteActeur(id) {
-    //prevstate est la liste des acteurs originale
+    //prevstate est la liste des acteursPartie originale
     this.setState((prevState) =>{
       return {
         //on fait une boucle qui redéfini acteur en lui retirant l'acteur dont l'id à été cliqué
-        acteurs: prevState.acteurs.map(acteur => {
-          if (acteur.id !== id){
-            return acteur;
+        acteursPartie: prevState.acteursPartie.map(acteurPartie => {
+          if (acteurPartie.id !== id){
+            return acteurPartie;
           }
           //permet de mettre isDeleting : true pour l'acteur qui se fait supprimer
-          return {...acteur, isDeleting: true};
+          return {...acteurPartie, isDeleting: true};
         })
       }
     });
 
-    deleteActeur(id)
+    deleteActeurPartie(id)
       .then(() => {
         // remove the rep log without mutating state
         // filter returns a new array
         this.setState((prevState) => {
           return {
-            acteurs: prevState.acteurs.filter(acteur => acteur.id != id)
+            acteursPartie: prevState.acteursPartie.filter(acteurPartie => acteurPartie.id != id)
           }
         });
         this.setSuccessMessage('Acteur supprimé !');
@@ -201,11 +238,12 @@ export default class CardBoardApp extends Component {
         })
   }
 
-  handleShowModal(modalType, acteurId=0){
+  handleShowModal(modalType, acteurId=0, previousModal=""){
     this.setState({
       showModal: true,
       modalType:modalType,
-      acteurSelect:acteurId
+      acteurSelect:acteurId,
+      previousModal:previousModal,
     });
   }
 
@@ -213,7 +251,8 @@ export default class CardBoardApp extends Component {
     this.setState({
       showModal: false,
       modalType:"",
-      acteurSelect:0
+      acteurSelect:0,
+      pouvoirsSelection: []
     });
   }
 
@@ -239,7 +278,7 @@ export default class CardBoardApp extends Component {
           };
         });
       }
-      console.log(2, this.state.pouvoirsSelection, this.state.pouvoirsSelectionTest);
+      console.log(this.state.pouvoirsSelection);
   }
 
 
