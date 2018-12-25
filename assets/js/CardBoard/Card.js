@@ -59,8 +59,6 @@ export default function Card(props) {
             </div>
             <div className="description">
               <span>Nombre individus : {acteur.nombreIndividus}</span>
-              <br/>
-              <span>Type acteur ?</span>
               <a href="#" onClick={(event => handleDeleteClick(event, acteur.id))}>
                 <button className="right floated ui basic button">
                   <i className="trash icon"></i>

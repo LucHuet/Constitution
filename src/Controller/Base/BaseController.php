@@ -135,7 +135,10 @@ class BaseController extends Controller
         $model->description = $acteur->getDescription();
         $model->image = $acteur->getImage();
         foreach ($acteur->getCountryDescriptions() as $countryDescription) {
-          $model->countryDescriptions[$countryDescription->getCountry()] = $countryDescription->getDescription();
+          $country ['country'] = $countryDescription->getCountry();
+          $country ['description'] = $countryDescription->getDescription();
+          $country ['code'] = $countryDescription->getCountryCode();
+          $model->countryDescriptions[$countryDescription->getCountryCode()] = $country;
         }
         foreach ($acteur->getPouvoirsBase() as $pouvoirBase) {
           $model->pouvoirsBase[] = $this->createPouvoirRefApiModel($pouvoirBase);

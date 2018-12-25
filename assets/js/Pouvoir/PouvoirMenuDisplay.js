@@ -31,19 +31,17 @@ export default class PouvoirMenuDisplay extends Component {
     if(pouvoir.pouvoirParent == parent)
     {
       return (
-        <span>
+        <React.Fragment>
           <div
           onClick={()=> onClickPouvoir(pouvoir.id)}
           key={pouvoir.id}
           className={maClassDiv}
           >
-          <div>
             <Icon name={pouvoirsSelection.includes(pouvoir.id) ? 'minus square outline' : 'plus square outline'}/>
             {pouvoir.nom}
           </div>
-          </div>
           <PouvoirMenuDisplay pouvoirsSelection={pouvoirsSelection} onClickPouvoir={onClickPouvoir} tree = {tree} parent = {pouvoir.id} level = {level + 1} />
-        </span>
+        </React.Fragment>
       )
     }
 
@@ -57,7 +55,9 @@ export default class PouvoirMenuDisplay extends Component {
 
         <div>
         {tree.map((pouvoir) => (
+          <React.Fragment key={pouvoir}>
           this.levelCheck(pouvoir)
+          </React.Fragment>
         ))}
         </div>
 

@@ -10,7 +10,8 @@ export default class ActeurChefCreator extends Component {
 
     this.state = {
       nombreActeurError: '',
-      nombreIndividus: 1
+      nombreIndividus: 1,
+      displayCountryDescription: '',
     };
 
     //ref permettent d'accéder à des élements du dom
@@ -24,10 +25,18 @@ export default class ActeurChefCreator extends Component {
 
     this.handleAjoutPouvoir = this.handleAjoutPouvoir.bind(this);
     this.nombreIndividusChange = this.nombreIndividusChange.bind(this);
+    this.handleCountryDescriptionClick = this.handleCountryDescriptionClick.bind(this);
     this.handleBack = this.handleBack.bind(this);
     this.handleSave = this.handleSave.bind(this);
 
 
+  }
+
+  componentDidMount(){
+    const {onClickPouvoir, acteursReferenceChef} = this.props;
+    acteursReferenceChef.pouvoirsBase.map((pouvoirBase) => {
+      onClickPouvoir(pouvoirBase.id);
+    });
   }
 
   handleBack(modalType){
@@ -41,7 +50,7 @@ export default class ActeurChefCreator extends Component {
     //fait appel au props de l'objet
     const {onAddActeur, acteursReferenceChef} = this.props;
 
-    const nomActeur = acteursReferenceChef.type;
+    const nomActeur = this.nomActeur.current;
     const nombreActeur = this.nombreActeur.current;
     const typeActeur = acteursReferenceChef.id;
     const typeDesignation = this.typeDesignation.current;
@@ -56,7 +65,7 @@ export default class ActeurChefCreator extends Component {
     }
 
     onAddActeur(
-      nomActeur,
+      nomActeur.value,
       nombreActeur.value,
       typeActeur,
       typeDesignation.options[typeDesignation.selectedIndex].value,
@@ -78,6 +87,16 @@ export default class ActeurChefCreator extends Component {
     onShowModal( modalType, acteurId, 'Chef d\'état');
   }
 
+  handleCountryDescriptionClick(description){
+    if(this.state.displayCountryDescription == description)
+    {
+      description = '';
+    }
+    this.setState({
+      displayCountryDescription: description
+    });
+  }
+
   nombreIndividusChange(nbIndibidus)
   {
     this.setState({
@@ -88,6 +107,7 @@ export default class ActeurChefCreator extends Component {
   render(){
 
     const {
+        onClickPouvoir,
         acteursReferenceChef,
         pouvoirsSelection,
         designationOptions,
@@ -98,7 +118,8 @@ export default class ActeurChefCreator extends Component {
     <div>
     <Header as='h2' icon textAlign='center'>
       <Image size='medium' circular src='/build/static/chef.png' />
-      <Header.Content>Ajout Acteur : {acteursReferenceChef.type}</Header.Content>
+      <Header.Content>Ajout Acteur : <input type="text" id="nom" ref={this.nomActeur} defaultValue={acteursReferenceChef.type} required="required" maxLength="255" />
+      </Header.Content>
     </Header>
     <br/>
     <Container textAlign='justified'>
@@ -112,11 +133,15 @@ export default class ActeurChefCreator extends Component {
       <Segment>
         <b>Dans le monde</b>
         <Divider />
+
         {Object.keys(acteursReferenceChef.countryDescriptions).map((countryDesc, index) => {
           return (
-            <React.Fragment key={countryDesc}> <Flag name='france' /> {countryDesc}  &nbsp;  </React.Fragment>
+              <div key={acteursReferenceChef.countryDescriptions[countryDesc].code} onClick={() => this.handleCountryDescriptionClick(acteursReferenceChef.countryDescriptions[countryDesc].description)}>
+                <Flag name={acteursReferenceChef.countryDescriptions[countryDesc].code} /> {acteursReferenceChef.countryDescriptions[countryDesc].country}  &nbsp;
+              </div>
           )
         } )}
+        <div>{this.state.displayCountryDescription}</div>
       </Segment>
       <Segment>
         <b>Nombre de personnes : </b>

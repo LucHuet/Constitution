@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\ActeurPartie;
 use App\Entity\DesignationPartie;
+use App\Entity\PouvoirPartie;
 use App\Form\ActeurPartieCompletType;
 use App\Repository\ActeurPartieRepository;
+use App\Repository\PouvoirRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -34,7 +36,7 @@ class ActeurPartieController extends BaseController
      * @Route("/", name="acteur_partie_new", methods="POST", options={"expose"=true})
      * @Method("POST")
      */
-    public function createActeurPartie(Request $request)
+    public function createActeurPartie(Request $request, PouvoirRepository $pouvoirRepository)
     {
         $session = new Session();
         $partieCourante = $session->get('partieCourante');
@@ -57,21 +59,32 @@ class ActeurPartieController extends BaseController
                 'errors' => $errors
             ], 400);
         }
-        dump($form->getData());
+
         $data=$form->getData();
         /** @var Acteur $acteur */
-        $acteur = new ActeurPartie();
+
         $em = $this->getDoctrine()->getManager();
         $partieCourante = $em->merge($partieCourante);
-        $acteur->setNom($data['nom']);
-        $acteur->setNombreIndividus($data['nombreIndividus']);
+
+        $acteur = $data['acteurPartie'];
         $acteur->setPartie($partieCourante);
-        $typeActeur= $em->merge($data['typeActeur']);
-        $acteur->setTypeActeur($typeActeur);
 
         $designation = $data['designation'];
         $designation->setActeurDesigne($acteur);
         $designation->setPartie($partieCourante);
+
+        $pouvoirsId = $data['pouvoirs'];
+
+        foreach($pouvoirsId as $pouvoirId){
+          $pouvoirPartie = new PouvoirPartie();
+          $pouvoirRef = $pouvoirRepository->find($pouvoirId);
+          $pouvoirPartie->setNom($pouvoirRef->getNom());
+          $pouvoirPartie->setPartie($partieCourante);
+          $pouvoirPartie->setPouvoir($pouvoirRef);
+          $pouvoirPartie->addActeurPossedant($acteur);
+          $em->persist($pouvoirPartie);
+        }
+
         $em->persist($acteur);
         $em->persist($designation);
         $em->flush();

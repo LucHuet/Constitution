@@ -116,12 +116,19 @@ export default class CardBoardApp extends Component {
         acteurDesignant: acteurDesignant
       };
 
+      const newPouvoirs = this.state.pouvoirsSelection;
+
       const newActeurPartie = {
         nom: nom,
         nombreIndividus : nombreIndividus,
         typeActeur : typeActeur,
-        designation: newDesignation
       };
+
+      const newActeurPartieComplet = {
+        acteurPartie : newActeurPartie,
+        pouvoirs: newPouvoirs,
+        designation: newDesignation
+      }
 
       this.setState({
         isSavingNewActeur: true
@@ -132,7 +139,7 @@ export default class CardBoardApp extends Component {
         isSavingNewActeur: false,
       }
 
-      createActeurPartie(newActeurPartie)
+      createActeurPartie(newActeurPartieComplet)
       //l'ajout n'as pas d'erreur
         .then(acteurPartie => {
           //prevstate est la liste des acteurs originale
@@ -271,7 +278,7 @@ export default class CardBoardApp extends Component {
           };
         });
       }
-      console.log(2, this.state.pouvoirsSelection, this.state.pouvoirsSelectionTest);
+      console.log(this.state.pouvoirsSelection);
   }
 
 

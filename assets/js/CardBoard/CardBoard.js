@@ -73,16 +73,17 @@ export default function CardBoard(props){
                      /> ;
         break;
     case 'pouvoir':
-      modalContent =       <PouvoirCreator
-              pouvoirsSelection={pouvoirsSelection}
-              onAddPouvoir={onAddPouvoir}
-              onClickPouvoir = {onClickPouvoir}
-              onShowModal={onShowModal}
-              validationErrorMessage={newActeurValidationErrorMessage}
-              pouvoirOptions={pouvoirOptions}
-              acteurSelect={acteurSelect}
-              previousModal={previousModal}
-            /> ;
+      modalContent = <PouvoirCreator
+                      pouvoirsSelection={pouvoirsSelection}
+                      onAddPouvoir={onAddPouvoir}
+                      onClickPouvoir = {onClickPouvoir}
+                      onShowModal={onShowModal}
+                      onCloseModal={onCloseModal}
+                      validationErrorMessage={newActeurValidationErrorMessage}
+                      pouvoirOptions={pouvoirOptions}
+                      acteurSelect={acteurSelect}
+                      previousModal={previousModal}
+                    /> ;
       break;
     case 'designation':
     modalContent =       <DesignationCreator
