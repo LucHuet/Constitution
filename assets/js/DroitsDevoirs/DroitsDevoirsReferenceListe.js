@@ -15,11 +15,9 @@ export default function DroitsDevoirsReferenceListe(props) {
       var inPartie = true;
 
        droitsDevoirs.forEach((droitDevoirPartie) => {
-
          if(droitDevoirPartie.id == droitDevoir.id){
            inPartie = false;
          }
-         console.log("in partie ? " + inPartie);
 
       });
 
