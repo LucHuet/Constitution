@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export default function DroitsDevoirsListe(props) {
 
-  const { droitsDevoirs } = props;
+  const { droitsDevoirs, onRowClick } = props;
 
 
   if(droitsDevoirs != null){
@@ -13,6 +13,7 @@ export default function DroitsDevoirsListe(props) {
         {droitsDevoirs.map((droitsDevoirs) => (
             <tr
               key={droitsDevoirs.id}
+              onClick={()=> onRowClick(droitsDevoirs.id)}
              >
               <td><i className='ui icon minus square outline'></i>{droitsDevoirs.nom}</td>
             </tr>
@@ -31,4 +32,5 @@ export default function DroitsDevoirsListe(props) {
 
   DroitsDevoirsListe.propTypes = {
     droitsDevoirs: PropTypes.array.isRequired,
+    onRowClick: PropTypes.func.isRequired,
   };
