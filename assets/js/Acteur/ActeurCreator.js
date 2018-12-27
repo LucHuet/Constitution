@@ -69,8 +69,6 @@ export default class ActeurCreator extends Component{
 
 
     return (
-      <div>
-
       <Card.Group>
       {acteursReference.map(acteurRef => {
         return  (
@@ -88,44 +86,6 @@ export default class ActeurCreator extends Component{
                 )
       } )}
       </Card.Group>
-
-      <Form onSubmit={this.handleFormSubmit}>
-        {validationErrorMessage && (
-          <div className="alert alert-danger">
-          {validationErrorMessage}
-          </div>
-        )}
-            <Form.Field>
-              <label htmlFor="nom" className="required">Nom</label>
-              <input type="text" id="nom" ref={this.nomActeur} required="required" maxLength="255" />
-            </Form.Field>
-            {' '}
-            <div className={`form-group ${nombreActeurError ? 'has-error' : '' }`}>
-            <Form.Field>
-              <label htmlFor="nombreIndividus">Nombre individus</label>
-                <input
-                  type="number"
-                  id="nombreIndividus"
-                  ref={this.nombreActeur}
-                />
-                { nombreActeurError  && <span className="help-block">{nombreActeurError}</span>}
-              </Form.Field>
-            {' '}
-            <Form.Field>
-              <label htmlFor="typeActeur" className="required">Type acteur</label>
-              <select id="typeActeur" ref={this.typeActeur}>
-                {acteursReference.map(acteurRef => {
-                  return <option value={acteurRef.id} key={acteurRef.id}>{acteurRef.type}</option>
-                } )}
-              </select>
-            </Form.Field>
-          </div>
-          {' '}
-          <Button type="submit" className="btn-primary">
-            Sauvegarder
-          </Button>
-      </Form>
-      </div>
     );
   }
 }

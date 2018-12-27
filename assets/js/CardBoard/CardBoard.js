@@ -47,12 +47,12 @@ export default function CardBoard(props){
 
   switch (modalType) {
     case 'acteur':
-    modalContent =       <ActeurCreator
-      onAddActeur={onAddActeur}
-      onShowModal={onShowModal}
-      validationErrorMessage={newActeurValidationErrorMessage}
-      acteursReference={acteursReference}
-    /> ;
+    modalContent = <ActeurCreator
+                    onAddActeur={onAddActeur}
+                    onShowModal={onShowModal}
+                    validationErrorMessage={newActeurValidationErrorMessage}
+                    acteursReference={acteursReference}
+                  /> ;
       break;
       case 'Chef d\'état':
       var acteursReferenceChef = [];
@@ -86,13 +86,13 @@ export default function CardBoard(props){
                     /> ;
       break;
     case 'designation':
-    modalContent =       <DesignationCreator
-            onAddDesignation={onAddDesignation}
-            validationErrorMessage={newActeurValidationErrorMessage}
-            designationOptions={designationOptions}
-            acteursPartiesOptions={acteursPartiesOptions}
-            acteurSelect={acteurSelect}
-          /> ;
+    modalContent = <DesignationCreator
+                    onAddDesignation={onAddDesignation}
+                    validationErrorMessage={newActeurValidationErrorMessage}
+                    designationOptions={designationOptions}
+                    acteursPartiesOptions={acteursPartiesOptions}
+                    acteurSelect={acteurSelect}
+                  /> ;
       break;
   }
 
@@ -117,7 +117,6 @@ export default function CardBoard(props){
 
       <div id="sort1" className="ui cards" data-sortable=".card">
       {acteursPartie.map((acteur, index) => (
-
           <Card
             key = {index}
             index={index}
