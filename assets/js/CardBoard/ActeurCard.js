@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Card, Image } from 'semantic-ui-react'
 
-export default function Card(props) {
+export default function ActeurCard(props) {
 
   //on descructure les props pour en récuperer les variables
   const {
@@ -24,31 +25,30 @@ export default function Card(props) {
     onShowModal( modalType, acteurId);
   };
 
+  const handleDisplay = function(event, modalType, acteurId){
+    event.preventDefault();
+    onShowModal( modalType, acteurId);
+  };
+
   return(
-        <div
-          className="card"
+        <Card
           data-position={index}
           data-id={index}
         >
-          <div className="extra content">
+          <Card.Content extra>
             <div className="left floated">
-              <a>
-                <span>Désigné par :</span>
-              </a>
-              <img className="ui avatar image" src="/build/static/chef.png"/>
+              <span>Désigné par :</span>
+              <Image avatar="true" src="/build/static/chef.png"/>
             </div>
-            <div className="right floated">
-              <a>
-                <span>Controlé par :</span>
-              </a>
-              <i className="university icon"></i>
-            </div>
-          </div>
-          <div className="content">
-            <img className="right floated tiny ui image" src={"/build/static/"+acteur.image}/>
-            <div className="header">
-              <span>{acteur.nom}</span>
-            </div>
+          </Card.Content>
+          <Card.Content>
+            <Image
+              size="tiny"
+              floated="right"
+              src={"/build/static/"+acteur.image}
+              onClick={(event => handleDisplay(event, "acteurDisplay", acteur.id))}
+            />
+            <Card.Header>{acteur.nom}</Card.Header>
             <div className="meta">
               <a href="#" onClick={(event => handleAjout(event, "pouvoir", acteur.id))}>
                 <i className="plus square outline icon"></i>Pouvoir
@@ -65,29 +65,21 @@ export default function Card(props) {
                 </button>
               </a>
             </div>
-          </div>
-          <div className="extra content">
+          </Card.Content>
+          <Card.Content extra>
           <div className="left floated">
             <a>
               <span>Désigne :</span>
             </a>
-            <i className="briefcase icon"></i>
-            <i className="university icon"></i>
+            <Image avatar="true" src="/build/static/parlement.png"/>
           </div>
-          <div className="right floated">
-            <a>
-              <span>Contrôle :</span>
-            </a>
-            <i className="balance scale icon"></i>
-            <i className="fighter jet icon"></i>
-          </div>
-          </div>
-        </div>
+          </Card.Content>
+        </Card>
   );
 }
 
 //on défini les types des props
-Card.propTypes = {
+ActeurCard.propTypes = {
   index: PropTypes.number,
   onDeleteActeur: PropTypes.func.isRequired,
   onShowModal: PropTypes.func.isRequired,

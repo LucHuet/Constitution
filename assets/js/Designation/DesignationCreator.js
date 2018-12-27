@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Button from '../Components/Button';
-import {Form} from 'semantic-ui-react';
+import {Form, Button} from 'semantic-ui-react';
 
 export default class DesignationCreator extends Component{
 
