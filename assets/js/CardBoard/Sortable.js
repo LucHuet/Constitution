@@ -54,7 +54,7 @@ export default class Sortable {
     var rect = this.items[0].getBoundingClientRect();
     //récupère la longueur et largueur du rectangle
     this.item_width = Math.floor(rect.width);
-    this.item_height = Math.floor(rect.width / 1.6);
+    this.item_height = Math.floor(rect.height);
     //récupère le nombre de colonne en fonction de la taille des rectangles
     // ! dépend de element
     this.cols = Math.floor(this.element.offsetWidth / this.item_width);
@@ -67,7 +67,7 @@ export default class Sortable {
       item.style.position = "absolute";
       item.style.top = "0px";
       item.style.left = "0px";
-      item.style.height = this.item_height;
+      //item.style.height = this.item_height+"px !important";
       item.style.transitionDuration = ajoutSuppressionItem ? null : "0s";
       var position = item.dataset.position;
       this.moveItem(item, position);

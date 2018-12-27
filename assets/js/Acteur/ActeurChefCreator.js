@@ -45,8 +45,6 @@ export default class ActeurChefCreator extends Component {
   }
 
   handleSave(){
-    console.log("Ajout à FAIRE");
-
     //fait appel au props de l'objet
     const {onAddActeur, acteursReferenceChef} = this.props;
 
@@ -164,7 +162,7 @@ export default class ActeurChefCreator extends Component {
         {acteursReferenceChef.pouvoirsBase.map((pouvoirBase) => {
           return (
             <React.Fragment key={pouvoirBase.id}>
-              <span onClick={()=> this.onClickPouvoir(pouvoirBase.id)}>
+              <span onClick={()=> onClickPouvoir(pouvoirBase.id)}>
                 <Icon name={pouvoirsSelection.includes(pouvoirBase.id) ? 'minus square outline' : 'plus square outline'} size='small' />
                 {pouvoirBase.nom}
               </span>

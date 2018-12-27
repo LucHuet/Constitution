@@ -74,6 +74,10 @@ export default class CardBoardApp extends Component {
             acteursReference: data,
           });
         });
+
+      setTimeout(() => {
+          this.state.sortable.setPositions(true);
+      }, 400);
   }
 
   //componentWillUnmount est une methode magique qui est automatiquement
@@ -278,7 +282,6 @@ export default class CardBoardApp extends Component {
           };
         });
       }
-      console.log(this.state.pouvoirsSelection);
   }
 
 

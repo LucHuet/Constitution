@@ -31,7 +31,6 @@ export default class DroitsDevoirsApp extends Component {
       });
     getDroitsDevoirs()
       .then((data) => {
-        console.log("get", data);
         this.setState({
           droitsDevoirs : data
         });

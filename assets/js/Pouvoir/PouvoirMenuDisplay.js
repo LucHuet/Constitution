@@ -55,8 +55,8 @@ export default class PouvoirMenuDisplay extends Component {
 
         <div>
         {tree.map((pouvoir) => (
-          <React.Fragment key={pouvoir}>
-          this.levelCheck(pouvoir)
+          <React.Fragment key={pouvoir.id}>
+          {this.levelCheck(pouvoir)}
           </React.Fragment>
         ))}
         </div>

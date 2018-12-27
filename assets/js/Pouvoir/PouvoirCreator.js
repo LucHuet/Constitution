@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Button from '../Components/Button';
-import {Form, Table} from 'semantic-ui-react';
+import {Form, Table, Button} from 'semantic-ui-react';
 import { getPouvoirsReference } from '../api/partie_api.js';
 import PouvoirMenuDisplay from './PouvoirMenuDisplay'
 
