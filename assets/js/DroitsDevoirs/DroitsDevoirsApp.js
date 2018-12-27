@@ -12,11 +12,11 @@ export default class DroitsDevoirsApp extends Component {
       droitsDevoirsReference : [],
       droitsDevoirs: [],
       addedRowId:null,
-      droitsDevoirsReferenceShow:false,
+      droitsDevoirsPartieShow:false,
       };
 
     this.handleRowClick = this.handleRowClick.bind(this);
-    this.handleDroitsDevoirsReferenceListe = this.handleDroitsDevoirsReferenceListe.bind(this);
+    this.handleDroitsDevoirsPartieListe = this.handleDroitsDevoirsPartieListe.bind(this);
 
   }
 
@@ -49,9 +49,9 @@ export default class DroitsDevoirsApp extends Component {
       });
   }
 
-  handleDroitsDevoirsReferenceListe(){
+  handleDroitsDevoirsPartieListe(){
     this.setState((prevState)=>({
-      droitsDevoirsReferenceShow: !prevState.droitsDevoirsReferenceShow
+      droitsDevoirsPartieShow: !prevState.droitsDevoirsPartieShow
     }))
   }
 
@@ -61,7 +61,7 @@ export default class DroitsDevoirsApp extends Component {
             {...this.props}
             {...this.state}
             onRowClick={this.handleRowClick}
-            onShowDroitsDevoirsRefListe={this.handleDroitsDevoirsReferenceListe}
+            onShowDroitsDevoirsPartieListe={this.handleDroitsDevoirsPartieListe}
         />
 
     )

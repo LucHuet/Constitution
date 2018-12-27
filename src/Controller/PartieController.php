@@ -14,14 +14,17 @@ use App\Repository\DesignationRepository;
 use App\Repository\ActeurPartieRepository;
 use App\Repository\PouvoirPartieRepository;
 use App\Repository\DroitDevoirRepository;
+use App\Service\CheckStepService;
+use App\Controller\Base\BaseController;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Session\Session;
-use App\Service\CheckStepService;
-use App\Controller\Base\BaseController;
+
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Route("/partie")
@@ -148,6 +151,24 @@ class PartieController extends BaseController
        $partieCourante = $session->get('partieCourante');
        $em = $this->getDoctrine()->getManager();
        $partieCourante = $em->merge($partieCourante);
+
+       //récupération de tous les droits et devoirs de la partie en cours
+       $droitsDevoirsPartieNoms = array();
+       $droitsDevoirsPartie = $partieCourante->getDroitDevoirs();
+
+       foreach($droitsDevoirsPartie as $droitDevoirPartie){
+         $droitDevoirPartieNom = $droitDevoirPartie->getNom();
+         array_push($droitsDevoirsPartieNoms, $droitDevoirPartieNom);
+       }
+
+       //si le droit devoir envoyé n'est pas encore présent dans la partie on le rajoute
+       if(!in_array($droitDevoir->getNom(), $droitsDevoirsPartieNoms)){
+         $partieCourante->addDroitDevoir($droitDevoir);
+       }
+       //si le droit devoir est déjà présent dans la partie, on l'enlève
+       else{
+         $partieCourante->removeDroitDevoir($droitDevoir);
+       }
 
        $em->persist($partieCourante);
        $em->flush();

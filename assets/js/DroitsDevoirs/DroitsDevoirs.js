@@ -9,48 +9,48 @@ export default function DroitsDevoirs(props) {
           droitsDevoirsReference,
           droitsDevoirs,
           addedRowId,
-          droitsDevoirsReferenceShow,
+          droitsDevoirsPartieShow,
           onRowClick,
-          onShowDroitsDevoirsRefListe
+          onShowDroitsDevoirsPartieListe
         } = props;
 
-  const handleDroitsDevoirs = function(event){
+  const handleDroitsDevoirsPartie = function(event){
     //évite le comportement normal du boutton
     //exemple évite que le submit soumette la page.
     event.preventDefault();
 
-    onShowDroitsDevoirsRefListe();
+    onShowDroitsDevoirsPartieListe();
   };
 
   return (
-    <div>
-      <button className="ui basic button" onClick={(event => handleDroitsDevoirs(event))}>
-        <i className="icon angle down"></i>
-        Droits et devoirs
-      </button>
-
-      {!droitsDevoirsReferenceShow && (
-        <React.Fragment>
-          <h3 className="ui header">Droits et devoirs</h3>
-            <table>
-              <DroitsDevoirsReferenceListe
-                droitsDevoirsReference={droitsDevoirsReference}
-                droitsDevoirs={droitsDevoirs}
-                onRowClick={onRowClick}
-                addedRowId={addedRowId}
-                />
-            </table>
-          </React.Fragment>
-        )
-      }
+    <div className="droits-devoirs-listes">
+      <h3 className="ui header">Droits et devoirs</h3>
+        <table>
+          <DroitsDevoirsReferenceListe
+            droitsDevoirsReference={droitsDevoirsReference}
+            droitsDevoirs={droitsDevoirs}
+            onRowClick={onRowClick}
+            addedRowId={addedRowId}
+            />
+        </table>
       <br/>
 
-      <h3 className="ui header"> Droits et devoirs de la partie</h3>
-      <table>
+      <button className="ui basic button" onClick={(event => handleDroitsDevoirsPartie(event))}>
+        <i className="icon angle down"></i>
+        Droits et devoirs de la partie
+      </button>
+      {!droitsDevoirsPartieShow && (
+        <React.Fragment>
+          <h3 className="ui header"> Droits et devoirs de la partie</h3>
+          <table>
 
-        <DroitsDevoirsListe
-          droitsDevoirs={droitsDevoirs}/>
-      </table>
+            <DroitsDevoirsListe
+              droitsDevoirs={droitsDevoirs}
+              onRowClick={onRowClick}/>
+          </table>
+        </React.Fragment>
+        )
+      }
     </div>
   );
 }
@@ -59,7 +59,7 @@ DroitsDevoirs.propTypes = {
   droitsDevoirsReference: PropTypes.array.isRequired,
   droitsDevoirs: PropTypes.array.isRequired,
   onRowClick: PropTypes.func.isRequired,
-  onShowDroitsDevoirsRefListe: PropTypes.func.isRequired,
-  droitsDevoirsReferenceShow: PropTypes.bool.isRequired,
+  onShowDroitsDevoirsPartieListe: PropTypes.func.isRequired,
+  droitsDevoirsPartieShow: PropTypes.bool.isRequired,
   addedRowId: PropTypes.any,
 };
