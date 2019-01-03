@@ -7,7 +7,8 @@ export default class ActeurCreator extends Component {
   constructor(props){
     //super(props) permet d'appeler le constructeur parent
     super(props);
-
+    const {acteurReference} = this.props;
+    
     this.state = {
       nombreActeurError: '',
       nombreIndividus: 1,

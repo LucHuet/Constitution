@@ -103,7 +103,6 @@ export default function CardBoard(props){
     }
     var acteurRef = [];
     acteursReference.forEach(function(acteurRef2) {
-      console.log(acteurRef.type, modalType);
       if(acteurRef2.type == modalType)
       {
         acteurRef = acteurRef2;
