@@ -1,6 +1,7 @@
 import React from 'react';
-import Card from './Card';
+import ActeurCard from './ActeurCard';
 import ActeurCreator from '../Acteur/ActeurCreator';
+import ActeurDisplay from '../Acteur/ActeurDisplay';
 import ActeurChefCreator from '../Acteur/ActeurChefCreator';
 import PouvoirCreator from '../Pouvoir/PouvoirCreator';
 import DesignationCreator from '../Designation/DesignationCreator';
@@ -54,7 +55,26 @@ export default function CardBoard(props){
                     acteursReference={acteursReference}
                   /> ;
       break;
-      case 'Chef d\'état':
+    case 'acteurDisplay':
+      var acteurPartieDisplay = [];
+      acteursPartie.forEach(function(acteurPartie) {
+        if(acteurPartie.id == acteurSelect)
+        {
+          acteurPartieDisplay = acteurPartie;
+        }
+      });
+      console.log(acteurPartieDisplay);
+      modalContent = <ActeurDisplay
+                      acteurPartieDisplay={acteurPartieDisplay}
+                      onShowModal={onShowModal}
+                      onAddActeur={onAddActeur}
+                      onClickPouvoir = {onClickPouvoir}
+                      pouvoirsSelection={pouvoirsSelection}
+                      acteursPartiesOptions={acteursPartiesOptions}
+                      designationOptions={designationOptions}
+                    /> ;
+        break;
+    case 'Chef d\'état':
       var acteursReferenceChef = [];
       acteursReference.forEach(function(acteurRef) {
         if(acteurRef.type == 'Chef d\'état')
@@ -117,7 +137,7 @@ export default function CardBoard(props){
 
       <div id="sort1" className="ui cards" data-sortable=".card">
       {acteursPartie.map((acteur, index) => (
-          <Card
+          <ActeurCard
             key = {index}
             index={index}
             acteur={acteur}

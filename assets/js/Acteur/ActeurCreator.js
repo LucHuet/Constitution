@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Button from '../Components/Button';
 import {Card, Form, Image} from 'semantic-ui-react';
 
 export default class ActeurCreator extends Component{
