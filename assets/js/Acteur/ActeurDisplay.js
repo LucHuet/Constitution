@@ -8,9 +8,13 @@ export default class ActeurDisplay extends Component {
     //super(props) permet d'appeler le constructeur parent
     super(props);
 
+    const {
+        acteurPartieDisplay,
+    } = this.props;
+
     this.state = {
       nombreActeurError: '',
-      nombreIndividus: 1,
+      nombreIndividus: acteurPartieDisplay.nombreIndividus,
       displayCountryDescription: '',
     };
 
@@ -113,7 +117,6 @@ export default class ActeurDisplay extends Component {
         <input
           type="range"
           ref={this.nombreActeur}
-          defaultValue={acteurPartieDisplay.nombreIndividus}
           value={this.state.nombreIndividus}
           min="1" max="10"
           onChange={(e) => {

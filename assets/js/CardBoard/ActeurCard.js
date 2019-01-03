@@ -38,7 +38,7 @@ export default function ActeurCard(props) {
           <Card.Content extra>
             <div className="left floated">
               <span>Désigné par :</span>
-              <Image avatar="true" src="/build/static/chef.png"/>
+              <Image avatar={true} src="/build/static/chef.png"/>
             </div>
           </Card.Content>
           <Card.Content>
@@ -71,7 +71,7 @@ export default function ActeurCard(props) {
             <a>
               <span>Désigne :</span>
             </a>
-            <Image avatar="true" src="/build/static/parlement.png"/>
+            <Image avatar={true} src="/build/static/parlement.png"/>
           </div>
           </Card.Content>
         </Card>

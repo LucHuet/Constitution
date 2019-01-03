@@ -14,6 +14,10 @@ class ActeurPartieApiModel
 
     public $pouvoirs;
 
+    public $designations;    
+
+    public $type;
+
     private $links = [];
 
     public function addLink($ref, $url)

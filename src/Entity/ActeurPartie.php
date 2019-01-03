@@ -149,6 +149,15 @@ class ActeurPartie
         return $this->acteursDesignes;
     }
 
+    public function getActeursDesignesId(): Array
+    {   $acteursDesignesId = [];
+        foreach($this->acteursDesignes as $acteurDesigne)
+        {
+          $acteursDesignesId[] = $acteurDesigne->getId();
+        }
+        return $acteursDesignesId;
+    }
+
     public function addActeursDesigne(DesignationPartie $acteursDesigne): self
     {
         if (!$this->acteursDesignes->contains($acteursDesigne)) {
@@ -178,6 +187,15 @@ class ActeurPartie
     public function getActeursDesignants(): Collection
     {
         return $this->acteursDesignants;
+    }
+
+    public function getActeursDesignantsId(): Array
+    {   $acteursDesignantsId = [];
+        foreach($this->acteursDesignants as $acteurDesignant)
+        {
+          $acteursDesignantsId[] = $acteurDesignant->getId();
+        }
+        return $acteursDesignantsId;
     }
 
     public function addActeursDesignant(DesignationPartie $acteursDesignant): self
