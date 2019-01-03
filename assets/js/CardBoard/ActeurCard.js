@@ -49,14 +49,6 @@ export default function ActeurCard(props) {
               onClick={(event => handleDisplay(event, "acteurDisplay", acteur.id))}
             />
             <Card.Header>{acteur.nom}</Card.Header>
-            <div className="meta">
-              <a href="#" onClick={(event => handleAjout(event, "pouvoir", acteur.id))}>
-                <i className="plus square outline icon"></i>Pouvoir
-              </a>
-              <a href="#" onClick={(event => handleAjout(event, "designation", acteur.id))}>
-                <i className="plus square outline icon"></i>Désignation
-              </a>
-            </div>
             <div className="description">
               <span>Nombre individus : {acteur.nombreIndividus}</span>
               <a href="#" onClick={(event => handleDeleteClick(event, acteur.id))}>
