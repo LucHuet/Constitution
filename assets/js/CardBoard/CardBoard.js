@@ -1,8 +1,8 @@
 import React from 'react';
 import ActeurCard from './ActeurCard';
-import ActeurCreator from '../Acteur/ActeurCreator';
+import ActeurCreatorSelection from '../Acteur/ActeurCreatorSelection';
 import ActeurDisplay from '../Acteur/ActeurDisplay';
-import ActeurChefCreator from '../Acteur/ActeurChefCreator';
+import ActeurCreator from '../Acteur/ActeurCreator';
 import PouvoirCreator from '../Pouvoir/PouvoirCreator';
 import DesignationCreator from '../Designation/DesignationCreator';
 import PropTypes from 'prop-types';
@@ -48,7 +48,7 @@ export default function CardBoard(props){
 
   switch (modalType) {
     case 'acteur':
-    modalContent = <ActeurCreator
+    modalContent = <ActeurCreatorSelection
                     onAddActeur={onAddActeur}
                     onShowModal={onShowModal}
                     validationErrorMessage={newActeurValidationErrorMessage}
@@ -74,24 +74,6 @@ export default function CardBoard(props){
                       designationOptions={designationOptions}
                     /> ;
         break;
-    case 'Chef d\'état':
-      var acteursReferenceChef = [];
-      acteursReference.forEach(function(acteurRef) {
-        if(acteurRef.type == 'Chef d\'état')
-        {
-          acteursReferenceChef = acteurRef;
-        }
-      });
-      modalContent = <ActeurChefCreator
-                      onShowModal={onShowModal}
-                      onAddActeur={onAddActeur}
-                      onClickPouvoir = {onClickPouvoir}
-                      acteursReferenceChef={acteursReferenceChef}
-                      pouvoirsSelection={pouvoirsSelection}
-                      acteursPartiesOptions={acteursPartiesOptions}
-                      designationOptions={designationOptions}
-                     /> ;
-        break;
     case 'pouvoir':
       modalContent = <PouvoirCreator
                       pouvoirsSelection={pouvoirsSelection}
@@ -113,6 +95,29 @@ export default function CardBoard(props){
                     acteursPartiesOptions={acteursPartiesOptions}
                     acteurSelect={acteurSelect}
                   /> ;
+      break;
+    default:
+    if(modalType == "")
+    {
+      break;
+    }
+    var acteurRef = [];
+    acteursReference.forEach(function(acteurRef2) {
+      console.log(acteurRef.type, modalType);
+      if(acteurRef2.type == modalType)
+      {
+        acteurRef = acteurRef2;
+      }
+    });
+    modalContent = <ActeurCreator
+                    onShowModal={onShowModal}
+                    onAddActeur={onAddActeur}
+                    onClickPouvoir = {onClickPouvoir}
+                    acteurReference={acteurRef}
+                    pouvoirsSelection={pouvoirsSelection}
+                    acteursPartiesOptions={acteursPartiesOptions}
+                    designationOptions={designationOptions}
+                   /> ;
       break;
   }
 
