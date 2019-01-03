@@ -8,10 +8,32 @@ export default class ActeurCreator extends Component {
     //super(props) permet d'appeler le constructeur parent
     super(props);
     const {acteurReference} = this.props;
-    
+
+    this.individusMin = 0;
+    this.individusMax = 0;
+    console.log(acteurReference.type);
+    switch(acteurReference.type) {
+      case 'Chef d\'état':
+        this.individusMin = 1;
+        this.individusMax = 10;
+        break;
+      case 'Parlement':
+        this.individusMin = 200;
+        this.individusMax = 1000;
+        break;
+      case 'Gouvernement':
+        this.individusMin = 5;
+        this.individusMax = 20;
+        break;
+      case 'Conseil':
+        this.individusMin = 5;
+        this.individusMax = 20;
+        break;
+    }
+    console.log(this.individusMax);
     this.state = {
       nombreActeurError: '',
-      nombreIndividus: 1,
+      nombreIndividus: this.individusMin,
       displayCountryDescription: '',
     };
 
@@ -148,7 +170,7 @@ export default class ActeurCreator extends Component {
           type="range"
           ref={this.nombreActeur}
           value={this.state.nombreIndividus}
-          min="1" max="10"
+          min={this.individusMin} max={this.individusMax}
           onChange={(e) => {
             this.nombreIndividusChange(+e.target.value)
           }}
