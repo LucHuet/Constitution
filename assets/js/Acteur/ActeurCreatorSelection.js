@@ -70,7 +70,9 @@ export default class ActeurCreatorSelection extends Component{
     return (
       <Card.Group>
       {acteursReference.map(acteurRef => {
-        return  (
+        if(acteurRef.type != 'Peuple')
+        {
+        return (
           <Card key={acteurRef.id} onClick={(event => this.handleAjout(event,acteurRef.type))}>
 
             <Card.Content>
@@ -82,7 +84,8 @@ export default class ActeurCreatorSelection extends Component{
             </Card.Content>
 
           </Card>
-                )
+        )
+        }
       } )}
       </Card.Group>
     );

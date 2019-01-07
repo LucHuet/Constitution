@@ -138,7 +138,7 @@ export default class ActeurCreator extends Component {
     return (
     <div>
     <Header as='h2' icon textAlign='center'>
-      <Image size='medium' circular src='/build/static/chef.png' />
+      <Image size='medium' circular src={'/build/static/'+acteurReference.image} />
       <Header.Content>Ajout Acteur : <input type="text" id="nom" ref={this.nomActeur} defaultValue={acteurReference.type} required="required" maxLength="255" />
       </Header.Content>
     </Header>
