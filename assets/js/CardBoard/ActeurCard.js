@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Image } from 'semantic-ui-react'
+import { Card, Image, Button, Icon } from 'semantic-ui-react'
 
 export default function ActeurCard(props) {
 
@@ -30,6 +30,23 @@ export default function ActeurCard(props) {
     onShowModal( modalType, acteurId);
   };
 
+  const showBasket = function(acteurType){
+    if (acteurType != 'Peuple')
+    {
+      return(
+          <Button floated="right" onClick={(event => handleDeleteClick(event, acteur.id))} >
+            <Icon name="trash"></Icon>
+          </Button>
+      )
+    }else {
+      return(
+        <Button floated="right" disabled={true}>
+          <Icon name="trash" disabled={true}></Icon>
+        </Button>
+      )
+    }
+  }
+
   return(
         <Card
           data-position={index}
@@ -49,21 +66,9 @@ export default function ActeurCard(props) {
               onClick={(event => handleDisplay(event, "acteurDisplay", acteur.id))}
             />
             <Card.Header>{acteur.nom}</Card.Header>
-            <div className="meta">
-              <a href="#" onClick={(event => handleAjout(event, "pouvoir", acteur.id))}>
-                <i className="plus square outline icon"></i>Pouvoir
-              </a>
-              <a href="#" onClick={(event => handleAjout(event, "designation", acteur.id))}>
-                <i className="plus square outline icon"></i>Désignation
-              </a>
-            </div>
             <div className="description">
               <span>Nombre individus : {acteur.nombreIndividus}</span>
-              <a href="#" onClick={(event => handleDeleteClick(event, acteur.id))}>
-                <button className="right floated ui basic button">
-                  <i className="trash icon"></i>
-                </button>
-              </a>
+              {showBasket(acteur.type)}
             </div>
           </Card.Content>
           <Card.Content extra>
