@@ -56,6 +56,11 @@ img {
   }
 }
 
+.ui.card>.extra, .ui.cards>.card>.extra{
+  min-height: 3.5em!important;
+}
+
+
 .ui.menu .item > a:not(.ui),
 .navbar-nav > li > a,
 .menu-sous-item,

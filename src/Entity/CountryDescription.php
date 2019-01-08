@@ -37,10 +37,11 @@ class CountryDescription
      */
     private $countryCode;
 
-    public function __construct($country, $description)
+    public function __construct($country, $description, $countryCode)
     {
         $this->country = $country;
         $this->description = $description;
+        $this->countryCode = $countryCode;
     }
 
     public function getId(): ?int
