@@ -118,9 +118,39 @@ class BaseController extends Controller
         $model->nombreIndividus = $acteurPartie->getNombreIndividus();
         $model->image = $acteurPartie->getTypeActeur()->getImage();
         $model->type = $acteurPartie->getTypeActeur()->getType();
-        $designation['designants'] = $acteurPartie->getActeursDesignantsId();
-        $designation['designes'] = $acteurPartie->getActeursDesignesId();
+        //$designation['designants'] =
+        $listeDesignationActeurPartieDesignants = $acteurPartie->getActeursDesignants();
+        $listeDesignationActeurPartieDesignes = $acteurPartie->getActeursDesignes();
+        $acteurDesigneSimple = [];
+        $designation = [];
+        foreach($listeDesignationActeurPartieDesignes as $designationActeurDesigne)
+        {
+          $acteurDesigneSimple = [];
+
+          $acteurDesigne = $designationActeurDesigne->getActeurDesignant();
+
+          $acteurDesigneSimple['id'] = $acteurDesigne->getId();
+          $acteurDesigneSimple['nom'] = $acteurDesigne->getNom();
+          $acteurDesigneSimple['type'] = $acteurDesigne->getTypeActeur()->getType();
+          $acteurDesigneSimple['image'] = $acteurDesigne->getTypeActeur()->getImage();
+          $designation['designants'] = $acteurDesigneSimple;
+        }
+
+        foreach($listeDesignationActeurPartieDesignants as $designationActeurDesigne)
+        {
+          $acteurDesigneSimple = [];
+
+          $acteurDesigne = $designationActeurDesigne->getActeurDesigne();
+
+          $acteurDesigneSimple['id'] = $acteurDesigne->getId();
+          $acteurDesigneSimple['nom'] = $acteurDesigne->getNom();
+          $acteurDesigneSimple['type'] = $acteurDesigne->getTypeActeur()->getType();
+          $acteurDesigneSimple['image'] = $acteurDesigne->getTypeActeur()->getImage();
+          $designation['designes'] = $acteurDesigneSimple;
+        }
+
         $model->designations = $designation;
+
         foreach ($acteurPartie->getPouvoirParties() as $pouvoir) {
           $model->pouvoirs[] = $this->createPouvoirPartieApiModel($pouvoir);
         }
@@ -136,28 +166,28 @@ class BaseController extends Controller
 
     protected function createActeurRefApiModel(Acteur $acteur)
     {
-        $model = new ActeurRefApiModel();
-        $model->id = $acteur->getId();
-        $model->type = $acteur->getType();
-        $model->description = $acteur->getDescription();
-        $model->image = $acteur->getImage();
-        foreach ($acteur->getCountryDescriptions() as $countryDescription) {
-          $country ['country'] = $countryDescription->getCountry();
-          $country ['description'] = $countryDescription->getDescription();
-          $country ['code'] = $countryDescription->getCountryCode();
-          $model->countryDescriptions[$countryDescription->getCountryCode()] = $country;
-        }
-        foreach ($acteur->getPouvoirsBase() as $pouvoirBase) {
-          $model->pouvoirsBase[] = $this->createPouvoirRefApiModel($pouvoirBase);
-        }
+      $model = new ActeurRefApiModel();
+      $model->id = $acteur->getId();
+      $model->type = $acteur->getType();
+      $model->description = $acteur->getDescription();
+      $model->image = $acteur->getImage();
+      foreach ($acteur->getCountryDescriptions() as $countryDescription) {
+        $country ['country'] = $countryDescription->getCountry();
+        $country ['description'] = $countryDescription->getDescription();
+        $country ['code'] = $countryDescription->getCountryCode();
+        $model->countryDescriptions[$countryDescription->getCountryCode()] = $country;
+      }
+      foreach ($acteur->getPouvoirsBase() as $pouvoirBase) {
+        $model->pouvoirsBase[] = $this->createPouvoirRefApiModel($pouvoirBase);
+      }
 
-        $selfUrl = $this->generateUrl(
-            'acteur_ref_get',
-            ['id' => $acteur->getId()]
-        );
-        $model->addLink('_self', $selfUrl);
+      $selfUrl = $this->generateUrl(
+          'acteur_ref_get',
+          ['id' => $acteur->getId()]
+      );
+      $model->addLink('_self', $selfUrl);
 
-        return $model;
+      return $model;
     }
 
     protected function createPouvoirPartieApiModel(PouvoirPartie $pouvoirPartie)
