@@ -30,7 +30,22 @@ export default function ActeurCard(props) {
     onShowModal( modalType, acteurId);
   };
 
-  console.log(acteur.designations);
+  const showBasket = function(acteurType){
+    if (acteurType != 'Peuple')
+    {
+      return(
+          <Button floated="right" onClick={(event => handleDeleteClick(event, acteur.id))} >
+            <Icon name="trash"></Icon>
+          </Button>
+      )
+    }else {
+      return(
+        <Button floated="right" disabled={true}>
+          <Icon name="trash" disabled={true}></Icon>
+        </Button>
+      )
+  }
+}
 
   const handleDesignantImage = function(acteur){
     if(acteur.designations.designants !== undefined){
@@ -55,23 +70,7 @@ export default function ActeurCard(props) {
     }
     else{
       return(  <span>Ne désigne personne</span>)
-    }
-  }
 
-  const showBasket = function(acteurType){
-    if (acteurType != 'Peuple')
-    {
-      return(
-          <Button floated="right" onClick={(event => handleDeleteClick(event, acteur.id))} >
-            <Icon name="trash"></Icon>
-          </Button>
-      )
-    }else {
-      return(
-        <Button floated="right" disabled={true}>
-          <Icon name="trash" disabled={true}></Icon>
-        </Button>
-      )
     }
   }
 
@@ -115,4 +114,5 @@ ActeurCard.propTypes = {
   onDeleteActeur: PropTypes.func.isRequired,
   onShowModal: PropTypes.func.isRequired,
   acteur: PropTypes.object,
-};
+
+}
