@@ -37,4 +37,9 @@ class DesignationsFixtures extends Fixture
 
       $manager->flush();
     }
+
+    public static function getGroups(): array
+    {
+         return ['all', 'designation'];
+    }
 }

@@ -71,6 +71,7 @@ class PouvoirsFixtures extends Fixture
         "Législatif",
         null
       );
+      $this->addReference('legislatif', $pouvoir2);
       $manager->persist($pouvoir2);
 
       $pouvoir2_1 = new Pouvoir(
@@ -80,6 +81,7 @@ class PouvoirsFixtures extends Fixture
         "Législatif",
         $pouvoir2
       );
+      $this->addReference('creeLaLoi', $pouvoir2_1);
       $manager->persist($pouvoir2_1);
 
       $pouvoir2_1_1 = new Pouvoir(
@@ -89,6 +91,7 @@ class PouvoirsFixtures extends Fixture
         "Législatif",
         $pouvoir2_1
       );
+      $this->addReference('proposeLaLoi', $pouvoir2_1_1);
       $manager->persist($pouvoir2_1_1);
 
       $pouvoir2_1_2 = new Pouvoir(
@@ -98,6 +101,7 @@ class PouvoirsFixtures extends Fixture
         "Législatif",
         $pouvoir2_1
       );
+      $this->addReference('amendeLaLoi', $pouvoir2_1_2);
       $manager->persist($pouvoir2_1_2);
 
       $pouvoir2_1_3 = new Pouvoir(
@@ -107,6 +111,7 @@ class PouvoirsFixtures extends Fixture
         "Législatif",
         $pouvoir2_1
       );
+      $this->addReference('voteLaLoi', $pouvoir2_1_3);
       $manager->persist($pouvoir2_1_3);
 
       $pouvoir2_1_4 = new Pouvoir(
@@ -116,6 +121,7 @@ class PouvoirsFixtures extends Fixture
         "Législatif",
         $pouvoir2_1
       );
+      $this->addReference('promulgueLaLoi', $pouvoir2_1_4);
       $manager->persist($pouvoir2_1_4);
 
       $pouvoir2_2 = new Pouvoir(
@@ -125,6 +131,7 @@ class PouvoirsFixtures extends Fixture
         "Législatif",
         $pouvoir2
       );
+      $this->addReference('traiteInternationaux', $pouvoir2_2);
       $manager->persist($pouvoir2_2);
 
       $pouvoir2_3 = new Pouvoir(
@@ -143,6 +150,7 @@ class PouvoirsFixtures extends Fixture
         "Législatif",
         $pouvoir2
       );
+      $this->addReference('gestionBudgetEtat', $pouvoir2_4);
       $manager->persist($pouvoir2_4);
 
       $pouvoir3 = new Pouvoir(
@@ -161,6 +169,7 @@ class PouvoirsFixtures extends Fixture
         "Exécutif",
         $pouvoir3
       );
+      $this->addReference('gestionAdministration', $pouvoir3_1);
       $manager->persist($pouvoir3_1);
 
       $pouvoir3_1_1 = new Pouvoir(
@@ -170,6 +179,7 @@ class PouvoirsFixtures extends Fixture
         "Exécutif",
         $pouvoir3_1
       );
+      $this->addReference('gestionMinistres', $pouvoir3_1_1);
       $manager->persist($pouvoir3_1_1);
 
       $pouvoir3_1_2 = new Pouvoir(
@@ -179,6 +189,7 @@ class PouvoirsFixtures extends Fixture
         "Exécutif",
         $pouvoir3_1
       );
+      $this->addReference('textesReglementaires', $pouvoir3_1_2);
       $manager->persist($pouvoir3_1_2);
 
       $pouvoir3_2 = new Pouvoir(
@@ -188,6 +199,7 @@ class PouvoirsFixtures extends Fixture
         "Exécutif",
         $pouvoir3
       );
+      $this->addReference('conseilMinistres', $pouvoir3_2);
       $manager->persist($pouvoir3_2);
 
       $pouvoir3_3 = new Pouvoir(
@@ -206,6 +218,7 @@ class PouvoirsFixtures extends Fixture
         "Exécutif",
         $pouvoir3_3
       );
+      $this->addReference('gestionArmee', $pouvoir3_3_1);
       $manager->persist($pouvoir3_3_1);
 
       $pouvoir3_3_2 = new Pouvoir(
@@ -215,6 +228,7 @@ class PouvoirsFixtures extends Fixture
         "Exécutif",
         $pouvoir3_3
       );
+      $this->addReference('etatSiege', $pouvoir3_3_2);
       $manager->persist($pouvoir3_3_2);
 
       $pouvoir3_3_3 = new Pouvoir(
@@ -224,6 +238,7 @@ class PouvoirsFixtures extends Fixture
         "Exécutif",
         $pouvoir3_3
       );
+      $this->addReference('pleinsPouvoirs', $pouvoir3_3_3);
       $manager->persist($pouvoir3_3_3);
 
       $pouvoir3_3_4 = new Pouvoir(
@@ -233,6 +248,7 @@ class PouvoirsFixtures extends Fixture
         "Exécutif",
         $pouvoir3_3
       );
+      $this->addReference('guerreEtPaix', $pouvoir3_3_4);
       $manager->persist($pouvoir3_3_4);
 
       $pouvoir3_4 = new Pouvoir(
@@ -242,6 +258,7 @@ class PouvoirsFixtures extends Fixture
         "Exécutif",
         $pouvoir3
       );
+      $this->addReference('determinePolitique', $pouvoir3_4);
       $manager->persist($pouvoir3_4);
 
       $pouvoir4 = new Pouvoir(
@@ -287,6 +304,7 @@ class PouvoirsFixtures extends Fixture
         "Judiciaire",
         $pouvoir4
       );
+      $this->addReference('jugeLaLoi', $pouvoir4_2);      
       $manager->persist($pouvoir4_2);
 
       $pouvoir5 = new Pouvoir(
@@ -326,5 +344,10 @@ class PouvoirsFixtures extends Fixture
       $manager->persist($pouvoir5_3);
 
       $manager->flush();
+    }
+
+    public static function getGroups(): array
+    {
+         return ['all', 'pouvoir'];
     }
 }

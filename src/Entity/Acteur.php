@@ -43,13 +43,17 @@ class Acteur
      */
     private $pouvoirsBase;
 
-    public function __construct($type, $description, $image)
+    public function __construct($type, $description, $image, $pouvoirsBase=[])
     {
         $this->type = $type;
         $this->description = $description;
         $this->image = $image;
         $this->countryDescriptions = new ArrayCollection();
         $this->pouvoirsBase = new ArrayCollection();
+        foreach($pouvoirsBase as $pouvoirBase)
+        {
+          $this->addPouvoirsBase($pouvoirBase);
+        }
     }
 
     public function __toString()
