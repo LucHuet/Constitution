@@ -4,7 +4,6 @@ import ActeurCreatorSelection from '../Acteur/ActeurCreatorSelection';
 import ActeurDisplay from '../Acteur/ActeurDisplay';
 import ActeurCreator from '../Acteur/ActeurCreator';
 import PouvoirCreator from '../Pouvoir/PouvoirCreator';
-import DesignationCreator from '../Designation/DesignationCreator';
 import PropTypes from 'prop-types';
 import { Modal, Button, Icon} from 'semantic-ui-react';
 
@@ -74,12 +73,25 @@ export default function CardBoard(props){
                       designationOptions={designationOptions}
                     /> ;
         break;
+    case 'pouvoir':
+      modalContent = <PouvoirCreator
+                      pouvoirsSelection={pouvoirsSelection}
+                      onAddPouvoir={onAddPouvoir}
+                      onClickPouvoir = {onClickPouvoir}
+                      onShowModal={onShowModal}
+                      onCloseModal={onCloseModal}
+                      validationErrorMessage={newActeurValidationErrorMessage}
+                      pouvoirOptions={pouvoirOptions}
+                      acteurSelect={acteurSelect}
+                      previousModal={previousModal}
+                    /> ;
+      break;
     default:
     if(modalType == "")
     {
       break;
     }
-    var acteurRef = [];
+    var acteurRef;
     acteursReference.forEach(function(acteurRef2) {
       if(acteurRef2.type == modalType)
       {
