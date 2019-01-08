@@ -30,6 +30,34 @@ export default function ActeurCard(props) {
     onShowModal( modalType, acteurId);
   };
 
+  console.log(acteur.designations);
+
+  const handleDesignantImage = function(acteur){
+    if(acteur.designations.designants !== undefined){
+      return(
+        <React.Fragment>
+          <span>Désigné par :</span>
+          <Image avatar={true} src={"/build/static/"+acteur.designations.designants.image}/>
+        </React.Fragment>)
+    }
+    else{
+      return(  <span>Non désigné</span>)
+    }
+  }
+
+  const handleDesigneImage = function(acteur){
+    if(acteur.designations.designes !== undefined){
+      return(
+        <React.Fragment>
+          <span>Designe :</span>
+          <Image avatar={true} src={"/build/static/"+acteur.designations.designes.image}/>
+        </React.Fragment>)
+    }
+    else{
+      return(  <span>Ne désigne personne</span>)
+    }
+  }
+
   const showBasket = function(acteurType){
     if (acteurType != 'Peuple')
     {
@@ -54,8 +82,9 @@ export default function ActeurCard(props) {
         >
           <Card.Content extra>
             <div className="left floated">
-              <span>Désigné par :</span>
-              <Image avatar={true} src="/build/static/chef.png"/>
+
+            {handleDesignantImage(acteur)}
+
             </div>
           </Card.Content>
           <Card.Content>
@@ -73,10 +102,7 @@ export default function ActeurCard(props) {
           </Card.Content>
           <Card.Content extra>
           <div className="left floated">
-            <a>
-              <span>Désigne :</span>
-            </a>
-            <Image avatar={true} src="/build/static/parlement.png"/>
+            {handleDesigneImage(acteur)}
           </div>
           </Card.Content>
         </Card>

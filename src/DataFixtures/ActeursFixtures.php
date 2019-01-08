@@ -52,7 +52,7 @@ class ActeursFixtures extends Fixture
       );
 
       foreach ($acteurs as $acteur) {
-            $acteur->addCountryDescription(new CountryDescription("France", "Description de l'acteur ".$acteur->getType()." à completer."));
+            $acteur->addCountryDescription(new CountryDescription("France", "Description de l'acteur ".$acteur->getType()." à completer.", "fr"));
             $manager->persist($acteur);
       }
 
