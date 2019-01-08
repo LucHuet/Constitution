@@ -11,7 +11,6 @@ export default class ActeurCreator extends Component {
 
     this.individusMin = 0;
     this.individusMax = 0;
-    console.log(acteurReference.type);
     switch(acteurReference.type) {
       case 'Chef d\'état':
         this.individusMin = 1;
@@ -30,7 +29,7 @@ export default class ActeurCreator extends Component {
         this.individusMax = 20;
         break;
     }
-    console.log(this.individusMax);
+
     this.state = {
       nombreActeurError: '',
       nombreIndividus: this.individusMin,
