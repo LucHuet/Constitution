@@ -73,7 +73,7 @@ export default function ActeurCard(props) {
 
     }
   }
-
+ console.log(acteur);
   return(
         <Card
           data-position={index}

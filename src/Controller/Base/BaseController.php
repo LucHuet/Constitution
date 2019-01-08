@@ -125,6 +125,7 @@ class BaseController extends Controller
         $designation = [];
         foreach($listeDesignationActeurPartieDesignes as $designationActeurDesigne)
         {
+
           $acteurDesigneSimple = [];
 
           $acteurDesigne = $designationActeurDesigne->getActeurDesignant();
