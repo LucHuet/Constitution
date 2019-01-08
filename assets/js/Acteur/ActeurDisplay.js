@@ -103,6 +103,23 @@ export default class ActeurDisplay extends Component {
         acteursPartiesOptions
     } = this.props;
 
+    const handleNomPouvoir = function(acteurPartieDisplay){
+      console.log(acteurPartieDisplay.pouvoirs);
+      if(acteurPartieDisplay.pouvoirs !== null){
+        {acteurPartieDisplay.pouvoirs.map((pouvoir) => {
+          return (
+            <React.Fragment key={pouvoir.id}>
+              {pouvoir.nom}
+              <br/>
+            </React.Fragment>
+          );
+        } )}
+      }
+      else{
+        return(  <span>Pas de pouvoir</span>)
+      }
+    }
+
     return (
     <div>
     <Header as='h2' icon textAlign='center'>
@@ -130,14 +147,7 @@ export default class ActeurDisplay extends Component {
         <Divider />
         De base :
         <p>
-        {acteurPartieDisplay.pouvoirs.map((pouvoir) => {
-          return (
-            <React.Fragment key={pouvoir.id}>
-              {pouvoir.nom}
-              <br/>
-            </React.Fragment>
-          );
-        } )}
+        {handleNomPouvoir(acteurPartieDisplay)};
         </p>
         Modifier les pouvoirs :
         <p>
