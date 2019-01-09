@@ -146,7 +146,6 @@ export default class CardBoardApp extends Component {
       createActeurPartie(newActeurPartieComplet)
       //l'ajout n'as pas d'erreur
         .then(acteurPartie => {
-          console.log("acteurPartie", acteurPartie);
           //prevstate est la liste des acteurs originale
           this.setState(prevState =>{
             //déclaration d'une nouvelle liste d'acteursJson
