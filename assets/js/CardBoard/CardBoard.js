@@ -130,12 +130,11 @@ export default function CardBoard(props){
       )}
 
       <div id="sort1" className="ui cards" data-sortable=".card">
-      {acteursPartie.map((acteur, index, acteurDesignant) => (
+      {acteursPartie.map((acteur, index) => (
           <ActeurCard
             key = {index}
             index={index}
             acteur={acteur}
-            acteurDesignant={acteurDesignant}
             onDeleteActeur={onDeleteActeur}
             onShowModal={onShowModal}
           />
