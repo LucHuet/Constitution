@@ -10,7 +10,29 @@ export default class ActeurDisplay extends Component {
 
     const {
         acteurPartieDisplay,
+        onUpdateActeur,
     } = this.props;
+
+    this.individusMin = 0;
+    this.individusMax = 0;
+    switch(acteurPartieDisplay.type) {
+      case 'Chef d\'état':
+        this.individusMin = 1;
+        this.individusMax = 10;
+        break;
+      case 'Parlement':
+        this.individusMin = 200;
+        this.individusMax = 1000;
+        break;
+      case 'Gouvernement':
+        this.individusMin = 5;
+        this.individusMax = 20;
+        break;
+      case 'Conseil':
+        this.individusMin = 5;
+        this.individusMax = 20;
+        break;
+    }
 
     this.state = {
       nombreActeurError: '',
@@ -35,9 +57,16 @@ export default class ActeurDisplay extends Component {
 
   }
 
+/*  componentDidMount(){
+    const {onClickPouvoir, acteurReference} = this.props;
+    acteurReference.pouvoirsBase.map((pouvoirBase) => {
+      onClickPouvoir(pouvoirBase.id);
+    });
+  }*/
+
   handleUpdate(){
     //fait appel au props de l'objet
-    const {onAddActeur} = this.props;
+    const {onUpdateActeur} = this.props;
 
     const nomActeur = this.nomActeur.current;
     const nombreActeur = this.nombreActeur.current;
@@ -46,21 +75,26 @@ export default class ActeurDisplay extends Component {
     const acteurDesignant = this.acteurDesignant.current;
     const nomDesignation = "designation test";
 
+    console.log("test");
+    console.log(this.nomActeur.current);
+    console.log(nombreActeur);
+    console.log(typeActeur);
+    console.log(typeDesignation);
+    console.log(acteurDesignant);
+    console.log(nomDesignation);
+
+
     if (nombreActeur.value <= 0) {
       this.setState({
         nombreActeurError: 'Vous ne pouvez pas entrer un nombre d\'acteur négatif!'
       });
       return;
     }
-    //a changer pour un update
-    /*onAddActeur(
-      nomActeur.value,
-      nombreActeur.value,
-      typeActeur,
-      typeDesignation.options[typeDesignation.selectedIndex].value,
-      acteurDesignant.options[acteurDesignant.selectedIndex].value,
-      nomDesignation
-    );*/
+
+    onUpdateActeur(
+      console.log("saved")
+    );
+
 
     //réinitialisation des données
     nombreActeur.value = '';
@@ -104,7 +138,6 @@ export default class ActeurDisplay extends Component {
     } = this.props;
 
     const handleNomPouvoir = function(acteurPartieDisplay){
-      console.log(acteurPartieDisplay.pouvoirs);
       if(acteurPartieDisplay.pouvoirs !== null){
         {acteurPartieDisplay.pouvoirs.map((pouvoir) => {
           return (
@@ -123,7 +156,7 @@ export default class ActeurDisplay extends Component {
     return (
     <div>
     <Header as='h2' icon textAlign='center'>
-      <Image size='medium' circular src='/build/static/chef.png' />
+      <Image size='medium' circular src={"/build/static/"+acteurPartieDisplay.image} />
       <Header.Content>Acteur : <input type="text" id="nom" ref={this.nomActeur} defaultValue={acteurPartieDisplay.nom} required="required" maxLength="255" />
       </Header.Content>
     </Header>
@@ -135,7 +168,7 @@ export default class ActeurDisplay extends Component {
           type="range"
           ref={this.nombreActeur}
           value={this.state.nombreIndividus}
-          min="1" max="10"
+          min={this.individusMin} max={this.individusMax}
           onChange={(e) => {
             this.nombreIndividusChange(+e.target.value)
           }}
@@ -157,7 +190,20 @@ export default class ActeurDisplay extends Component {
       <Segment>
         <b>Désignation : </b>
         <Divider />
-        <label htmlFor="designation" className="required"> Designation : </label>
+        <label htmlFor="designation" className="required"> Mode de désignation : </label>
+        <select id="designation" ref={this.typeDesignation} required="required">
+          {designationOptions.map(designation => {
+            return <option value={designation.id} key={designation.id}>{designation.text}</option>
+          } )}
+        </select>
+        <Header.Content>
+          Désigné par :
+          <select id="acteurPartie" defaultValue={acteurPartieDisplay.designations.designants.nom} ref={this.acteursPartiesOptions} required="required">
+            {acteursPartiesOptions.map(acteurPartie => {
+              return <option value={acteurPartie.nom} key={acteurPartie.id}>{acteurPartie.text}</option>
+            } )}
+          </select>
+        </Header.Content>
       </Segment>
       <Divider />
         <Button onClick={() => this.handleUpdate()}>Sauvegarder</Button>
@@ -170,7 +216,7 @@ export default class ActeurDisplay extends Component {
 //on défini les types des props
 ActeurDisplay.propTypes = {
   onShowModal: PropTypes.func.isRequired,
-  onAddActeur: PropTypes.func.isRequired,
+  onUpdateActeur: PropTypes.func.isRequired,
   onClickPouvoir : PropTypes.func.isRequired,
   acteurPartieDisplay: PropTypes.object.isRequired,
   pouvoirsSelection: PropTypes.array.isRequired,
