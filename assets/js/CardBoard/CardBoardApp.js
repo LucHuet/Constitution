@@ -44,6 +44,7 @@ export default class CardBoardApp extends Component {
     this.handleAddActeur = this.handleAddActeur.bind(this);
     this.handleDeleteActeur = this.handleDeleteActeur.bind(this);
     this.handleAddPouvoir = this.handleAddPouvoir.bind(this);
+    this.handleUpdateActeur = this.handleUpdateActeur.bind(this);
     this.handleAddDesignation = this.handleAddDesignation.bind(this);
     this.handleShowModal = this.handleShowModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
@@ -179,6 +180,10 @@ export default class CardBoardApp extends Component {
         })
   }
 
+  handleUpdateActeur(id) {
+    console.log("Update acteur");
+  }
+
   handleDeleteActeur(id) {
     //prevstate est la liste des acteursPartie originale
     this.setState((prevState) =>{
@@ -292,6 +297,7 @@ export default class CardBoardApp extends Component {
         {...this.props}
         {...this.state}
         onAddActeur={this.handleAddActeur}
+        onUpdateActeur={this.handleUpdateActeur}
         onAddPouvoir={this.handleAddPouvoir}
         onClickPouvoir={this.handlePouvoirClick}
         onAddDesignation={this.handleAddDesignation}

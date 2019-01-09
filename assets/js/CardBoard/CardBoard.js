@@ -15,6 +15,7 @@ export default function CardBoard(props){
     acteursPartie,
     acteursReference,
     onAddActeur,
+    onUpdateActeur,
     onAddPouvoir,
     onAddDesignation,
     onShowModal,
@@ -62,11 +63,11 @@ export default function CardBoard(props){
           acteurPartieDisplay = acteurPartie;
         }
       });
-
+      console.log(acteurPartieDisplay);
       modalContent = <ActeurDisplay
                       acteurPartieDisplay={acteurPartieDisplay}
                       onShowModal={onShowModal}
-                      onAddActeur={onAddActeur}
+                      onUpdateActeur={onUpdateActeur}
                       onClickPouvoir = {onClickPouvoir}
                       pouvoirsSelection={pouvoirsSelection}
                       acteursPartiesOptions={acteursPartiesOptions}
@@ -163,6 +164,7 @@ export default function CardBoard(props){
 
 CardBoard.propTypes = {
   onAddActeur: PropTypes.func.isRequired,
+  onUpdateActeur: PropTypes.func.isRequired,
   onAddPouvoir: PropTypes.func.isRequired,
   onClickPouvoir: PropTypes.func.isRequired,
   onAddDesignation: PropTypes.func.isRequired,
