@@ -84,9 +84,10 @@ class ActeurPartieController extends BaseController
           $pouvoirPartie->addActeurPossedant($acteur);
           $em->persist($pouvoirPartie);
         }
-
-        $em->persist($acteur);
+        
         $em->persist($designation);
+        $em->persist($acteur);
+
         $em->flush();
 
         $apiModel = $this->createActeurPartieApiModel($acteur);

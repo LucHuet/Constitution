@@ -173,8 +173,9 @@ class ActeurPartie
         if ($this->acteursDesignes->contains($acteursDesigne)) {
             $this->acteursDesignes->removeElement($acteursDesigne);
             // set the owning side to null (unless already changed)
-            if ($acteursDesigne->getActeurDesigne() === $this) {
-                $acteursDesigne->setActeurDesigne(null);
+
+            if ($acteursDesigne->getActeurDesignant() === $this) {
+                $acteursDesigne->setActeurDesignant(null);
             }
         }
 
@@ -202,7 +203,7 @@ class ActeurPartie
     {
         if (!$this->acteursDesignants->contains($acteursDesignant)) {
             $this->acteursDesignants[] = $acteursDesignant;
-            $acteursDesignant->setActeurRecepteur($this);
+            $acteursDesignant->setActeurDesignant($this);
         }
 
         return $this;
@@ -213,8 +214,8 @@ class ActeurPartie
         if ($this->acteursDesignants->contains($acteursDesignant)) {
             $this->acteursDesignants->removeElement($acteursDesignant);
             // set the owning side to null (unless already changed)
-            if ($acteursDesignant->getActeurRecepteur() === $this) {
-                $acteursDesignant->setActeurRecepteur(null);
+            if ($acteursDesignant->getActeurDesigne() === $this) {
+                $acteursDesignant->setActeurDesigne(null);
             }
         }
 

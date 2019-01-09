@@ -63,13 +63,7 @@ export default function CardBoard(props){
           acteurPartieDisplay = acteurPartie;
         }
       });
-      console.log("test 1");
       console.log(acteurPartieDisplay);
-      console.log(pouvoirsSelection);
-      console.log(acteursPartiesOptions);
-      console.log(acteurPartieDisplay.nom);
-      console.log(acteurPartieDisplay.designations);
-      console.log(acteurPartieDisplay.nombreIndividus);
       modalContent = <ActeurDisplay
                       acteurPartieDisplay={acteurPartieDisplay}
                       onShowModal={onShowModal}

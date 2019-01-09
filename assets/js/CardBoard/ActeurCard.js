@@ -52,7 +52,9 @@ export default function ActeurCard(props) {
       return(
         <React.Fragment>
           <span>Désigné par :</span>
-          <Image avatar={true} src={"/build/static/"+acteur.designations.designants.image}/>
+          {acteur.designations.designants.map((acteurDesignant) => (
+            <Image key={acteurDesignant.id} avatar={true} src={"/build/static/"+acteurDesignant.image}/>
+          ))}
         </React.Fragment>)
     }
     else{
@@ -65,7 +67,9 @@ export default function ActeurCard(props) {
       return(
         <React.Fragment>
           <span>Designe :</span>
-          <Image avatar={true} src={"/build/static/"+acteur.designations.designes.image}/>
+          {acteur.designations.designes.map((acteurDesigne) => (
+            <Image key={acteurDesigne.id} avatar={true} src={"/build/static/"+acteurDesigne.image}/>
+          ))}
         </React.Fragment>)
     }
     else{

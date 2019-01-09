@@ -83,7 +83,7 @@ class DesignationPartie
     public function setActeurDesigne(?ActeurPartie $acteurDesigne): self
     {
         $this->acteurDesigne = $acteurDesigne;
-
+        $acteurDesigne->addActeursDesigne($this);
         return $this;
     }
 
@@ -95,7 +95,7 @@ class DesignationPartie
     public function setActeurDesignant(?ActeurPartie $acteurDesignant): self
     {
         $this->acteurDesignant = $acteurDesignant;
-
+        $acteurDesignant->addActeursDesignant($this);
         return $this;
     }
 

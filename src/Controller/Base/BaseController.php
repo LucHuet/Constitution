@@ -125,6 +125,7 @@ class BaseController extends Controller
         $designation = [];
         foreach($listeDesignationActeurPartieDesignes as $designationActeurDesigne)
         {
+
           $acteurDesigneSimple = [];
 
           $acteurDesigne = $designationActeurDesigne->getActeurDesignant();
@@ -133,7 +134,7 @@ class BaseController extends Controller
           $acteurDesigneSimple['nom'] = $acteurDesigne->getNom();
           $acteurDesigneSimple['type'] = $acteurDesigne->getTypeActeur()->getType();
           $acteurDesigneSimple['image'] = $acteurDesigne->getTypeActeur()->getImage();
-          $designation['designants'] = $acteurDesigneSimple;
+          $designation['designants'][] = $acteurDesigneSimple;
         }
 
         foreach($listeDesignationActeurPartieDesignants as $designationActeurDesigne)
@@ -146,7 +147,7 @@ class BaseController extends Controller
           $acteurDesigneSimple['nom'] = $acteurDesigne->getNom();
           $acteurDesigneSimple['type'] = $acteurDesigne->getTypeActeur()->getType();
           $acteurDesigneSimple['image'] = $acteurDesigne->getTypeActeur()->getImage();
-          $designation['designes'] = $acteurDesigneSimple;
+          $designation['designes'][] = $acteurDesigneSimple;
         }
 
         $model->designations = $designation;
