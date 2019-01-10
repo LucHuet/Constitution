@@ -36,15 +36,17 @@ class PouvoirPartieRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?PouvoirPartie
+    public function findByListOfPouvoirId($pouvoirId, $partieCourante)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+        return $this->createQueryBuilder('pp')
+            ->join('pp.pouvoir', 'p')
+            ->where('pp.partie = :partieCourante')
+            ->andWhere("p.id IN(:pouvoirId)")
+            ->setParameter('pouvoirId', array_values($pouvoirId))
+            ->setParameter('partieCourante', $partieCourante)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
     }
-    */
+
 }
