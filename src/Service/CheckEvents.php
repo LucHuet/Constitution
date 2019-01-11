@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Service;
+use App\Entity\EventPartie;
 use App\Repository\ActeurRepository;
 use App\Repository\PouvoirRepository;
 use App\Repository\ActeurPartieRepository;
@@ -14,19 +15,16 @@ class CheckEvents
   private $acteurPartieRepository;
   private $acteurRepository;
   private $pouvoirPartieRepository;
-  private $pouvoirRepository;
 
   public function __construct(
     ActeurPartieRepository $acteurPartieRepository,
     ActeurRepository $acteurRepository,
-    PouvoirPartieRepository $pouvoirPartieRepository,
-    PouvoirRepository $pouvoirRepository
+    PouvoirPartieRepository $pouvoirPartieRepository
   )
   {
       $this->acteurPartieRepository = $acteurPartieRepository;
       $this->acteurRepository = $acteurRepository;
       $this->pouvoirPartieRepository = $pouvoirPartieRepository;
-      $this->pouvoirRepository = $pouvoirRepository;
   }
 
   public function checkEvent1()
@@ -42,7 +40,8 @@ class CheckEvents
     $listePouvoirsDangereux = [33, 331, 332, 333];
     $session = new Session();
     $partieCourante = $session->get('partieCourante');
-
+    $eventPartie = new EventPartie();
+    $eventPartie->setPartie($partieCourante);
     $chefEtatType = $this->acteurRepository->findOneBy(['type' => 'Chef d\'état']);
     $chefsEtatPartie = $this->acteurPartieRepository->findBy(['partie' => $partieCourante->getId(), 'typeActeur' => $chefEtatType->getId()]);
     $listePouvoirsDangereuxPartie = $this->pouvoirPartieRepository->findByListOfPouvoirId($listePouvoirsDangereux, $partieCourante);
@@ -50,22 +49,35 @@ class CheckEvents
     {//il n'y a pas d'acteurs qui sont des chef d'état
     //ou il n'y a pas de pouvoir dangereux dans cette partie
     //donc ce test n'a pas de sens
-      return null;
+      $eventPartie->setResultat(0);
+      $eventPartie->setExplicationResultat("");
+      return $eventPartie;
     }else{
       //on verifie si les pouvoirs dangereux sont partagé, il n'y a pas de problème
+      $tableauDuplicats = [];
       foreach($listePouvoirsDangereuxPartie as $pouvoirDangereuxPartie)
-      { $duplicat = 0;
-        foreach($listePouvoirsDangereuxPartie as $pouvoirDangereuxPartie2)
+      {
+        dump($pouvoirDangereuxPartie->getActeurPossedant());
+        $ajout = false;
+        foreach($tableauDuplicats as &$entreeTab)
         {
-          if($pouvoirDangereuxPartie->getPouvoir()==$pouvoirDangereuxPartie2->getPouvoir())
+          if($entreeTab[0] == $pouvoirDangereuxPartie->getPouvoir())
           {
-            $duplicat++;
+            $ajout = true;
+            $entreeTab[1]++;
           }
         }
-        if($duplicat>1)
+        if(empty($tableauDuplicats) or !$ajout)
         {
-          return true;
+          $tableauDuplicats[] = [$pouvoirDangereuxPartie->getPouvoir(), 1];
         }
+      }
+      dump($tableauDuplicats);
+      if(true)
+      {
+        $eventPartie->setResultat(1);
+        $eventPartie->setExplicationResultat("");
+        return $eventPartie;
       }
       //les pouvoirs dangereux ne sont pas partagé,
       //on vérifie si c'est un chef d'état (seul acteur à pouvoir être seul)
@@ -76,11 +88,15 @@ class CheckEvents
         {
           if(in_array($pouvoirPartie->getPouvoir()->getId(), $listePouvoirsDangereux))
           {
-            return false;
+            $eventPartie->setResultat(2);
+            $eventPartie->setExplicationResultat("");
+            return $eventPartie;
           }
         }
       }
-      return true;
+      $eventPartie->setResultat(1);
+      $eventPartie->setExplicationResultat("");
+      return $eventPartie;
     }
   }
 
