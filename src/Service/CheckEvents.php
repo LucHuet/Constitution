@@ -54,52 +54,45 @@ class CheckEvents
       return $eventPartie;
     }else{
       //on verifie si les pouvoirs dangereux sont partagé, il n'y a pas de problème
-      $tableauDuplicats = [];
+      $tableauPouvoirsDangereux = [];
+      $tableauPouvoirsNonDangereux = [];
       foreach($listePouvoirsDangereuxPartie as $pouvoirDangereuxPartie)
       {
-        dump($pouvoirDangereuxPartie->getActeurPossedant());
-        foreach($pouvoirDangereuxPartie->getActeurPossedant() as $ap)
-        {dump($pouvoirDangereuxPartie);}
-
-        $ajout = false;
-        foreach($tableauDuplicats as &$entreeTab)
+        //si le pouvoir dangereux n'est possedé que par 1 seule personne
+        //et que cette personne est un chef d'état, alors c'est un pouvoir dangereux
+        if(
+          count($pouvoirDangereuxPartie->getActeurPossedant()) == 1
+          and
+          ($pouvoirDangereuxPartie->getActeurPossedant()->get(0)->getTypeActeur()->getType() == "Chef d'état")
+        )
         {
-          if($entreeTab[0] == $pouvoirDangereuxPartie->getPouvoir())
-          {
-            $ajout = true;
-            $entreeTab[1]++;
-          }
-        }
-        if(empty($tableauDuplicats) or !$ajout)
-        {
-          $tableauDuplicats[] = [$pouvoirDangereuxPartie->getPouvoir(), 1];
+            $tableauPouvoirsDangereux[] = $pouvoirDangereuxPartie;
+        }else {
+            $tableauPouvoirsNonDangereux[] = $pouvoirDangereuxPartie;
         }
       }
-      dump($tableauDuplicats);
-      if(true)
+
+      if(!empty($tableauPouvoirsDangereux))
       {
-        $eventPartie->setResultat(1);
-        $eventPartie->setExplicationResultat("");
+        //il y a certains pouvoirs que l'on qualifie de dangereux
+        $explication = "Les pouvoirs suivant sont dangereux et détenus par un chef d'état seulement :";
+        foreach($tableauPouvoirsDangereux as $pouvoirPartie)
+        {
+          $explication.= "<br> - ".$pouvoirPartie->getPouvoir()->getNom();
+        }
+        $eventPartie->setResultat(2);
+        $eventPartie->setExplicationResultat($explication);
+        return $eventPartie;
+      }else {
+        $explication = "L'ensemble des pouvoirs potentielement dangereux sont partagés :";
+        foreach($tableauPouvoirsNonDangereux as $pouvoirPartie)
+        {
+          $explication.= "<br> - ".$pouvoirPartie->getPouvoir()->getNom();
+        }
+        $eventPartie->setResultat(2);
+        $eventPartie->setExplicationResultat($explication);
         return $eventPartie;
       }
-      //les pouvoirs dangereux ne sont pas partagé,
-      //on vérifie si c'est un chef d'état (seul acteur à pouvoir être seul)
-      //qui possede le pouvoir
-      foreach($chefsEtatPartie as $chefEtat)
-      {
-        foreach($chefEtat->getPouvoirParties() as $pouvoirPartie)
-        {
-          if(in_array($pouvoirPartie->getPouvoir()->getId(), $listePouvoirsDangereux))
-          {
-            $eventPartie->setResultat(2);
-            $eventPartie->setExplicationResultat("");
-            return $eventPartie;
-          }
-        }
-      }
-      $eventPartie->setResultat(1);
-      $eventPartie->setExplicationResultat("");
-      return $eventPartie;
     }
   }
 
