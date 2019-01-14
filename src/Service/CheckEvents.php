@@ -58,6 +58,9 @@ class CheckEvents
       foreach($listePouvoirsDangereuxPartie as $pouvoirDangereuxPartie)
       {
         dump($pouvoirDangereuxPartie->getActeurPossedant());
+        foreach($pouvoirDangereuxPartie->getActeurPossedant() as $ap)
+        {dump($pouvoirDangereuxPartie);}
+
         $ajout = false;
         foreach($tableauDuplicats as &$entreeTab)
         {
