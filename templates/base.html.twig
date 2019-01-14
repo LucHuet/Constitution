@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
 
-    <title>{% block title %}Constitution!{% endblock %}</title>
+    <title>{% block title %}Constitution{% endblock %}</title>
 
     {% block stylesheets %}
       <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.1/dist/semantic.min.css"/>
@@ -79,10 +79,10 @@
 
 <div class="container-fluid text-center">
   <div class="ui grid">
+    <div class="three wide column">
     {% block leftmenu %}
-      <div class="three wide column">
-      </div>
     {% endblock %}
+    </div>
     {% for type, messages in app.session.flashbag.all() %}
       {% for message in messages %}
           <div class="flash-{{ type }} alert alert-info">
@@ -91,13 +91,13 @@
       {% endfor %}
     {% endfor %}
     <div class="ten wide column">
-      {% block body %}
-      {% endblock %}
-    </div>
-    {% block rightmenu %}
-    <div class="three wide column">
-    </div>
+    {% block body %}
     {% endblock %}
+    </div>
+    <div class="three wide column">
+    {% block rightmenu %}
+    {% endblock %}    
+    </div>
   </div>
 </div>
 {% block footer %}
