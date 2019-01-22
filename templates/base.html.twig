@@ -79,7 +79,9 @@
 
 <div class="container-fluid text-center">
   <div class="ui grid">
-    <div class="three wide column">
+    <div class="one wide column">
+    </div>
+    <div class="two wide column">
     {% block leftmenu %}
     {% endblock %}
     </div>
@@ -94,9 +96,11 @@
     {% block body %}
     {% endblock %}
     </div>
-    <div class="three wide column">
+    <div class="two wide column">
     {% block rightmenu %}
-    {% endblock %}    
+    {% endblock %}
+    </div>
+    <div class="one wide column">
     </div>
   </div>
 </div>

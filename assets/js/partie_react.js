@@ -3,6 +3,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import CardBoardApp from './CardBoard/CardBoardApp';
 import DroitsDevoirsApp from './DroitsDevoirs/DroitsDevoirsApp';
+import EventApp from './Event/EventApp';
 
 render(
 
@@ -10,6 +11,13 @@ render(
     {...window.PARTIE_APP_PROPS}
   />,
   document.getElementById('cardBoard-app'),
+);
+
+render(
+  <EventApp
+    {...window.PARTIE_APP_PROPS}
+  />,
+  document.getElementById('evenements-app')
 );
 
 render(
