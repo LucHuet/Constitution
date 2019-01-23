@@ -135,8 +135,8 @@ export function getDroitsDevoirs(){
 */
 
 export function launchEvent() {
-    return fetchJson(`/event/launch/`)
-      .then(data => data.items);
+    return fetchJson(`/event/launch/`).
+      then(data => data);
 }
 
 export function getPastEvents(){

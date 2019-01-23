@@ -22,6 +22,7 @@ export default function Event(props) {
   };
 
   return (
+    <React.Fragment>
     <div className="droits-devoirs-listes">
       <br/>
       <button className="ui basic button" onClick={() => handleLaunchEvent()}>
@@ -41,12 +42,18 @@ export default function Event(props) {
         </React.Fragment>
       )}
     </div>
+    <div>
+    {eventResult && (
+    eventResult
+    )}
+    </div>
+    </React.Fragment>
   );
 }
 
 Event.propTypes = {
   pastEvents: PropTypes.array.isRequired,
-  eventResult: PropTypes.array.isRequired,
+  eventResult: PropTypes.object,
   pastEventsShow: PropTypes.bool.isRequired,
   onLaunchEvent: PropTypes.func.isRequired,
   onShowPastEvent: PropTypes.func.isRequired,

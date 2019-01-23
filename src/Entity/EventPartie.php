@@ -43,6 +43,12 @@ class EventPartie
         return $this->id;
     }
 
+    public function setId($id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
+
     public function getEventReference(): ?EventReference
     {
         return $this->eventReference;

@@ -6,6 +6,7 @@ use App\Repository\ActeurRepository;
 use App\Repository\PouvoirRepository;
 use App\Repository\ActeurPartieRepository;
 use App\Repository\PouvoirPartieRepository;
+use App\Repository\EventReferenceRepository;
 
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -15,16 +16,19 @@ class CheckEvents
   private $acteurPartieRepository;
   private $acteurRepository;
   private $pouvoirPartieRepository;
+  private $eventReferenceRepository;
 
   public function __construct(
     ActeurPartieRepository $acteurPartieRepository,
     ActeurRepository $acteurRepository,
-    PouvoirPartieRepository $pouvoirPartieRepository
+    PouvoirPartieRepository $pouvoirPartieRepository,
+    EventReferenceRepository $eventReferenceRepository
   )
   {
       $this->acteurPartieRepository = $acteurPartieRepository;
       $this->acteurRepository = $acteurRepository;
       $this->pouvoirPartieRepository = $pouvoirPartieRepository;
+      $this->eventReferenceRepository = $eventReferenceRepository;
   }
 
   public function checkEvent1()
@@ -40,8 +44,10 @@ class CheckEvents
     $listePouvoirsDangereux = [33, 331, 332, 333];
     $session = new Session();
     $partieCourante = $session->get('partieCourante');
+    $eventReference = $this->eventReferenceRepository->findOneBy(['ref' => 'e1']);
     $eventPartie = new EventPartie();
     $eventPartie->setPartie($partieCourante);
+    $eventPartie->setEventReference($eventReference);
     $chefEtatType = $this->acteurRepository->findOneBy(['type' => 'Chef d\'état']);
     $chefsEtatPartie = $this->acteurPartieRepository->findBy(['partie' => $partieCourante->getId(), 'typeActeur' => $chefEtatType->getId()]);
     $listePouvoirsDangereuxPartie = $this->pouvoirPartieRepository->findByListOfPouvoirId($listePouvoirsDangereux, $partieCourante);

@@ -10,7 +10,7 @@ export default class EventApp extends Component {
 
     this.state = {
       pastEvents: [],
-      eventResult: [],
+      eventResult: null,
       pastEventsShow:false,
       };
 
@@ -38,6 +38,7 @@ export default class EventApp extends Component {
         this.setState({
           eventResult : data
         });
+        console.log(this.state.eventResult);
       });
   }
 
