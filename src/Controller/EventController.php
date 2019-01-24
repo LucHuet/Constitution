@@ -29,7 +29,7 @@ class EventController extends BaseController
     }
 
     /**
-     * @Route("/getPast", name="get_past_events", methods="GET")
+     * @Route("/getPast/", name="get_past_events", methods="GET")
      */
     public function getPastEvents()
     {

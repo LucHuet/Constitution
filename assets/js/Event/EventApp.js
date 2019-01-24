@@ -12,21 +12,22 @@ export default class EventApp extends Component {
       pastEvents: [],
       eventResult: null,
       pastEventsShow:false,
+      showModal:false,
       };
 
     this.handleLaunchEvent = this.handleLaunchEvent.bind(this);
     this.handleShowPastEvent = this.handleShowPastEvent.bind(this);
-
+    this.handleCloseModal = this.handleCloseModal.bind(this);
   }
 
 //charge les droits et devoirs avant que la page charge
   componentDidMount(){
-    getPastEvents()
+    /*getPastEvents()
       .then((data) => {
         this.setState({
           pastEvents : data
         });
-      });
+      });*/
   }
 
   handleLaunchEvent(droitDevoirId) {
@@ -36,9 +37,9 @@ export default class EventApp extends Component {
       launchEvent()
       .then((data) => {
         this.setState({
-          eventResult : data
+          eventResult : data,
+          showModal : true,
         });
-        console.log(this.state.eventResult);
       });
   }
 
@@ -48,6 +49,12 @@ export default class EventApp extends Component {
     }))
   }
 
+  handleCloseModal(){
+    this.setState({
+      showModal : false
+    });
+  }
+
   render() {
     return (
         <Event
@@ -55,6 +62,7 @@ export default class EventApp extends Component {
             {...this.state}
             onLaunchEvent={this.handleLaunchEvent}
             onShowPastEvent={this.handleShowPastEvent}
+            onCloseModal={this.handleCloseModal}
         />
 
     )

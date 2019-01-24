@@ -1,6 +1,7 @@
 import React from 'react';
 import EventListe from './EventListe';
 import PropTypes from 'prop-types';
+import { Modal } from 'semantic-ui-react';
 
 export default function Event(props) {
 
@@ -10,6 +11,8 @@ export default function Event(props) {
           pastEventsShow,
           onLaunchEvent,
           onShowPastEvent,
+          onCloseModal,
+          showModal,
         } = props;
 
 
@@ -19,6 +22,10 @@ export default function Event(props) {
 
   const handleShowPastEvent = function(){
     onShowPastEvent();
+  };
+
+  const handleCloseModal = function(){
+    onCloseModal();
   };
 
   return (
@@ -42,11 +49,22 @@ export default function Event(props) {
         </React.Fragment>
       )}
     </div>
-    <div>
-    {eventResult && (
-    eventResult
-    )}
-    </div>
+
+    {eventResult != null &&
+      <Modal
+        onClose={handleCloseModal}
+        open={showModal}
+        size='large'
+      >
+        <Modal.Content>
+        {eventResult.nomReference}
+        <br/>
+        {eventResult.explicationReference}
+        <br/>
+        {eventResult.explicationResultatEventPartie}
+        </Modal.Content>
+      </Modal>
+    }
     </React.Fragment>
   );
 }
@@ -55,6 +73,8 @@ Event.propTypes = {
   pastEvents: PropTypes.array.isRequired,
   eventResult: PropTypes.object,
   pastEventsShow: PropTypes.bool.isRequired,
+  showModal: PropTypes.bool.isRequired,
   onLaunchEvent: PropTypes.func.isRequired,
   onShowPastEvent: PropTypes.func.isRequired,
+  onCloseModal: PropTypes.func.isRequired,
 };
