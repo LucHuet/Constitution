@@ -123,7 +123,7 @@ class ActeurPartieController extends BaseController
 
 
     /**
-     * @Route("/{id}", name="acteur_partie_get" , methods="GET")
+     * @Route("/{id<\d+>}", name="acteur_partie_get" , methods="GET")
      * @Method("GET")
      */
     public function getActeurPartie(ActeurPartie $acteurPartie)
@@ -134,7 +134,7 @@ class ActeurPartieController extends BaseController
     }
 
     /**
-     * @Route("/{id}", name="acteur_partie_edit", methods="PUT")
+     * @Route("/{id<\d+>}", name="acteur_partie_edit", methods="PUT")
      */
     public function editActeurPartie(Request $request, ActeurPartie $acteurPartie): Response
     {
@@ -159,7 +159,7 @@ class ActeurPartieController extends BaseController
     }
 
     /**
-     * @Route("/{id}", name="acteur_partie_delete", methods="DELETE")
+     * @Route("/{id<\d+>}", name="acteur_partie_delete", methods="DELETE")
      * @Method("DELETE")
      */
     public function deleteActeurPartie(ActeurPartie $acteurPartie)

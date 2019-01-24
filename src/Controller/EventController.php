@@ -24,7 +24,6 @@ class EventController extends BaseController
               $eventPartie = $checkEvents->checkEvent1();
               $eventPartie->setId(hexdec( uniqid() ));
               $eventApiModel = $this->createEventApiModel($eventPartie);
-              //dump($this->createApiResponse($eventApiModel)); die();
               return $this->createApiResponse($eventApiModel);
     }
 
@@ -40,7 +39,8 @@ class EventController extends BaseController
      */
     public function getEvent(EventPartie $eventPartie)
     {
-      dump($eventPartie); die();
+      $eventApiModel = $this->createEventApiModel($eventPartie);
+      return $this->createApiResponse($eventApiModel);
     }
 
 }

@@ -26,7 +26,7 @@ class PouvoirController extends BaseController
   }
 
   /**
-   * @Route("/{id}", name="pouvoir_ref_get" , methods="GET")
+   * @Route("/{id<\d+>}", name="pouvoir_ref_get" , methods="GET")
    * @Method("GET")
    */
   public function getPouvoirReference(Pouvoir $pouvoir)

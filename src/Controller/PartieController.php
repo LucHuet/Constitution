@@ -52,7 +52,7 @@ class PartieController extends BaseController
     }
 
     /**
-     * @Route("/{id}", name="partie_get" , methods="GET")
+     * @Route("/{id<\d+>}", name="partie_get" , methods="GET")
      * @Method("GET")
      */
     public function getPartie(Partie $partie)
@@ -117,7 +117,7 @@ class PartieController extends BaseController
     }
 
     /**
-     * @Route("/{id}", name="partie_delete", methods="DELETE")
+     * @Route("/{id<\d+>}", name="partie_delete", methods="DELETE")
      */
     public function deletePartie(Partie $partie)
     {
@@ -142,7 +142,7 @@ class PartieController extends BaseController
     }
 
     /**
-     * @Route("/droitDevoir/{id}", name="droit_devoir_partie_new")
+     * @Route("/droitDevoir/{id<\d+>}", name="droit_devoir_partie_new")
      * @Method("GET")
      */
      public function addDroitDevoir(Request $request, DroitDevoir $droitDevoir){

@@ -36,7 +36,7 @@ class PartieDisplayController extends BaseController
     }
 
     /**
-     * @Route("/liste", name="partie_liste", methods="GET")
+     * @Route("/liste/", name="partie_liste", methods="GET")
      */
     public function liste(PartieRepository $partieRepository): Response
     {
@@ -121,7 +121,7 @@ class PartieDisplayController extends BaseController
     }
 
     /**
-     * @Route("/new", name="partie_display_new", methods="GET|POST")
+     * @Route("/new/", name="partie_display_new", methods="GET|POST")
      */
     public function new(Request $request, ActeurRepository $acteurRepository): Response
     {

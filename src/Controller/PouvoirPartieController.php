@@ -101,7 +101,7 @@ class PouvoirPartieController extends BaseController
     }
 
     /**
-     * @Route("/{id}", name="pouvoir_partie_show", methods="GET")
+     * @Route("/{id<\d+>}", name="pouvoir_partie_show", methods="GET")
      */
     public function showPouvoirPartie(PouvoirPartie $pouvoirPartie): Response
     {
@@ -114,7 +114,7 @@ class PouvoirPartieController extends BaseController
 
 
     /**
-     * @Route("/{id}", name="pouvoir_partie_delete", methods="DELETE")
+     * @Route("/{id<\d+>}", name="pouvoir_partie_delete", methods="DELETE")
      */
     public function deletePouvoirPartie(Request $request, PouvoirPartie $pouvoirPartie): Response
     {
