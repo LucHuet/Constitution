@@ -9,6 +9,7 @@ use App\Api\PartieApiModel;
 use App\Api\PouvoirRefApiModel;
 use App\Api\PouvoirApiModel;
 use App\Api\DroitDevoirApiModel;
+use App\Api\EventPartieApiModel;
 use App\Entity\ActeurPartie;
 use App\Entity\Acteur;
 use App\Entity\PouvoirPartie;
@@ -16,6 +17,7 @@ use App\Entity\DroitDevoir;
 use App\Entity\Partie;
 use App\Entity\Pouvoir;
 use App\Entity\DesignationPartie;
+use App\Entity\EventPartie;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,7 +33,6 @@ class BaseController extends Controller
      */
     protected function createApiResponse($data, $statusCode = 200)
     {
-      dump($data);
         $json = $this->get('serializer')
             ->serialize($data, 'json');
 
@@ -125,11 +126,8 @@ class BaseController extends Controller
         $designation = [];
         foreach($listeDesignationActeurPartieDesignes as $designationActeurDesigne)
         {
-
           $acteurDesigneSimple = [];
-
           $acteurDesigne = $designationActeurDesigne->getActeurDesignant();
-
           $acteurDesigneSimple['id'] = $acteurDesigne->getId();
           $acteurDesigneSimple['nom'] = $acteurDesigne->getNom();
           $acteurDesigneSimple['type'] = $acteurDesigne->getTypeActeur()->getType();
@@ -140,9 +138,7 @@ class BaseController extends Controller
         foreach($listeDesignationActeurPartieDesignants as $designationActeurDesigne)
         {
           $acteurDesigneSimple = [];
-
           $acteurDesigne = $designationActeurDesigne->getActeurDesigne();
-
           $acteurDesigneSimple['id'] = $acteurDesigne->getId();
           $acteurDesigneSimple['nom'] = $acteurDesigne->getNom();
           $acteurDesigneSimple['type'] = $acteurDesigne->getTypeActeur()->getType();
@@ -217,6 +213,35 @@ class BaseController extends Controller
         $selfUrl = $this->generateUrl(
             'designation_partie_show',
             ['id' => $designationPartie->getId()]
+        );
+        $model->addLink('_self', $selfUrl);
+
+        return $model;
+    }
+
+    protected function createEventApiModel(EventPartie $eventPartie)
+    {
+        $model = new EventPartieApiModel();
+        $model->id = $eventPartie->getId();
+        $model->nomReference = $eventPartie->getEventReference()->getNom();
+        $model->explicationReference = $eventPartie->getEventReference()->getExplication();
+        switch ($eventPartie->getResultat()) {
+          case 0:
+            $model->resultatReference = $eventPartie->getEventReference()->getResultatNull();
+            break;
+          case 1:
+            $model->resultatReference = $eventPartie->getEventReference()->getResultatOK();
+            break;
+          case 2:
+            $model->resultatReference = $eventPartie->getEventReference()->getResultatNOK();
+            break;
+        }
+        $model->resultatEventPartie = $eventPartie->getResultat();
+        $model->explicationResultatEventPartie = $eventPartie->getExplicationResultat();
+
+        $selfUrl = $this->generateUrl(
+            'event_get',
+            ['id' => $eventPartie->getId()]
         );
         $model->addLink('_self', $selfUrl);
 

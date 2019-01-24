@@ -41,26 +41,6 @@ class PouvoirPartie
      */
     private $acteurPossedant;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\PouvoirPartie", cascade={"persist", "remove"})
-     */
-    private $pouvoirDestinataire;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\PouvoirPartie")
-     */
-    private $pouvoirControlled;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ActeurPartie")
-     */
-    private $acteurControlled;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\DesignationPartie")
-     */
-    private $designationControlled;
-
 
     public function __construct()
     {
@@ -118,11 +98,13 @@ class PouvoirPartie
      */
     public function getActeurPossedant(): Collection
     {
+
         return $this->acteurPossedant;
     }
 
     public function addActeurPossedant(ActeurPartie $acteurPossedant): self
     {
+
         if (!$this->acteurPossedant->contains($acteurPossedant)) {
             $this->acteurPossedant[] = $acteurPossedant;
         }
@@ -135,54 +117,6 @@ class PouvoirPartie
         if ($this->acteurPossedant->contains($acteurPossedant)) {
             $this->acteurPossedant->removeElement($acteurPossedant);
         }
-
-        return $this;
-    }
-
-    public function getPouvoirDestinataire(): ?self
-    {
-        return $this->pouvoirDestinataire;
-    }
-
-    public function setPouvoirDestinataire(?self $pouvoirDestinataire): self
-    {
-        $this->pouvoirDestinataire = $pouvoirDestinataire;
-
-        return $this;
-    }
-
-    public function getPouvoirControlled(): ?self
-    {
-        return $this->pouvoirControlled;
-    }
-
-    public function setPouvoirControlled(?self $pouvoirControlled): self
-    {
-        $this->pouvoirControlled = $pouvoirControlled;
-
-        return $this;
-    }
-
-    public function getActeurControlled(): ?self
-    {
-        return $this->acteurControlled;
-    }
-
-    public function setActeurControlled(?ActeurPartie $acteurControlled): self
-    {
-        $this->acteurControlled = $acteurControlled;
-
-        return $this;
-    }
-
-    public function getDesignationControlled(): ?DesignationPartie
-    {
-        return $this->designationControlled;
-    }
-
-    public function setDesignationControlled(?DesignationPartie $designationControlled): self
-    {
-        $this->designationControlled = $designationControlled;
 
         return $this;
     }

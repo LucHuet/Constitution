@@ -18,7 +18,7 @@ use App\Controller\Base\BaseController;
 /**
  * @Route("/designation")
  */
-class DesignationPartieController extends BaseController
+class DesignationPartieController_OLD extends BaseController
 {
     /**
      * @Route("/", name="designation_partie_index", methods="GET")

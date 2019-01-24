@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Session\Session;
+use App\Service\CheckEvents;
 use App\Service\CheckStepService;
 use App\Controller\Base\BaseController;
 
@@ -58,7 +59,8 @@ class PartieDisplayController extends BaseController
       PouvoirPartieRepository $pouvoirPartieRepository,
       ActeurRepository $acteurRepository,
       DesignationRepository $designationRepository,
-      PouvoirRepository $pouvoirRepository
+      PouvoirRepository $pouvoirRepository,
+      CheckEvents $checkEvents
     ): Response
     {
 
@@ -66,6 +68,7 @@ class PartieDisplayController extends BaseController
         $session = new Session();
         $session->set('partieCourante', $partieCourante);
 
+        dump($checkEvents->checkEvent1());
         // verification de la partie courante
         if($this->checkStep->checkPartie($partieCourante) != null){
           return $this->redirectToRoute($this->checkStep->checkPartie($partieCourante));
