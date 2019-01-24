@@ -194,12 +194,6 @@ class BaseController extends Controller
         $model->nom = $pouvoirPartie->getNom();
         $model->pouvoir = $pouvoirPartie->getPouvoir()->getId();
 
-        $selfUrl = $this->generateUrl(
-            'pouvoir_partie_show',
-            ['id' => $pouvoirPartie->getId()]
-        );
-        $model->addLink('_self', $selfUrl);
-
         return $model;
     }
 

@@ -55,7 +55,7 @@ class ActeurPartieController extends BaseController
     }
 
     /**
-     * @Route("/", name="acteur_partie_new", methods="POST", options={"expose"=true})
+     * @Route("/", name="acteur_partie_new", methods="POST")
      */
     public function createActeurPartie(Request $request, PouvoirRepository $pouvoirRepository, PouvoirPartieRepository $pouvoirPartieRepository)
     {

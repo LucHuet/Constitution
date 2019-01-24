@@ -27,7 +27,7 @@ class ActeurReferenceController extends BaseController
     }
 
     /**
-     * @Route("/", name="acteur_ref_list", methods="GET", options={"expose"=true})
+     * @Route("/", name="acteur_ref_list", methods="GET")
      */
     public function getActeursReference()
     {
