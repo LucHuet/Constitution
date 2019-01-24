@@ -20,7 +20,6 @@ class EventController extends BaseController
      */
     public function launch(CheckEvents $checkEvents)
     {
-
               $eventPartie = $checkEvents->checkEvent1();
               $eventPartie->setId(hexdec( uniqid() ));
               $eventApiModel = $this->createEventApiModel($eventPartie);

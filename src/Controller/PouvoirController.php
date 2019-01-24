@@ -14,8 +14,17 @@ class PouvoirController extends BaseController
 {
 
   /**
+   * @Route("/{id<\d+>}", name="pouvoir_ref_get" , methods="GET")
+   */
+  public function getPouvoirReference(Pouvoir $pouvoir)
+  {
+      $apiModel = $this->createPouvoirApiModel($pouvoir);
+
+      return $this->createApiResponse($apiModel);
+  }
+
+  /**
    * @Route("/", name="pouvoir_ref_list", methods="GET")
-   * @Method("GET")
    */
   public function getPouvoirsReference()
   {
@@ -25,14 +34,5 @@ class PouvoirController extends BaseController
       ]);
   }
 
-  /**
-   * @Route("/{id<\d+>}", name="pouvoir_ref_get" , methods="GET")
-   * @Method("GET")
-   */
-  public function getPouvoirReference(Pouvoir $pouvoir)
-  {
-      $apiModel = $this->createPouvoirApiModel($pouvoir);
 
-      return $this->createApiResponse($apiModel);
-  }
 }

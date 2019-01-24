@@ -19,7 +19,6 @@ class DroitDevoirController extends BaseController
 
   /**
    * @Route("/", name="droits_devoirs_liste", methods="GET", options={"expose"=true})
-   * @Method("GET")
    */
   public function getDroitsDevoirs(DroitDevoirRepository $DroitDevoirRepository)
   {

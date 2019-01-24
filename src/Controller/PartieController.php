@@ -40,18 +40,6 @@ class PartieController extends BaseController
     }
 
     /**
-     * @Route("/", name="partie_list", methods="GET")
-     * @Method("GET")
-     */
-    public function getParties()
-    {
-        $models = $this->findAllUserPartiesModels();
-        return $this->createApiResponse([
-            'items' => $models
-        ]);
-    }
-
-    /**
      * @Route("/{id<\d+>}", name="partie_get" , methods="GET")
      * @Method("GET")
      */
@@ -63,7 +51,21 @@ class PartieController extends BaseController
     }
 
     /**
-     * @Route("/", name="partie_new", methods="POST", options={"expose"=true})
+     * @Route("/", name="partie_list", methods="GET")
+     * @Method("GET")
+     */
+    public function getParties()
+    {
+        $models = $this->findAllUserPartiesModels();
+        return $this->createApiResponse([
+            'items' => $models
+        ]);
+    }
+
+
+
+    /**
+     * @Route("/", name="partie_new", methods="POST")
      * @Method("POST")
      */
     public function createPartie(Request $request, ActeurPartieRepository $acteurPartieRepository, ActeurRepository $acteurRepository)
@@ -130,8 +132,7 @@ class PartieController extends BaseController
     }
 
     /**
-     * @Route("/droitDevoir/", name="droits_devoirs_partie_liste", methods="GET", options={"expose"=true})
-     * @Method("GET")
+     * @Route("/droitDevoir/", name="droits_devoirs_partie_liste", methods="GET")
      */
     public function getDroitsDevoirs(DroitDevoirRepository $DroitDevoirRepository)
     {
@@ -143,7 +144,6 @@ class PartieController extends BaseController
 
     /**
      * @Route("/droitDevoir/{id<\d+>}", name="droit_devoir_partie_new")
-     * @Method("GET")
      */
      public function addDroitDevoir(Request $request, DroitDevoir $droitDevoir){
 

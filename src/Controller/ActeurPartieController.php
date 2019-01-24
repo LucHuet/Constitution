@@ -34,8 +34,28 @@ class ActeurPartieController extends BaseController
     }
 
     /**
+     * @Route("/{id<\d+>}", name="acteur_partie_get" , methods="GET")
+     */
+    public function getActeurPartie(ActeurPartie $acteurPartie)
+    {
+        $apiModel = $this->createActeurPartieApiModel($acteurPartie);
+
+        return $this->createApiResponse($apiModel);
+    }
+
+    /**
+     * @Route("/", name="acteur_partie_list", methods="GET")
+     */
+    public function getActeursPartie()
+    {
+        $models = $this->findAllActeursPartieModels();
+        return $this->createApiResponse([
+            'items' => $models
+        ]);
+    }
+
+    /**
      * @Route("/", name="acteur_partie_new", methods="POST", options={"expose"=true})
-     * @Method("POST")
      */
     public function createActeurPartie(Request $request, PouvoirRepository $pouvoirRepository, PouvoirPartieRepository $pouvoirPartieRepository)
     {
@@ -109,31 +129,6 @@ class ActeurPartieController extends BaseController
     }
 
     /**
-     * @Route("/", name="acteur_partie_list", methods="GET")
-     * @Method("GET")
-     */
-    public function getActeursPartie()
-    {
-        $models = $this->findAllActeursPartieModels();
-        return $this->createApiResponse([
-            'items' => $models
-        ]);
-    }
-
-
-
-    /**
-     * @Route("/{id<\d+>}", name="acteur_partie_get" , methods="GET")
-     * @Method("GET")
-     */
-    public function getActeurPartie(ActeurPartie $acteurPartie)
-    {
-        $apiModel = $this->createActeurPartieApiModel($acteurPartie);
-
-        return $this->createApiResponse($apiModel);
-    }
-
-    /**
      * @Route("/{id<\d+>}", name="acteur_partie_edit", methods="PUT")
      */
     public function editActeurPartie(Request $request, ActeurPartie $acteurPartie): Response
@@ -160,7 +155,6 @@ class ActeurPartieController extends BaseController
 
     /**
      * @Route("/{id<\d+>}", name="acteur_partie_delete", methods="DELETE")
-     * @Method("DELETE")
      */
     public function deleteActeurPartie(ActeurPartie $acteurPartie)
     {
