@@ -20,7 +20,7 @@ class DroitDevoirController extends BaseController
   /**
    * @Route("/", name="droits_devoirs_liste", methods="GET")
    */
-  public function getDroitsDevoirs(DroitDevoirRepository $DroitDevoirRepository)
+  public function getDroitsDevoirs()
   {
     $models = $this->findAllDroitsDevoirsReferenceModels();
     return $this->createApiResponse([

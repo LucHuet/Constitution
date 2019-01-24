@@ -121,12 +121,12 @@ export function getDroitsDevoirsReference(){
 }
 
 export function addDroitDevoir(id) {
-    return fetchJson(`/partie/droitDevoir/${id}`).
+    return fetchJson(`/droitDevoirPartie/${id}`).
       then(data => data.items);
 }
 
 export function getDroitsDevoirs(){
-  return fetchJson('/partie/droitDevoir/').
+  return fetchJson('/droitDevoirPartie/').
     then(data => data.items);
 }
 
