@@ -61,6 +61,8 @@ export default function Event(props) {
         <br/>
         {eventResult.explicationReference}
         <br/>
+        {eventResult.resultatReference}
+        <br/>
         {eventResult.explicationResultatEventPartie}
         </Modal.Content>
       </Modal>

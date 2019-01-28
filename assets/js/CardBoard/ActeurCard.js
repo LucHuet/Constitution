@@ -34,9 +34,9 @@ export default function ActeurCard(props) {
     if (acteurType != 'Peuple')
     {
       return(
-          <Button floated="right" onClick={(event => handleDeleteClick(event, acteur.id))} >
-            <Icon name="trash"></Icon>
-          </Button>
+        <Button floated="right" onClick={(event => handleDeleteClick(event, acteur.id))} >
+          <Icon name="trash"></Icon>
+        </Button>
       )
     }else {
       return(

@@ -222,6 +222,7 @@ class BaseController extends Controller
         $model->id = $eventPartie->getId();
         $model->nomReference = $eventPartie->getEventReference()->getNom();
         $model->explicationReference = $eventPartie->getEventReference()->getExplication();
+
         switch ($eventPartie->getResultat()) {
           case 0:
             $model->resultatReference = $eventPartie->getEventReference()->getResultatNull();
