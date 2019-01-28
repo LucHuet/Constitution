@@ -9,6 +9,7 @@ export default class ActeurDisplay extends Component {
     super(props);
 
     const {
+        onClickPouvoir,
         acteurPartieDisplay,
         onUpdateActeur,
     } = this.props;
@@ -18,7 +19,7 @@ export default class ActeurDisplay extends Component {
     switch(acteurPartieDisplay.type) {
       case 'Chef d\'état':
         this.individusMin = 1;
-        this.individusMax = 10;
+        this.individusMax = 1;
         break;
       case 'Parlement':
         this.individusMin = 200;
@@ -33,6 +34,11 @@ export default class ActeurDisplay extends Component {
         this.individusMax = 20;
         break;
     }
+
+    acteurPartieDisplay.pouvoirs.map(pouvoir =>{
+      onClickPouvoir(pouvoir.id);
+    })
+
 
     this.state = {
       nombreActeurError: '',
@@ -66,17 +72,14 @@ export default class ActeurDisplay extends Component {
 
   handleUpdate(){
     //fait appel au props de l'objet
-    const {onUpdateActeur} = this.props;
+    const {onUpdateActeur, acteurPartieDisplay} = this.props;
 
+    const idActeur = acteurPartieDisplay.id;
     const nomActeur = this.nomActeur.current;
     const nombreActeur = this.nombreActeur.current;
     const typeActeur = 0;
     const typeDesignation = this.typeDesignation.current;
     const acteurDesignant = this.acteurDesignant.current;
-    const nomDesignation = "designation test";
-
-    console.log(typeDesignation);
-
 
     if (nombreActeur.value <= 0) {
       this.setState({
@@ -86,7 +89,11 @@ export default class ActeurDisplay extends Component {
     }
 
     onUpdateActeur(
-      console.log("saved")
+      idActeur,
+      nomActeur.value,
+      nombreActeur.value,
+      typeDesignation.options[typeDesignation.selectedIndex].value,
+      acteurDesignant.options[acteurDesignant.selectedIndex].value
     );
 
 
@@ -147,8 +154,6 @@ export default class ActeurDisplay extends Component {
       }
     }
 
-    console.log(acteurPartieDisplay.pouvoirs);
-
     return (
     <div>
     <Header as='h2' icon textAlign='center'>
@@ -195,7 +200,7 @@ export default class ActeurDisplay extends Component {
         </select>
         <Header.Content>
           Désigné par :
-          <select id="acteurPartie" defaultValue={acteurPartieDisplay.designations.designants[0].nom} ref={this.acteursPartiesOptions} required="required">
+          <select id="acteurPartie" defaultValue={acteurPartieDisplay.designations.designants[0].nom} ref={this.acteurDesignant} required="required">
             {acteursPartiesOptions.map(acteurPartie => {
               return <option value={acteurPartie.nom} key={acteurPartie.id}>{acteurPartie.text}</option>
             } )}

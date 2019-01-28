@@ -14,7 +14,7 @@ export default class ActeurCreator extends Component {
     switch(acteurReference.type) {
       case 'Chef d\'état':
         this.individusMin = 1;
-        this.individusMax = 10;
+        this.individusMax = 1;
         break;
       case 'Parlement':
         this.individusMin = 200;

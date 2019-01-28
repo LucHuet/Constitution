@@ -113,11 +113,9 @@ export default class CardBoardApp extends Component {
     acteurDesignant,
     nomDesignation
   ){
-
       const newDesignation = {
         nom: nomDesignation,
         designation : typeDesignation,
-        //acteurDesigne : acteurSelect, ????
         acteurDesignant: acteurDesignant
       };
 
@@ -180,8 +178,20 @@ export default class CardBoardApp extends Component {
         })
   }
 
-  handleUpdateActeur(id) {
+  handleUpdateActeur(
+    idActeur,
+    nom,
+    nombreIndividus,
+    typeDesignation,
+    acteurDesignant
+  ){
     console.log("Update acteur");
+    console.log("Id acteur", idActeur);
+    console.log("Nouveau nom", nom);
+    console.log("Nouveau nombreIndividus", nombreIndividus);
+    console.log("Nouveau typeDesignation", typeDesignation);
+    console.log("Nouveau acteurDesignant", acteurDesignant);
+    console.log("Nouveau pouvoirsSelection", this.state.pouvoirsSelection)
   }
 
   handleDeleteActeur(id) {
