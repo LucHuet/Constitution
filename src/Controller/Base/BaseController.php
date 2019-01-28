@@ -133,6 +133,8 @@ class BaseController extends Controller
           $acteurDesigneSimple['id'] = $acteurDesigne->getId();
           $acteurDesigneSimple['nom'] = $acteurDesigne->getNom();
           $acteurDesigneSimple['type'] = $acteurDesigne->getTypeActeur()->getType();
+          $acteurDesigneSimple['typeDesignation'] = $designationActeurDesigne->getDesignation()->getNom();
+
           $acteurDesigneSimple['image'] = $acteurDesigne->getTypeActeur()->getImage();
           $designation['designants'][] = $acteurDesigneSimple;
         }
@@ -146,6 +148,7 @@ class BaseController extends Controller
           $acteurDesigneSimple['id'] = $acteurDesigne->getId();
           $acteurDesigneSimple['nom'] = $acteurDesigne->getNom();
           $acteurDesigneSimple['type'] = $acteurDesigne->getTypeActeur()->getType();
+          $acteurDesigneSimple['typeDesignation'] = $designationActeurDesigne->getDesignation()->getNom();
           $acteurDesigneSimple['image'] = $acteurDesigne->getTypeActeur()->getImage();
           $designation['designes'][] = $acteurDesigneSimple;
         }

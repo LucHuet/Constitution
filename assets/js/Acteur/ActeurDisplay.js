@@ -75,13 +75,7 @@ export default class ActeurDisplay extends Component {
     const acteurDesignant = this.acteurDesignant.current;
     const nomDesignation = "designation test";
 
-    console.log("test");
-    console.log(this.nomActeur.current);
-    console.log(nombreActeur);
-    console.log(typeActeur);
     console.log(typeDesignation);
-    console.log(acteurDesignant);
-    console.log(nomDesignation);
 
 
     if (nombreActeur.value <= 0) {
@@ -153,6 +147,8 @@ export default class ActeurDisplay extends Component {
       }
     }
 
+    console.log(acteurPartieDisplay.pouvoirs);
+
     return (
     <div>
     <Header as='h2' icon textAlign='center'>
@@ -191,14 +187,14 @@ export default class ActeurDisplay extends Component {
         <b>Désignation : </b>
         <Divider />
         <label htmlFor="designation" className="required"> Mode de désignation : </label>
-        <select id="designation" ref={this.typeDesignation} required="required">
+        <select id="designation" defaultValue={acteurPartieDisplay.designations.designants[0].typeDesignation} ref={this.typeDesignation} required="required">
           {designationOptions.map(designation => {
-            return <option value={designation.id} key={designation.id}>{designation.text}</option>
+            return <option value={designation.typeDesignation} key={designation.id}>{designation.text}</option>
           } )}
         </select>
         <Header.Content>
           Désigné par :
-          <select id="acteurPartie" defaultValue={acteurPartieDisplay.designations.designants.nom} ref={this.acteursPartiesOptions} required="required">
+          <select id="acteurPartie" defaultValue={acteurPartieDisplay.designations.designants[0].nom} ref={this.acteursPartiesOptions} required="required">
             {acteursPartiesOptions.map(acteurPartie => {
               return <option value={acteurPartie.nom} key={acteurPartie.id}>{acteurPartie.text}</option>
             } )}
