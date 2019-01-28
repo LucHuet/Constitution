@@ -63,6 +63,7 @@ export default function CardBoard(props){
           acteurPartieDisplay = acteurPartie;
         }
       });
+
       console.log(acteurPartieDisplay);
       modalContent = <ActeurDisplay
                       acteurPartieDisplay={acteurPartieDisplay}
