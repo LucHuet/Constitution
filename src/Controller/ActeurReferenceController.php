@@ -17,8 +17,17 @@ class ActeurReferenceController extends BaseController
 {
 
     /**
-     * @Route("/", name="acteur_ref_list", methods="GET", options={"expose"=true})
-     * @Method("GET")
+     * @Route("/{id}", name="acteur_ref_get" , methods="GET")
+     */
+    public function getActeurReference(Acteur $acteur)
+    {
+        $apiModel = $this->createActeurRefApiModel($acteur);
+
+        return $this->createApiResponse($apiModel);
+    }
+
+    /**
+     * @Route("/", name="acteur_ref_list", methods="GET")
      */
     public function getActeursReference()
     {
@@ -26,17 +35,6 @@ class ActeurReferenceController extends BaseController
         return $this->createApiResponse([
             'items' => $models
         ]);
-    }
-
-    /**
-     * @Route("/{id}", name="acteur_ref_get" , methods="GET")
-     * @Method("GET")
-     */
-    public function getActeurReference(Acteur $acteur)
-    {
-        $apiModel = $this->createActeurRefApiModel($acteur);
-
-        return $this->createApiResponse($apiModel);
     }
 
 }

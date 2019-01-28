@@ -183,6 +183,7 @@ export default class ActeurDisplay extends Component {
         <Icon name='plus square outline' onClick={(event => this.handleAjoutPouvoir(event, "pouvoir"))} size='small' /> Ajouter des pouvoirs à l acteur <br/>
         </p>
       </Segment>
+      {acteurPartieDisplay.designations.designants != undefined &&
       <Segment>
         <b>Désignation : </b>
         <Divider />
@@ -201,6 +202,7 @@ export default class ActeurDisplay extends Component {
           </select>
         </Header.Content>
       </Segment>
+      }
       <Divider />
         <Button onClick={() => this.handleUpdate()}>Sauvegarder</Button>
     </Container>

@@ -38,7 +38,7 @@ class ActeurPartie
     private $partie;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\PouvoirPartie", mappedBy="acteurPossedant", cascade={"remove"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\PouvoirPartie", mappedBy="acteurPossedant")
      */
     private $pouvoirParties;
 
@@ -125,7 +125,7 @@ class ActeurPartie
     {
         if (!$this->pouvoirParties->contains($pouvoirParty)) {
             $this->pouvoirParties[] = $pouvoirParty;
-            $pouvoirParty->addActeurDestinataire($this);
+            $pouvoirParty->addActeurPossedant($this);
         }
 
         return $this;
@@ -135,7 +135,7 @@ class ActeurPartie
     {
         if ($this->pouvoirParties->contains($pouvoirParty)) {
             $this->pouvoirParties->removeElement($pouvoirParty);
-            $pouvoirParty->removeActeurDestinataire($this);
+            $pouvoirParty->removeActeurPossedant($this);
         }
 
         return $this;

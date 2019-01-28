@@ -8,6 +8,7 @@ use App\Entity\PouvoirPartie;
 use App\Form\ActeurPartieCompletType;
 use App\Repository\ActeurPartieRepository;
 use App\Repository\PouvoirRepository;
+use App\Repository\PouvoirPartieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -33,10 +34,30 @@ class ActeurPartieController extends BaseController
     }
 
     /**
-     * @Route("/", name="acteur_partie_new", methods="POST", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/{id<\d+>}", name="acteur_partie_get" , methods="GET")
      */
-    public function createActeurPartie(Request $request, PouvoirRepository $pouvoirRepository)
+    public function getActeurPartie(ActeurPartie $acteurPartie)
+    {
+        $apiModel = $this->createActeurPartieApiModel($acteurPartie);
+
+        return $this->createApiResponse($apiModel);
+    }
+
+    /**
+     * @Route("/", name="acteur_partie_list", methods="GET")
+     */
+    public function getActeursPartie()
+    {
+        $models = $this->findAllActeursPartieModels();
+        return $this->createApiResponse([
+            'items' => $models
+        ]);
+    }
+
+    /**
+     * @Route("/", name="acteur_partie_new", methods="POST")
+     */
+    public function createActeurPartie(Request $request, PouvoirRepository $pouvoirRepository, PouvoirPartieRepository $pouvoirPartieRepository)
     {
         $session = new Session();
         $partieCourante = $session->get('partieCourante');
@@ -76,15 +97,19 @@ class ActeurPartieController extends BaseController
         $pouvoirsId = $data['pouvoirs'];
 
         foreach($pouvoirsId as $pouvoirId){
-          $pouvoirPartie = new PouvoirPartie();
           $pouvoirRef = $pouvoirRepository->find($pouvoirId);
-          $pouvoirPartie->setNom($pouvoirRef->getNom());
-          $pouvoirPartie->setPartie($partieCourante);
-          $pouvoirPartie->setPouvoir($pouvoirRef);
+          $pouvoirPartie = $pouvoirPartieRepository->findOneBy(['pouvoir' => $pouvoirRef]);
+          if($pouvoirPartie == null)
+          {
+            $pouvoirPartie = new PouvoirPartie();
+            $pouvoirPartie->setNom($pouvoirRef->getNom());
+            $pouvoirPartie->setPartie($partieCourante);
+            $pouvoirPartie->setPouvoir($pouvoirRef);
+          }
           $pouvoirPartie->addActeurPossedant($acteur);
           $em->persist($pouvoirPartie);
         }
-        
+
         $em->persist($designation);
         $em->persist($acteur);
 
@@ -104,32 +129,7 @@ class ActeurPartieController extends BaseController
     }
 
     /**
-     * @Route("/", name="acteur_partie_list", methods="GET")
-     * @Method("GET")
-     */
-    public function getActeursPartie()
-    {
-        $models = $this->findAllActeursPartieModels();
-        return $this->createApiResponse([
-            'items' => $models
-        ]);
-    }
-
-
-
-    /**
-     * @Route("/{id}", name="acteur_partie_get" , methods="GET")
-     * @Method("GET")
-     */
-    public function getActeurPartie(ActeurPartie $acteurPartie)
-    {
-        $apiModel = $this->createActeurPartieApiModel($acteurPartie);
-
-        return $this->createApiResponse($apiModel);
-    }
-
-    /**
-     * @Route("/{id}", name="acteur_partie_edit", methods="PUT")
+     * @Route("/{id<\d+>}", name="acteur_partie_edit", methods="PUT")
      */
     public function editActeurPartie(Request $request, ActeurPartie $acteurPartie): Response
     {
@@ -154,8 +154,7 @@ class ActeurPartieController extends BaseController
     }
 
     /**
-     * @Route("/{id}", name="acteur_partie_delete", methods="DELETE")
-     * @Method("DELETE")
+     * @Route("/{id<\d+>}", name="acteur_partie_delete", methods="DELETE")
      */
     public function deleteActeurPartie(ActeurPartie $acteurPartie)
     {
@@ -164,6 +163,13 @@ class ActeurPartieController extends BaseController
         $partieCourante = $session->get('partieCourante');
 
         $em = $this->getDoctrine()->getManager();
+        foreach($acteurPartie->getPouvoirParties() as $pouvoirPartie)
+        {
+          if(count($pouvoirPartie->getActeurPossedant())==1)
+          {
+            $em->remove($pouvoirPartie);
+          }
+        }
         $em->remove($acteurPartie);
         $em->flush();
         return new Response(null, 204);

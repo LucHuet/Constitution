@@ -40,6 +40,17 @@ class PartieController extends BaseController
     }
 
     /**
+     * @Route("/{id<\d+>}", name="partie_get" , methods="GET")
+     * @Method("GET")
+     */
+    public function getPartie(Partie $partie)
+    {
+        $apiModel = $this->createPartieApiModel($partie);
+
+        return $this->createApiResponse($apiModel);
+    }
+
+    /**
      * @Route("/", name="partie_list", methods="GET")
      * @Method("GET")
      */
@@ -51,19 +62,10 @@ class PartieController extends BaseController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="partie_get" , methods="GET")
-     * @Method("GET")
-     */
-    public function getPartie(Partie $partie)
-    {
-        $apiModel = $this->createPartieApiModel($partie);
 
-        return $this->createApiResponse($apiModel);
-    }
 
     /**
-     * @Route("/", name="partie_new", methods="POST", options={"expose"=true})
+     * @Route("/", name="partie_new", methods="POST")
      * @Method("POST")
      */
     public function createPartie(Request $request, ActeurPartieRepository $acteurPartieRepository, ActeurRepository $acteurRepository)
@@ -117,7 +119,7 @@ class PartieController extends BaseController
     }
 
     /**
-     * @Route("/{id}", name="partie_delete", methods="DELETE")
+     * @Route("/{id<\d+>}", name="partie_delete", methods="DELETE")
      */
     public function deletePartie(Partie $partie)
     {
@@ -129,54 +131,6 @@ class PartieController extends BaseController
         return new Response(null, 204);
     }
 
-    /**
-     * @Route("/droitDevoir/", name="droits_devoirs_partie_liste", methods="GET", options={"expose"=true})
-     * @Method("GET")
-     */
-    public function getDroitsDevoirs(DroitDevoirRepository $DroitDevoirRepository)
-    {
-      $models = $this->findAllDroitsDevoirsModels();
-      return $this->createApiResponse([
-          'items' => $models
-      ]);
-    }
 
-    /**
-     * @Route("/droitDevoir/{id}", name="droit_devoir_partie_new")
-     * @Method("GET")
-     */
-     public function addDroitDevoir(Request $request, DroitDevoir $droitDevoir){
-
-       $session = new Session();
-       $partieCourante = $session->get('partieCourante');
-       $em = $this->getDoctrine()->getManager();
-       $partieCourante = $em->merge($partieCourante);
-
-       //récupération de tous les droits et devoirs de la partie en cours
-       $droitsDevoirsPartieNoms = array();
-       $droitsDevoirsPartie = $partieCourante->getDroitDevoirs();
-
-       foreach($droitsDevoirsPartie as $droitDevoirPartie){
-         $droitDevoirPartieNom = $droitDevoirPartie->getNom();
-         array_push($droitsDevoirsPartieNoms, $droitDevoirPartieNom);
-       }
-
-       //si le droit devoir envoyé n'est pas encore présent dans la partie on le rajoute
-       if(!in_array($droitDevoir->getNom(), $droitsDevoirsPartieNoms)){
-         $partieCourante->addDroitDevoir($droitDevoir);
-       }
-       //si le droit devoir est déjà présent dans la partie, on l'enlève
-       else{
-         $partieCourante->removeDroitDevoir($droitDevoir);
-       }
-
-       $em->persist($partieCourante);
-       $em->flush();
-
-       $models = $this->findAllDroitsDevoirsModels();
-       return $this->createApiResponse([
-           'items' => $models
-       ]);
-      }
 
 }

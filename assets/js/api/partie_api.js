@@ -121,11 +121,25 @@ export function getDroitsDevoirsReference(){
 }
 
 export function addDroitDevoir(id) {
-    return fetchJson(`/partie/droitDevoir/${id}`).
+    return fetchJson(`/droitDevoirPartie/${id}`).
       then(data => data.items);
 }
 
 export function getDroitsDevoirs(){
-  return fetchJson('/partie/droitDevoir/').
+  return fetchJson('/droitDevoirPartie/').
     then(data => data.items);
+}
+
+/**
+---------- Methodes API pour les events --------
+*/
+
+export function launchEvent() {
+    return fetchJson(`/event/launch/`).
+      then(data => data);
+}
+
+export function getPastEvents(){
+  return fetchJson('/event/getPast/')
+    .then(data => data.items);
 }
