@@ -4,7 +4,7 @@ import CardBoard from './CardBoard';
 import PropTypes from 'prop-types';
 import interact from 'interactjs';
 import {
-    getActeursPartie, deleteActeurPartie, createActeurPartie,
+    getActeursPartie, deleteActeurPartie, createActeurPartie, updateActeurPartie,
     getActeursReference,
     createPouvoirPartie, createDesignation
    } from '../api/partie_api.js';
@@ -49,6 +49,8 @@ export default class CardBoardApp extends Component {
     this.handleShowModal = this.handleShowModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handlePouvoirClick = this.handlePouvoirClick.bind(this);
+    this.handlePouvoirClickAdd = this.handlePouvoirClickAdd.bind(this);
+    this.handlePouvoirClickRemove = this.handlePouvoirClickRemove.bind(this);
   }
 
   //componentDidMount est une methode magique qui est automatiquement
@@ -113,11 +115,9 @@ export default class CardBoardApp extends Component {
     acteurDesignant,
     nomDesignation
   ){
-
       const newDesignation = {
         nom: nomDesignation,
         designation : typeDesignation,
-        //acteurDesigne : acteurSelect, ????
         acteurDesignant: acteurDesignant
       };
 
@@ -180,8 +180,91 @@ export default class CardBoardApp extends Component {
         })
   }
 
-  handleUpdateActeur(id) {
+  handleUpdateActeur(
+    idActeur,
+    nom,
+    nombreIndividus,
+    typeActeur,
+    typeDesignation,
+    acteurDesignant
+  ){
     console.log("Update acteur");
+    console.log("Id acteur", idActeur);
+    console.log("Nouveau nom", nom);
+    console.log("Nouveau nombreIndividus", nombreIndividus);
+    console.log("Nouveau typeDesignation", typeDesignation);
+    console.log("Nouveau acteurDesignant", acteurDesignant);
+    console.log("Nouveau pouvoirsSelection", this.state.pouvoirsSelection);
+
+    const updatedDesignation = {
+      nom: '',
+      designation : typeDesignation,
+      acteurDesignant: acteurDesignant
+    };
+
+    const updatedPouvoirs = this.state.pouvoirsSelection;
+
+    const updatedActeurPartie = {
+      nom: nom,
+      nombreIndividus : nombreIndividus,
+      typeActeur : typeActeur,
+    };
+
+    const newActeurPartieComplet = {
+      acteurPartie : updatedActeurPartie,
+      pouvoirs: updatedPouvoirs,
+      designation: updatedDesignation
+    }
+
+    this.setState({
+      isSavingNewActeur: true
+    });
+
+
+    const newState = {
+      isSavingNewActeur: false,
+    }
+
+    updateActeurPartie(newActeurPartieComplet, idActeur)
+    //l'ajout n'as pas d'erreur
+    .then(updatedActeurPartie => {
+      //prevstate est la liste des acteurs originale
+      this.setState(prevState =>{
+        //déclaration d'une nouvelle liste d'acteursJson
+        //qui est la liste de base + le nouvel acteur
+        const newActeursPartie = prevState.acteursPartie.map((acteurPartieMap)=>{
+          if(acteurPartieMap.id == updatedActeurPartie.id)
+          {
+            return updatedActeurPartie;
+          }
+          return acteurPartieMap;
+        });
+
+        return {
+          //on remet isSavingNewActeur à false
+          ...newState,
+          acteursPartie: newActeursPartie,
+          newActeurValidationErrorMessage: '',
+          showModal: false
+        };
+
+      });
+      this.setSuccessMessage('Acteur enregistré !');
+
+      })
+      //il y a une erreur dans l'ajout
+      .catch(error=> {
+        error.response.json().then(errorsData => {
+          const errors = errorsData.errors;
+          const firstError = errors[Object.keys(errors)[0]];
+
+          this.setState({
+            ...newState,
+            newActeurValidationErrorMessage: firstError,
+          });
+        })
+      })
+
   }
 
   handleDeleteActeur(id) {
@@ -289,6 +372,35 @@ export default class CardBoardApp extends Component {
       }
   }
 
+  handlePouvoirClickAdd(pouvoirId) {
+    //permet à highlightedRowId de prendre la valeur de l'id de la ligne sur laquelle on clique
+      //this.setState({highlightedRowId:pouvoirId});
+      if(!this.state.pouvoirsSelection.includes(pouvoirId))
+      {
+        this.setState((prevState) => {
+          //déclaration d'une nouvelle liste d'acteursJson
+          //qui est la liste de base + le nouvel acteur
+          return {
+            pouvoirsSelectionTest : pouvoirId,
+            pouvoirsSelection: [...prevState.pouvoirsSelection, pouvoirId],
+          };
+        });
+      }
+  }
+
+  handlePouvoirClickRemove(pouvoirId) {
+    //permet à highlightedRowId de prendre la valeur de l'id de la ligne sur laquelle on clique
+      //this.setState({highlightedRowId:pouvoirId});
+      if(this.state.pouvoirsSelection.includes(pouvoirId))
+      {
+        this.setState((prevState) => {
+          return {
+            pouvoirsSelectionTest : pouvoirId,
+            pouvoirsSelection: prevState.pouvoirsSelection.filter(id => id != pouvoirId)
+          }
+        });
+      }
+  }
 
   render(){
 
@@ -300,6 +412,8 @@ export default class CardBoardApp extends Component {
         onUpdateActeur={this.handleUpdateActeur}
         onAddPouvoir={this.handleAddPouvoir}
         onClickPouvoir={this.handlePouvoirClick}
+        onClickPouvoirAdd={this.handlePouvoirClickAdd}
+        onClickPouvoirRemove={this.handlePouvoirClickRemove}
         onAddDesignation={this.handleAddDesignation}
         onShowModal={this.handleShowModal}
         onCloseModal={this.handleCloseModal}

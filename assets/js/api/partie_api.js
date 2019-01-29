@@ -48,6 +48,13 @@ export function createActeurPartie(acteur){
   })
 }
 
+export function updateActeurPartie(acteur, id){
+  return fetchJson(`http://localhost:8000/acteurPartie/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(acteur),
+  })
+}
+
 export function deleteActeurPartie(id) {
   return fetchJson(`/acteurPartie/${id}`, {
     method:'DELETE'

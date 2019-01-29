@@ -22,6 +22,8 @@ export default function CardBoard(props){
     onCloseModal,
     onDeleteActeur,
     onClickPouvoir,
+    onClickPouvoirAdd,
+    onClickPouvoirRemove,
     isLoaded,
     isSavingNewActeur,
     successMessage,
@@ -61,6 +63,12 @@ export default function CardBoard(props){
         if(acteurPartie.id == acteurSelect)
         {
           acteurPartieDisplay = acteurPartie;
+          acteursReference.forEach(function(acteurRef2) {
+            if(acteurRef2.type == acteurPartieDisplay.type)
+            {
+              acteurPartieDisplay.typeId = acteurRef2.id;
+            }
+          });
         }
       });
 
@@ -69,13 +77,13 @@ export default function CardBoard(props){
                       acteurPartieDisplay={acteurPartieDisplay}
                       onShowModal={onShowModal}
                       onUpdateActeur={onUpdateActeur}
-                      onClickPouvoir = {onClickPouvoir}
+                      onClickPouvoirAdd = {onClickPouvoirAdd}
                       pouvoirsSelection={pouvoirsSelection}
                       acteursPartiesOptions={acteursPartiesOptions}
                       designationOptions={designationOptions}
                     /> ;
         break;
-    case 'pouvoir':
+    case 'pouvoirSelection':
       modalContent = <PouvoirCreator
                       pouvoirsSelection={pouvoirsSelection}
                       onAddPouvoir={onAddPouvoir}
@@ -89,26 +97,27 @@ export default function CardBoard(props){
                     /> ;
       break;
     default:
-    if(modalType == "")
-    {
-      break;
-    }
-    var acteurRef;
-    acteursReference.forEach(function(acteurRef2) {
-      if(acteurRef2.type == modalType)
+      if(modalType == "")
       {
-        acteurRef = acteurRef2;
+        break;
       }
-    });
-    modalContent = <ActeurCreator
-                    onShowModal={onShowModal}
-                    onAddActeur={onAddActeur}
-                    onClickPouvoir = {onClickPouvoir}
-                    acteurReference={acteurRef}
-                    pouvoirsSelection={pouvoirsSelection}
-                    acteursPartiesOptions={acteursPartiesOptions}
-                    designationOptions={designationOptions}
-                   /> ;
+      var acteurRef;
+      acteursReference.forEach(function(acteurRef2) {
+        if(acteurRef2.type == modalType)
+        {
+          acteurRef = acteurRef2;
+        }
+      });
+      modalContent = <ActeurCreator
+                      onShowModal={onShowModal}
+                      onAddActeur={onAddActeur}
+                      onClickPouvoir = {onClickPouvoir}
+                      onClickPouvoirAdd = {onClickPouvoirAdd}
+                      acteurReference={acteurRef}
+                      pouvoirsSelection={pouvoirsSelection}
+                      acteursPartiesOptions={acteursPartiesOptions}
+                      designationOptions={designationOptions}
+                     /> ;
       break;
   }
 
@@ -168,6 +177,8 @@ CardBoard.propTypes = {
   onUpdateActeur: PropTypes.func.isRequired,
   onAddPouvoir: PropTypes.func.isRequired,
   onClickPouvoir: PropTypes.func.isRequired,
+  onClickPouvoirAdd: PropTypes.func.isRequired,
+  onClickPouvoirRemove: PropTypes.func.isRequired,
   onAddDesignation: PropTypes.func.isRequired,
   onShowModal: PropTypes.func.isRequired,
   onCloseModal: PropTypes.func.isRequired,
