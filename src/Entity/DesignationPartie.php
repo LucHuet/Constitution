@@ -95,7 +95,7 @@ class DesignationPartie
     public function setActeurDesignant(?ActeurPartie $acteurDesignant): self
     {
         $this->acteurDesignant = $acteurDesignant;
-        $acteurDesignant->addActeursDesignant($this);
+        //$acteurDesignant->addActeursDesignant($this);
         return $this;
     }
 

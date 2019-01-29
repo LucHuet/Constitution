@@ -9,7 +9,7 @@ export default class ActeurDisplay extends Component {
     super(props);
 
     const {
-        onClickPouvoir,
+        onClickPouvoirAdd,
         acteurPartieDisplay,
         onUpdateActeur,
     } = this.props;
@@ -35,10 +35,12 @@ export default class ActeurDisplay extends Component {
         break;
     }
 
-    acteurPartieDisplay.pouvoirs.map(pouvoir =>{
-      onClickPouvoir(pouvoir.id);
-    })
-
+    if(acteurPartieDisplay.pouvoirs != null)
+    {
+      acteurPartieDisplay.pouvoirs.map(pouvoirPartie =>{
+        onClickPouvoirAdd(pouvoirPartie.pouvoir);
+      })
+    }
 
     this.state = {
       nombreActeurError: '',
@@ -77,7 +79,7 @@ export default class ActeurDisplay extends Component {
     const idActeur = acteurPartieDisplay.id;
     const nomActeur = this.nomActeur.current;
     const nombreActeur = this.nombreActeur.current;
-    const typeActeur = 0;
+    const typeActeur = acteurPartieDisplay.typeId;
     const typeDesignation = this.typeDesignation.current;
     const acteurDesignant = this.acteurDesignant.current;
 
@@ -92,6 +94,7 @@ export default class ActeurDisplay extends Component {
       idActeur,
       nomActeur.value,
       nombreActeur.value,
+      typeActeur,
       typeDesignation.options[typeDesignation.selectedIndex].value,
       acteurDesignant.options[acteurDesignant.selectedIndex].value
     );
@@ -107,8 +110,8 @@ export default class ActeurDisplay extends Component {
 
   handleAjoutPouvoir(event, modalType, acteurId){
     event.preventDefault();
-    const {onShowModal} = this.props;
-    onShowModal( modalType, acteurId, 'Chef d\'état');
+    const {onShowModal, acteurPartieDisplay} = this.props;
+    onShowModal( modalType, acteurId, acteurPartieDisplay.type);
   }
 
   handleCountryDescriptionClick(description){
@@ -132,7 +135,6 @@ export default class ActeurDisplay extends Component {
 
     const {
         acteurPartieDisplay,
-        onClickPouvoir,
         pouvoirsSelection,
         designationOptions,
         acteursPartiesOptions
@@ -179,13 +181,25 @@ export default class ActeurDisplay extends Component {
       <Segment>
         <b>Pouvoirs</b>
         <Divider />
-        De base :
+        Déja présents :
         <p>
-        {handleNomPouvoir(acteurPartieDisplay)};
+        {acteurPartieDisplay.pouvoirs && (
+          acteurPartieDisplay.pouvoirs.map((pouvoirPartiePresent) => {
+          return (
+            <React.Fragment key={pouvoirPartiePresent.id}>
+              <span onClick={()=> onClickPouvoir(pouvoirPartiePresent.pouvoir)}>
+                <Icon name={pouvoirsSelection.includes(pouvoirPartiePresent.pouvoir) ? 'minus square outline' : 'plus square outline'} size='small' />
+                {pouvoirPartiePresent.nom}
+              </span>
+              <br/>
+            </React.Fragment>
+          );
+          })
+        )}
         </p>
         Modifier les pouvoirs :
         <p>
-        <Icon name='plus square outline' onClick={(event => this.handleAjoutPouvoir(event, "pouvoir"))} size='small' /> Ajouter des pouvoirs à l acteur <br/>
+        <Icon name='plus square outline' onClick={(event => this.handleAjoutPouvoir(event, "pouvoirSelection", acteurPartieDisplay.id))} size='small' /> Ajouter des pouvoirs à l acteur <br/>
         </p>
       </Segment>
       {acteurPartieDisplay.designations.designants != undefined &&
@@ -195,14 +209,14 @@ export default class ActeurDisplay extends Component {
         <label htmlFor="designation" className="required"> Mode de désignation : </label>
         <select id="designation" defaultValue={acteurPartieDisplay.designations.designants[0].typeDesignation} ref={this.typeDesignation} required="required">
           {designationOptions.map(designation => {
-            return <option value={designation.typeDesignation} key={designation.id}>{designation.text}</option>
+            return <option value={designation.id} key={designation.id}>{designation.text}</option>
           } )}
         </select>
         <Header.Content>
           Désigné par :
           <select id="acteurPartie" defaultValue={acteurPartieDisplay.designations.designants[0].nom} ref={this.acteurDesignant} required="required">
             {acteursPartiesOptions.map(acteurPartie => {
-              return <option value={acteurPartie.nom} key={acteurPartie.id}>{acteurPartie.text}</option>
+              return <option value={acteurPartie.id} key={acteurPartie.id}>{acteurPartie.text}</option>
             } )}
           </select>
         </Header.Content>
@@ -220,7 +234,7 @@ export default class ActeurDisplay extends Component {
 ActeurDisplay.propTypes = {
   onShowModal: PropTypes.func.isRequired,
   onUpdateActeur: PropTypes.func.isRequired,
-  onClickPouvoir : PropTypes.func.isRequired,
+  onClickPouvoirAdd : PropTypes.func.isRequired,
   acteurPartieDisplay: PropTypes.object.isRequired,
   pouvoirsSelection: PropTypes.array.isRequired,
   designationOptions: PropTypes.array.isRequired,

@@ -51,7 +51,7 @@ export default class PouvoirCreator extends Component{
     typePouvoir.selectedIndex = 0;
   }
 
-  handleBack(modalType){
+  handleBack(modalType, acteurSelect=0){
     const {onShowModal, onCloseModal} = this.props;
 
     if(modalType == '')
@@ -59,7 +59,7 @@ export default class PouvoirCreator extends Component{
       onCloseModal();
       return;
     }
-    onShowModal( modalType );
+    onShowModal( modalType , acteurSelect);
   }
 
   handleGetPouvoir(){
@@ -80,7 +80,7 @@ export default class PouvoirCreator extends Component{
 
   render(){
 
-    const { validationErrorMessage, pouvoirOptions, onClickPouvoir, pouvoirsSelection, previousModal} = this.props;
+    const { validationErrorMessage, pouvoirOptions, onClickPouvoir, pouvoirsSelection, previousModal, acteurSelect} = this.props;
 
     return (
       <div className="pouvoir">
@@ -89,7 +89,11 @@ export default class PouvoirCreator extends Component{
             pouvoirsSelection={pouvoirsSelection}
             tree={this.state.listePouvoirs}
           />
-          <Button onClick={() => this.handleBack(previousModal)}>Ok</Button>
+          {acteurSelect == 0 ?
+          <Button onClick={() => this.handleBack(previousModal)}>Retour à la création d un acteur</Button>
+          :
+          <Button onClick={() => this.handleBack('acteurDisplay', acteurSelect)}>Retour à la modification d un acteur</Button>
+          }
       </div>
     );
   }

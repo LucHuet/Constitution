@@ -141,6 +141,15 @@ class ActeurPartie
         return $this;
     }
 
+    public function emptyPouvoirParty(): self
+    {
+      foreach($this->getPouvoirParties() as $pouvoirPartie)
+      {
+        $this->removePouvoirParty($pouvoirPartie);
+      }
+      return $this;
+    }
+
     /**
      * @return Collection|DesignationPartie[]
      */
@@ -218,6 +227,13 @@ class ActeurPartie
                 $acteursDesignant->setActeurDesigne(null);
             }
         }
+
+        return $this;
+    }
+
+    public function emptyActeursDesignants(): self
+    {
+        $this->acteursDesignants = new ArrayCollection();
 
         return $this;
     }

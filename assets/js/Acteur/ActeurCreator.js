@@ -55,9 +55,9 @@ export default class ActeurCreator extends Component {
   }
 
   componentDidMount(){
-    const {onClickPouvoir, acteurReference} = this.props;
+    const {onClickPouvoirAdd, acteurReference} = this.props;
     acteurReference.pouvoirsBase.map((pouvoirBase) => {
-      onClickPouvoir(pouvoirBase.id);
+      onClickPouvoirAdd(pouvoirBase.id);
     });
   }
 
@@ -103,8 +103,8 @@ export default class ActeurCreator extends Component {
 
   handleAjoutPouvoir(event, modalType, acteurId){
     event.preventDefault();
-    const {onShowModal} = this.props;
-    onShowModal( modalType, acteurId, 'Chef d\'état');
+    const {onShowModal, acteurReference} = this.props;
+    onShowModal( modalType, acteurId, acteurReference.type);
   }
 
   handleCountryDescriptionClick(description){
@@ -127,7 +127,6 @@ export default class ActeurCreator extends Component {
   render(){
 
     const {
-        onClickPouvoir,
         acteurReference,
         pouvoirsSelection,
         designationOptions,
@@ -195,7 +194,7 @@ export default class ActeurCreator extends Component {
         </p>
         Supplémentaires :
         <p>
-        <Icon name='plus square outline' onClick={(event => this.handleAjoutPouvoir(event, "pouvoir"))} size='small' /> Ajouter des pouvoirs à l acteur <br/>
+        <Icon name='plus square outline' onClick={(event => this.handleAjoutPouvoir(event, "pouvoirSelection"))} size='small' /> Ajouter des pouvoirs à l acteur <br/>
         </p>
       </Segment>
       <Segment>
@@ -229,7 +228,7 @@ ActeurCreator.propTypes = {
   onShowModal: PropTypes.func.isRequired,
   onAddActeur: PropTypes.func.isRequired,
   acteurReference : PropTypes.object.isRequired,
-  onClickPouvoir : PropTypes.func.isRequired,
+  onClickPouvoirAdd : PropTypes.func.isRequired,
   pouvoirsSelection: PropTypes.array.isRequired,
   designationOptions: PropTypes.array.isRequired,
   acteursPartiesOptions: PropTypes.array.isRequired,

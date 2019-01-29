@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ActeurPartie;
 use App\Entity\DesignationPartie;
 use App\Entity\PouvoirPartie;
+use App\Entity\Pouvoir;
 use App\Form\ActeurPartieCompletType;
 use App\Repository\ActeurPartieRepository;
 use App\Repository\PouvoirRepository;
@@ -133,24 +134,82 @@ class ActeurPartieController extends BaseController
      */
     public function editActeurPartie(Request $request, ActeurPartie $acteurPartie): Response
     {
-        //on verifie que l'acteur est bien de la partie actuelle
-        if ($this->checkStep->checkActeur($acteurPartie) != null) {
-            return $this->redirectToRoute($this->checkStep->checkActeur($acteurPartie));
+      $session = new Session();
+      $partieCourante = $session->get('partieCourante');
+      $em = $this->getDoctrine()->getManager();
+      $partieCourante = $em->merge($partieCourante);
+
+      $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+      $data = json_decode($request->getContent(), true);
+      if ($data === null) {
+          throw new BadRequestHttpException('Invalid JSON');
+      }
+
+      $form = $this->createForm(ActeurPartieCompletType::class, null, [
+        'csrf_protection' => false
+      ]);
+
+      $form->submit($data);
+      if (!$form->isValid()) {
+          $errors = $this->getErrorsFromForm($form);
+
+          return $this->createApiResponse([
+              'errors' => $errors
+          ], 400);
+      }
+
+      $data=$form->getData();
+      /** @var Acteur $acteur */
+
+
+
+      $acteurPartie->setNom($data['acteurPartie']->getNom());
+      $acteurPartie->setNombreIndividus($data['acteurPartie']->getNombreIndividus());
+      foreach($acteurPartie->getActeursDesignes() as $designationEntrante)
+      {
+        $designationEntrante->setActeurDesignant($data['designation']->getActeurDesignant());
+        $designationEntrante->setDesignation($data['designation']->getDesignation());
+      }
+
+      $acteurPartie->emptyPouvoirParty();
+
+      $listOfPouvoirsAlreadyInGame = $em->getRepository(PouvoirPartie::class)->findByListOfPouvoirId($data['pouvoirs'], $partieCourante);
+      foreach($data['pouvoirs'] as $pouvoirRefToAdd)
+      {
+        $added = false;
+        foreach($listOfPouvoirsAlreadyInGame as $pouvoirAlreadyInGame)
+        {
+          if($pouvoirRefToAdd == $pouvoirAlreadyInGame->getPouvoir()->getId())
+          {
+            $acteurPartie->addPouvoirParty($pouvoirAlreadyInGame);
+            $added = true;
+          }
         }
-
-        $form = $this->createForm(ActeurPartieType::class, $acteurPartie);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('acteur_partie_edit', ['id' => $acteurPartie->getId()]);
+        if(!$added)
+        {
+          $pouvoirRefToAdd = $em->getRepository(Pouvoir::class)->find($pouvoirRefToAdd);
+          $pouvoirPartieToAdd = new PouvoirPartie();
+          $pouvoirPartieToAdd->setNom($pouvoirRefToAdd->getNom());
+          $pouvoirPartieToAdd->setPouvoir($pouvoirRefToAdd);
+          $pouvoirPartieToAdd->setPartie($partieCourante);
+          $em->persist($pouvoirPartieToAdd);
+          $acteurPartie->addPouvoirParty($pouvoirPartieToAdd);
         }
+      }
 
-        return $this->render('acteur_partie/edit.html.twig', [
-            'acteur_partie_get' => $acteurPartie,
-            'form' => $form->createView(),
-        ]);
+      $em->flush();
+
+      $apiModel = $this->createActeurPartieApiModel($acteurPartie);
+
+      $response = $this->createApiResponse($apiModel);
+      //$response = new Response(null, 204);
+      // setting the Location header... it's a best-practice
+      $response->headers->set(
+          'Location',
+          $this->generateUrl('acteur_partie_get', ['id' => $acteurPartie->getId()])
+      );
+
+      return $response;
     }
 
     /**
