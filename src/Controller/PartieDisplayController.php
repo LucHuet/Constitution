@@ -68,7 +68,6 @@ class PartieDisplayController extends BaseController
         $session = new Session();
         $session->set('partieCourante', $partieCourante);
 
-        dump($checkEvents->checkEvent1());
         // verification de la partie courante
         if($this->checkStep->checkPartie($partieCourante) != null){
           return $this->redirectToRoute($this->checkStep->checkPartie($partieCourante));

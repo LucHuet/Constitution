@@ -188,13 +188,6 @@ export default class CardBoardApp extends Component {
     typeDesignation,
     acteurDesignant
   ){
-    console.log("Update acteur");
-    console.log("Id acteur", idActeur);
-    console.log("Nouveau nom", nom);
-    console.log("Nouveau nombreIndividus", nombreIndividus);
-    console.log("Nouveau typeDesignation", typeDesignation);
-    console.log("Nouveau acteurDesignant", acteurDesignant);
-    console.log("Nouveau pouvoirsSelection", this.state.pouvoirsSelection);
 
     const updatedDesignation = {
       nom: '',

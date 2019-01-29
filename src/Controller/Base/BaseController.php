@@ -354,7 +354,7 @@ class BaseController extends Controller
         foreach ($droitsDevoirs as $droitDevoir) {
             $models[] = $this->createDroitDevoirApiModel($droitDevoir);
         }
-        dump($droitsDevoirs);
+
         return $models;
     }
 

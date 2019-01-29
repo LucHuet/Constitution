@@ -40,7 +40,7 @@ class ActeurPartieDataTransformer implements DataTransformerInterface
      */
     public function reverseTransform($id)
     {
-        dump($id);
+
         // no issue number? It's optional, so that's ok
         if (!$id) {
             return;

@@ -72,7 +72,6 @@ export default function CardBoard(props){
         }
       });
 
-      console.log(acteurPartieDisplay);
       modalContent = <ActeurDisplay
                       acteurPartieDisplay={acteurPartieDisplay}
                       onShowModal={onShowModal}
