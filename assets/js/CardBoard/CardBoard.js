@@ -59,10 +59,14 @@ export default function CardBoard(props){
       break;
     case 'acteurDisplay':
       var acteurPartieDisplay = [];
+      //on selectionne l'acteur à afficher
+      //TODO ? utiliser acteursPartie.filter(acteurPartie=>acteurPartie.id == acteurSelect) ?
       acteursPartie.forEach(function(acteurPartie) {
         if(acteurPartie.id == acteurSelect)
         {
           acteurPartieDisplay = acteurPartie;
+          //on donne à acteur le bon id de types
+          //TODO : recuperer cette valeur directement depuis le PHP
           acteursReference.forEach(function(acteurRef2) {
             if(acteurRef2.type == acteurPartieDisplay.type)
             {
@@ -100,11 +104,11 @@ export default function CardBoard(props){
       {
         break;
       }
-      var acteurRef;
-      acteursReference.forEach(function(acteurRef2) {
-        if(acteurRef2.type == modalType)
+      var acteurRefForActeurCreator;
+      acteursReference.forEach(function(acteurRefFromArray) {
+        if(acteurRefFromArray.type == modalType)
         {
-          acteurRef = acteurRef2;
+          acteurRefForActeurCreator = acteurRefFromArray;
         }
       });
       modalContent = <ActeurCreator
@@ -112,7 +116,7 @@ export default function CardBoard(props){
                       onAddActeur={onAddActeur}
                       onClickPouvoir = {onClickPouvoir}
                       onClickPouvoirAdd = {onClickPouvoirAdd}
-                      acteurReference={acteurRef}
+                      acteurReference={acteurRefForActeurCreator}
                       pouvoirsSelection={pouvoirsSelection}
                       acteursPartiesOptions={acteursPartiesOptions}
                       designationOptions={designationOptions}
@@ -140,11 +144,11 @@ export default function CardBoard(props){
       )}
 
       <div id="sort1" className="ui cards" data-sortable=".card">
-      {acteursPartie.map((acteur, index) => (
+      {acteursPartie.map((acteurPartie, index) => (
           <ActeurCard
-            key = {index}
+            key = {acteurPartie.id}
             index={index}
-            acteur={acteur}
+            acteurPartie={acteurPartie}
             onDeleteActeur={onDeleteActeur}
             onShowModal={onShowModal}
           />

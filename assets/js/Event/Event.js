@@ -50,7 +50,7 @@ export default function Event(props) {
       )}
     </div>
 
-    {eventResult != null &&
+    {eventResult != null && (
       <Modal
         onClose={handleCloseModal}
         open={showModal}
@@ -66,7 +66,7 @@ export default function Event(props) {
         {eventResult.explicationResultatEventPartie}
         </Modal.Content>
       </Modal>
-    }
+    )}
     </React.Fragment>
   );
 }
@@ -79,4 +79,8 @@ Event.propTypes = {
   onLaunchEvent: PropTypes.func.isRequired,
   onShowPastEvent: PropTypes.func.isRequired,
   onCloseModal: PropTypes.func.isRequired,
+};
+
+Event.defaultProps = {
+  eventResult: null,
 };

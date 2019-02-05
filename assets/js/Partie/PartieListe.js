@@ -17,9 +17,7 @@ export default function PartieListe(props) {
       );
     }
 
- const handleDeleteClick = function(event, partieId){
-   event.preventDefault();
-
+ const handleDeleteClick = function(partieId){
    onDeletePartie(partieId);
  }
 
@@ -32,7 +30,7 @@ export default function PartieListe(props) {
           >
            <td><a href={"/partieDisplay/" + partie.id}>{partie.nom}</a></td>
            <td>
-             <a href="#" onClick={(event) => handleDeleteClick(event, partie.id)}>
+             <a href="#" onClick={() => handleDeleteClick(partie.id)}>
               <i className="trash icon"></i>
              </a>
            </td>

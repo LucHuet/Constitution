@@ -12,7 +12,6 @@ export default class PouvoirCreator extends Component{
     super(props);
 
     this.state = {
-      nombreActeurError: '',
       listePouvoirs: [],
     };
 
@@ -21,7 +20,6 @@ export default class PouvoirCreator extends Component{
     this.nomPouvoir = React.createRef();
     this.typePouvoir = React.createRef();
 
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleGetPouvoir = this.handleGetPouvoir.bind(this);
     this.handleBack = this.handleBack.bind(this);
 
@@ -29,26 +27,6 @@ export default class PouvoirCreator extends Component{
 
   componentDidMount(){
     this.handleGetPouvoir();
-  }
-
-  handleFormSubmit(event){
-    event.preventDefault();
-
-    //fait appel au props de l'objet
-    const {onAddPouvoir, acteurSelect} = this.props;
-
-    const nomPouvoir = this.nomPouvoir.current;
-    const typePouvoir = this.typePouvoir.current;
-
-    onAddPouvoir(
-      nomPouvoir.value,
-      typePouvoir.options[typePouvoir.selectedIndex].value,
-      acteurSelect
-    );
-
-    //réinitialisation des données
-    nomPouvoir.value = '';
-    typePouvoir.selectedIndex = 0;
   }
 
   handleBack(modalType, acteurSelect=0){

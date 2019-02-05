@@ -14,11 +14,7 @@ export default function DroitsDevoirs(props) {
           onShowDroitsDevoirsReferenceListe
         } = props;
 
-  const handleDroitsDevoirsReferenceListe = function(event){
-    //évite le comportement normal du boutton
-    //exemple évite que le submit soumette la page.
-    event.preventDefault();
-
+  const handleDroitsDevoirsReferenceListe = function(){
     onShowDroitsDevoirsReferenceListe();
   };
 
@@ -37,7 +33,7 @@ export default function DroitsDevoirs(props) {
 
 
       <br/>
-      <button className="ui basic button" onClick={(event => handleDroitsDevoirsReferenceListe(event))}>
+      <button className="ui basic button" onClick={() => handleDroitsDevoirsReferenceListe()}>
         <i className="icon angle down"></i>
         Ajout Droits et Devoirs
       </button>

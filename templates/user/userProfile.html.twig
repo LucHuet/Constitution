@@ -9,7 +9,7 @@
       {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
         <div class="image">
             {% if user.image is not null %}
-              <img src="{{ vich_uploader_asset(user.image, 'imageFile') }}">
+              <img src="{{ vich_uploader_asset(user.image, 'imageFile') }}" alt="Profile">
             {% endif %}
         </div>
         <div class="content">

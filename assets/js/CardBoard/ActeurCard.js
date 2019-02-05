@@ -7,26 +7,16 @@ export default function ActeurCard(props) {
   //on descructure les props pour en récuperer les variables
   const {
     index,
-    acteur,
+    acteurPartie,
     onDeleteActeur,
     onShowModal,
   } = props;
 
-  const handleDeleteClick = function(event, acteurId){
-    //évite le comportement normal du boutton
-    //exemple évite que le submit soumette la page.
-    event.preventDefault();
-
+  const handleDeleteClick = function(acteurId){
     onDeleteActeur(acteurId);
   };
 
-  const handleAjout = function(event, modalType, acteurId){
-    event.preventDefault();
-    onShowModal( modalType, acteurId);
-  };
-
-  const handleDisplay = function(event, modalType, acteurId){
-    event.preventDefault();
+  const handleDisplay = function(modalType, acteurId){
     onShowModal( modalType, acteurId);
   };
 
@@ -34,26 +24,26 @@ export default function ActeurCard(props) {
     if (acteurType != 'Peuple')
     {
       return(
-        <Button floated="right" onClick={(event => handleDeleteClick(event, acteur.id))} >
+        <Button floated="right" onClick={() => handleDeleteClick(acteurPartie.id)} >
           <Icon name="trash"></Icon>
         </Button>
       )
     }else {
       return(
-        <Button floated="right" disabled={true}>
-          <Icon name="trash" disabled={true}></Icon>
+        <Button floated="right" disabled >
+          <Icon name="trash" disabled ></Icon>
         </Button>
       )
   }
 }
 
-  const handleDesignantImage = function(acteur){
-    if(acteur.designations.designants !== undefined){
+  const handleDesignantImage = function(acteurPartie){
+    if(acteurPartie.designations.designants !== undefined){
       return(
         <React.Fragment>
           <span>Désigné par :</span>
-          {acteur.designations.designants.map((acteurDesignant) => (
-            <Image key={acteurDesignant.id} avatar={true} src={"/build/static/"+acteurDesignant.image}/>
+          {acteurPartie.designations.designants.map((acteurDesignant) => (
+            <Image key={acteurDesignant.id} avatar src={"/build/static/"+acteurDesignant.image}/>
           ))}
         </React.Fragment>)
     }
@@ -62,13 +52,13 @@ export default function ActeurCard(props) {
     }
   }
 
-  const handleDesigneImage = function(acteur){
-    if(acteur.designations.designes !== undefined){
+  const handleDesigneImage = function(acteurPartie){
+    if(acteurPartie.designations.designes !== undefined){
       return(
         <React.Fragment>
           <span>Designe :</span>
-          {acteur.designations.designes.map((acteurDesigne) => (
-            <Image key={acteurDesigne.id} avatar={true} src={"/build/static/"+acteurDesigne.image}/>
+          {acteurPartie.designations.designes.map((acteurDesigne) => (
+            <Image key={acteurDesigne.id} avatar src={"/build/static/"+acteurDesigne.image}/>
           ))}
         </React.Fragment>)
     }
@@ -86,7 +76,7 @@ export default function ActeurCard(props) {
           <Card.Content extra>
             <div className="left floated">
 
-            {handleDesignantImage(acteur)}
+            {handleDesignantImage(acteurPartie)}
 
             </div>
           </Card.Content>
@@ -94,18 +84,18 @@ export default function ActeurCard(props) {
             <Image
               size="tiny"
               floated="right"
-              src={"/build/static/"+acteur.image}
-              onClick={(event => handleDisplay(event, "acteurDisplay", acteur.id))}
+              src={"/build/static/"+acteurPartie.image}
+              onClick={() => handleDisplay("acteurDisplay", acteurPartie.id)}
             />
-            <Card.Header>{acteur.nom}</Card.Header>
+            <Card.Header>{acteurPartie.nom}</Card.Header>
             <div className="description">
-              <span>Nombre individus : {acteur.nombreIndividus}</span>
-              {showBasket(acteur.type)}
+              <span>Nombre individus : {acteurPartie.nombreIndividus}</span>
+              {showBasket(acteurPartie.type)}
             </div>
           </Card.Content>
           <Card.Content extra>
           <div className="left floated">
-            {handleDesigneImage(acteur)}
+            {handleDesigneImage(acteurPartie)}
           </div>
           </Card.Content>
         </Card>
@@ -117,6 +107,6 @@ ActeurCard.propTypes = {
   index: PropTypes.number,
   onDeleteActeur: PropTypes.func.isRequired,
   onShowModal: PropTypes.func.isRequired,
-  acteur: PropTypes.object,
+  acteurPartie: PropTypes.object,
 
 }

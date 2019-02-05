@@ -40,7 +40,13 @@ export default class PouvoirMenuDisplay extends Component {
             <Icon name={pouvoirsSelection.includes(pouvoir.id) ? 'minus square outline' : 'plus square outline'}/>
             {pouvoir.nom}
           </div>
-          <PouvoirMenuDisplay pouvoirsSelection={pouvoirsSelection} onClickPouvoir={onClickPouvoir} tree = {tree} parent = {pouvoir.id} level = {level + 1} />
+          <PouvoirMenuDisplay
+            pouvoirsSelection={pouvoirsSelection}
+            onClickPouvoir={onClickPouvoir}
+            tree = {tree}
+            parent = {pouvoir.id}
+            level = {level + 1}
+          />
         </React.Fragment>
       )
     }

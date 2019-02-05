@@ -396,7 +396,6 @@ export default class CardBoardApp extends Component {
   }
 
   render(){
-
     return (
       <CardBoard
         {...this.props}

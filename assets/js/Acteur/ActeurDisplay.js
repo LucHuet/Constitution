@@ -9,6 +9,7 @@ export default class ActeurDisplay extends Component {
     super(props);
 
     const {
+        onClickPouvoir,
         onClickPouvoirAdd,
         acteurPartieDisplay,
         onUpdateActeur,
@@ -108,8 +109,7 @@ export default class ActeurDisplay extends Component {
 
   }
 
-  handleAjoutPouvoir(event, modalType, acteurId){
-    event.preventDefault();
+  handleAjoutPouvoir(modalType, acteurId){
     const {onShowModal, acteurPartieDisplay} = this.props;
     onShowModal( modalType, acteurId, acteurPartieDisplay.type);
   }
@@ -134,6 +134,7 @@ export default class ActeurDisplay extends Component {
   render(){
 
     const {
+        onClickPouvoir,
         acteurPartieDisplay,
         pouvoirsSelection,
         designationOptions,
@@ -199,10 +200,10 @@ export default class ActeurDisplay extends Component {
         </p>
         Modifier les pouvoirs :
         <p>
-        <Icon name='plus square outline' onClick={(event => this.handleAjoutPouvoir(event, "pouvoirSelection", acteurPartieDisplay.id))} size='small' /> Ajouter des pouvoirs à l acteur <br/>
+        <Icon name='plus square outline' onClick={() => this.handleAjoutPouvoir(event, "pouvoirSelection", acteurPartieDisplay.id)} size='small' /> Ajouter des pouvoirs à l acteur <br/>
         </p>
       </Segment>
-      {acteurPartieDisplay.designations.designants != undefined &&
+      {acteurPartieDisplay.designations.designants != undefined && (
       <Segment>
         <b>Désignation : </b>
         <Divider />
@@ -221,7 +222,7 @@ export default class ActeurDisplay extends Component {
           </select>
         </Header.Content>
       </Segment>
-      }
+      )}
       <Divider />
         <Button onClick={() => this.handleUpdate()}>Sauvegarder</Button>
     </Container>
@@ -234,6 +235,7 @@ export default class ActeurDisplay extends Component {
 ActeurDisplay.propTypes = {
   onShowModal: PropTypes.func.isRequired,
   onUpdateActeur: PropTypes.func.isRequired,
+  onClickPouvoir : PropTypes.func.isRequired,
   onClickPouvoirAdd : PropTypes.func.isRequired,
   acteurPartieDisplay: PropTypes.object.isRequired,
   pouvoirsSelection: PropTypes.array.isRequired,

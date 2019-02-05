@@ -101,17 +101,15 @@ export default class ActeurCreator extends Component {
 
   }
 
-  handleAjoutPouvoir(event, modalType, acteurId){
-    event.preventDefault();
+  handleAjoutPouvoir(modalType, acteurId){
     const {onShowModal, acteurReference} = this.props;
     onShowModal( modalType, acteurId, acteurReference.type);
   }
 
   handleCountryDescriptionClick(description){
-    if(this.state.displayCountryDescription == description)
-    {
-      description = '';
-    }
+    //si la description est déjà presente, alors on la supprime
+    {(this.state.displayCountryDescription == description) ? description = '' : null}
+    //on défini la description à afficher
     this.setState({
       displayCountryDescription: description
     });
@@ -127,6 +125,7 @@ export default class ActeurCreator extends Component {
   render(){
 
     const {
+        onClickPouvoir,
         acteurReference,
         pouvoirsSelection,
         designationOptions,
@@ -194,7 +193,7 @@ export default class ActeurCreator extends Component {
         </p>
         Supplémentaires :
         <p>
-        <Icon name='plus square outline' onClick={(event => this.handleAjoutPouvoir(event, "pouvoirSelection"))} size='small' /> Ajouter des pouvoirs à l acteur <br/>
+        <Icon name='plus square outline' onClick={() => this.handleAjoutPouvoir("pouvoirSelection")} size='small' /> Ajouter des pouvoirs à l acteur <br/>
         </p>
       </Segment>
       <Segment>
@@ -229,6 +228,7 @@ ActeurCreator.propTypes = {
   onAddActeur: PropTypes.func.isRequired,
   acteurReference : PropTypes.object.isRequired,
   onClickPouvoirAdd : PropTypes.func.isRequired,
+  onClickPouvoir : PropTypes.func.isRequired,
   pouvoirsSelection: PropTypes.array.isRequired,
   designationOptions: PropTypes.array.isRequired,
   acteursPartiesOptions: PropTypes.array.isRequired,

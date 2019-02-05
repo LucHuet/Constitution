@@ -21,8 +21,7 @@ export default class DesignationCreator extends Component{
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
-  handleFormSubmit(event){
-    event.preventDefault();
+  handleFormSubmit(){
 
     //fait appel au props de l'objet
     const {onAddDesignation, acteurSelect} = this.props;
@@ -52,7 +51,7 @@ export default class DesignationCreator extends Component{
 
     return (
       <div>
-      <Form onSubmit={this.handleFormSubmit}>
+      <Form onSubmit={() => this.handleFormSubmit()}>
           <Form.Field>
             <label htmlFor="nom" className="required">Nom</label>
             <input type="text" id="nom" ref={this.nomDesignation} required="required" maxLength="255" />
