@@ -80,6 +80,7 @@ export default function CardBoard(props){
                       acteurPartieDisplay={acteurPartieDisplay}
                       onShowModal={onShowModal}
                       onUpdateActeur={onUpdateActeur}
+                      onClickPouvoir = {onClickPouvoir}
                       onClickPouvoirAdd = {onClickPouvoirAdd}
                       pouvoirsSelection={pouvoirsSelection}
                       acteursPartiesOptions={acteursPartiesOptions}

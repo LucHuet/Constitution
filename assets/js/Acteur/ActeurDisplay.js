@@ -66,12 +66,6 @@ export default class ActeurDisplay extends Component {
 
   }
 
-/*  componentDidMount(){
-    const {onClickPouvoir, acteurReference} = this.props;
-    acteurReference.pouvoirsBase.map((pouvoirBase) => {
-      onClickPouvoir(pouvoirBase.id);
-    });
-  }*/
 
   handleUpdate(){
     //fait appel au props de l'objet
@@ -200,7 +194,7 @@ export default class ActeurDisplay extends Component {
         </p>
         Modifier les pouvoirs :
         <p>
-        <Icon name='plus square outline' onClick={() => this.handleAjoutPouvoir(event, "pouvoirSelection", acteurPartieDisplay.id)} size='small' /> Ajouter des pouvoirs à l acteur <br/>
+        <Icon name='plus square outline' onClick={() => this.handleAjoutPouvoir("pouvoirSelection", acteurPartieDisplay.id)} size='small' /> Ajouter des pouvoirs à l acteur <br/>
         </p>
       </Segment>
       {acteurPartieDisplay.designations.designants != undefined && (
