@@ -89,22 +89,22 @@ class BaseController extends Controller
         return $model;
     }
 
-    protected function createPouvoirRefApiModel(Pouvoir $pouvoir)
+    protected function createPouvoirRefApiModel(Pouvoir $pouvoirReference)
     {
         $model = new PouvoirRefApiModel();
-        $model->id = $pouvoir->getId();
-        $model->nom = $pouvoir->getNom();
-        $model->description = $pouvoir->getDescription();
-        $model->type = $pouvoir->getType();
-        if($pouvoir->getPouvoirParent() != null)
+        $model->id = $pouvoirReference->getId();
+        $model->nom = $pouvoirReference->getNom();
+        $model->description = $pouvoirReference->getDescription();
+        $model->type = $pouvoirReference->getType();
+        if($pouvoirReference->getPouvoirParent() != null)
         {
-        $model->pouvoirParent = $pouvoir->getPouvoirParent()->getId();
+        $model->pouvoirParent = $pouvoirReference->getPouvoirParent()->getId();
         }
 
 
         $selfUrl = $this->generateUrl(
             'pouvoir_ref_get',
-            ['id' => $pouvoir->getId()]
+            ['id' => $pouvoirReference->getId()]
         );
         $model->addLink('_self', $selfUrl);
 
@@ -320,6 +320,26 @@ class BaseController extends Controller
         return $models;
     }
 
+    /**
+     * @return PouvoirPartieApiModel[]
+     */
+     protected function findAllPouvoirsPartieModels()
+     {
+         //on récupere la partie courante afin de n'afficher que les acteurs de la partie courante
+         $session = new Session();
+         $partiCourante = $session->get('partieCourante');
+
+         $pouvoirsPartie = $this->getDoctrine()->getRepository(PouvoirPartie::class)
+             ->findBy(['partie' => $partiCourante])
+         ;
+
+         $models = [];
+         foreach ($pouvoirsPartie as $pouvoirPartie) {
+             $models[] = $this->createPouvoirPartieApiModel($pouvoirPartie);
+         }
+
+         return $models;
+     }
     /**
      * Methode permettant de récupérer la liste des droits et devoirs de réference
      * @return DroitDevoirApiModel[]

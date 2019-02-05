@@ -43,6 +43,7 @@ export default class ActeurCreator extends Component {
     this.typeActeur = React.createRef();
     this.typeDesignation = React.createRef();
     this.acteurDesignant = React.createRef();
+    this.controlePouvoir = React.createRef();
 
 
     this.handleAjoutPouvoir = this.handleAjoutPouvoir.bind(this);
@@ -50,8 +51,6 @@ export default class ActeurCreator extends Component {
     this.handleCountryDescriptionClick = this.handleCountryDescriptionClick.bind(this);
     this.handleBack = this.handleBack.bind(this);
     this.handleSave = this.handleSave.bind(this);
-
-
   }
 
   componentDidMount(){
@@ -128,6 +127,7 @@ export default class ActeurCreator extends Component {
         onClickPouvoir,
         acteurReference,
         pouvoirsSelection,
+        pouvoirsPartie,
         designationOptions,
         acteursPartiesOptions
     } = this.props;
@@ -212,6 +212,19 @@ export default class ActeurCreator extends Component {
           } )}
         </select>
       </Segment>
+      <Segment>
+        <b>Contrôle : </b>
+        <Divider />
+        <label htmlFor="controle" className="required"> Pouvoirs controllées : </label>
+          {pouvoirsPartie.map(pouvoir => {
+            return (
+              <p key={pouvoir.id}>
+                <input type="checkbox" name={pouvoir.id} value={pouvoir.id}/>
+                {pouvoir.nom}
+              </p>
+            )
+           })}
+      </Segment>
       <Divider />
 
         <Button onClick={() => this.handleBack('acteur')}>Retour</Button>
@@ -230,6 +243,7 @@ ActeurCreator.propTypes = {
   onClickPouvoirAdd : PropTypes.func.isRequired,
   onClickPouvoir : PropTypes.func.isRequired,
   pouvoirsSelection: PropTypes.array.isRequired,
+  pouvoirsPartie: PropTypes.array.isRequired,
   designationOptions: PropTypes.array.isRequired,
   acteursPartiesOptions: PropTypes.array.isRequired,
 };

@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 import interact from 'interactjs';
 import {
     getActeursPartie, deleteActeurPartie, createActeurPartie, updateActeurPartie,
-    getActeursReference,
-    createPouvoirPartie, createDesignation
+    getActeursReference, getPouvoirsPartie, createDesignation
    } from '../api/partie_api.js';
 import Sortable from './Sortable.js';
 
@@ -24,6 +23,7 @@ export default class CardBoardApp extends Component {
       acteursPartie: [],
       acteursReference: [],
       pouvoirsSelection: [],
+      pouvoirsPartie: [],
       isLoaded: false,
       isSavingNewActeur: false,
       successMessage: '',
@@ -43,7 +43,6 @@ export default class CardBoardApp extends Component {
     //et pas à la méthode.
     this.handleAddActeur = this.handleAddActeur.bind(this);
     this.handleDeleteActeur = this.handleDeleteActeur.bind(this);
-    this.handleAddPouvoir = this.handleAddPouvoir.bind(this);
     this.handleUpdateActeur = this.handleUpdateActeur.bind(this);
     this.handleAddDesignation = this.handleAddDesignation.bind(this);
     this.handleShowModal = this.handleShowModal.bind(this);
@@ -75,6 +74,15 @@ export default class CardBoardApp extends Component {
           //méthode qui permet de redonner une valeur à un state.
           this.setState({
             acteursReference: data,
+          });
+        });
+
+      getPouvoirsPartie()
+      //then signifie qu'il n'y a pas d'erreur.
+        .then((data)=>{
+          //méthode qui permet de redonner une valeur à un state.
+          this.setState({
+            pouvoirsPartie: data,
           });
         });
 
@@ -290,22 +298,6 @@ export default class CardBoardApp extends Component {
 
   }
 
-  handleAddPouvoir(nom, typePouvoir, acteurSelect){
-
-      const newPouvoir = {
-        nom: nom,
-        pouvoir : typePouvoir,
-        acteurPossedant: acteurSelect
-      };
-
-      createPouvoirPartie(newPouvoir)
-      //l'ajout n'as pas d'erreur
-        .then(pouvoir => {
-          this.setSuccessMessage('Pouvoir enregistré !');
-          this.setState({showModal: false});
-        })
-  }
-
   handleAddDesignation(nom, typeDesignation, acteurDesignant, acteurSelect){
 
       const newDesignation = {
@@ -402,7 +394,6 @@ export default class CardBoardApp extends Component {
         {...this.state}
         onAddActeur={this.handleAddActeur}
         onUpdateActeur={this.handleUpdateActeur}
-        onAddPouvoir={this.handleAddPouvoir}
         onClickPouvoir={this.handlePouvoirClick}
         onClickPouvoirAdd={this.handlePouvoirClickAdd}
         onClickPouvoirRemove={this.handlePouvoirClickRemove}

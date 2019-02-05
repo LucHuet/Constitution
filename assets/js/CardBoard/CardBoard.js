@@ -14,9 +14,9 @@ export default function CardBoard(props){
   const {
     acteursPartie,
     acteursReference,
+    pouvoirsPartie,
     onAddActeur,
     onUpdateActeur,
-    onAddPouvoir,
     onAddDesignation,
     onShowModal,
     onCloseModal,
@@ -90,7 +90,6 @@ export default function CardBoard(props){
     case 'pouvoirSelection':
       modalContent = <PouvoirCreator
                       pouvoirsSelection={pouvoirsSelection}
-                      onAddPouvoir={onAddPouvoir}
                       onClickPouvoir = {onClickPouvoir}
                       onShowModal={onShowModal}
                       onCloseModal={onCloseModal}
@@ -119,6 +118,7 @@ export default function CardBoard(props){
                       onClickPouvoirAdd = {onClickPouvoirAdd}
                       acteurReference={acteurRefForActeurCreator}
                       pouvoirsSelection={pouvoirsSelection}
+                      pouvoirsPartie={pouvoirsPartie}
                       acteursPartiesOptions={acteursPartiesOptions}
                       designationOptions={designationOptions}
                      /> ;
@@ -179,7 +179,6 @@ export default function CardBoard(props){
 CardBoard.propTypes = {
   onAddActeur: PropTypes.func.isRequired,
   onUpdateActeur: PropTypes.func.isRequired,
-  onAddPouvoir: PropTypes.func.isRequired,
   onClickPouvoir: PropTypes.func.isRequired,
   onClickPouvoirAdd: PropTypes.func.isRequired,
   onClickPouvoirRemove: PropTypes.func.isRequired,
@@ -190,6 +189,7 @@ CardBoard.propTypes = {
   acteursPartie: PropTypes.array.isRequired,
   acteursReference: PropTypes.array.isRequired,
   pouvoirsSelection: PropTypes.array.isRequired,
+  pouvoirsPartie: PropTypes.array.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   isSavingNewActeur: PropTypes.bool.isRequired,
   showModal: PropTypes.bool.isRequired,
