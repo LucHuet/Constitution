@@ -14,7 +14,9 @@ class ActeurPartieApiModel
 
     public $pouvoirs;
 
-    public $designations;    
+    public $designations;
+
+    public $pouvoirsControles;
 
     public $type;
 

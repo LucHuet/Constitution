@@ -17,13 +17,13 @@ export default function CardBoard(props){
     pouvoirsPartie,
     onAddActeur,
     onUpdateActeur,
-    onAddDesignation,
     onShowModal,
     onCloseModal,
     onDeleteActeur,
     onClickPouvoir,
     onClickPouvoirAdd,
     onClickPouvoirRemove,
+    onControleRowClick,
     isLoaded,
     isSavingNewActeur,
     successMessage,
@@ -37,6 +37,7 @@ export default function CardBoard(props){
     previousModal,
     acteurSelect,
     pouvoirsSelection,
+    pouvoirsControleSelection,
   } = props;
 
 
@@ -82,7 +83,10 @@ export default function CardBoard(props){
                       onUpdateActeur={onUpdateActeur}
                       onClickPouvoir = {onClickPouvoir}
                       onClickPouvoirAdd = {onClickPouvoirAdd}
+                      onControleRowClick = {onControleRowClick}
                       pouvoirsSelection={pouvoirsSelection}
+                      pouvoirsControleSelection= {pouvoirsControleSelection}
+                      pouvoirsPartie={pouvoirsPartie}
                       acteursPartiesOptions={acteursPartiesOptions}
                       designationOptions={designationOptions}
                     /> ;
@@ -116,8 +120,10 @@ export default function CardBoard(props){
                       onAddActeur={onAddActeur}
                       onClickPouvoir = {onClickPouvoir}
                       onClickPouvoirAdd = {onClickPouvoirAdd}
+                      onControleRowClick={onControleRowClick}
                       acteurReference={acteurRefForActeurCreator}
                       pouvoirsSelection={pouvoirsSelection}
+                      pouvoirsControleSelection= {pouvoirsControleSelection}
                       pouvoirsPartie={pouvoirsPartie}
                       acteursPartiesOptions={acteursPartiesOptions}
                       designationOptions={designationOptions}
@@ -182,13 +188,14 @@ CardBoard.propTypes = {
   onClickPouvoir: PropTypes.func.isRequired,
   onClickPouvoirAdd: PropTypes.func.isRequired,
   onClickPouvoirRemove: PropTypes.func.isRequired,
-  onAddDesignation: PropTypes.func.isRequired,
+  onControleRowClick: PropTypes.func.isRequired,
   onShowModal: PropTypes.func.isRequired,
   onCloseModal: PropTypes.func.isRequired,
   onDeleteActeur: PropTypes.func.isRequired,
   acteursPartie: PropTypes.array.isRequired,
   acteursReference: PropTypes.array.isRequired,
   pouvoirsSelection: PropTypes.array.isRequired,
+  pouvoirsControleSelection: PropTypes.array.isRequired,
   pouvoirsPartie: PropTypes.array.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   isSavingNewActeur: PropTypes.bool.isRequired,

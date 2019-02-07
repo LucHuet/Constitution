@@ -1,6 +1,17 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { Header, Image, Container, Divider, Segment, Flag, Icon, Button } from 'semantic-ui-react'
+import {
+  Header,
+  Image,
+  Container,
+  Divider,
+  Segment,
+  Flag,
+  Icon,
+  Button,
+  Table,
+  Accordion
+} from 'semantic-ui-react'
 
 export default class ActeurCreator extends Component {
 
@@ -128,8 +139,10 @@ export default class ActeurCreator extends Component {
         acteurReference,
         pouvoirsSelection,
         pouvoirsPartie,
+        pouvoirsControleSelection,
         designationOptions,
-        acteursPartiesOptions
+        acteursPartiesOptions,
+        onControleRowClick
     } = this.props;
 
     return (
@@ -162,7 +175,7 @@ export default class ActeurCreator extends Component {
         <div>{this.state.displayCountryDescription}</div>
       </Segment>
       <Segment>
-        <b>Nombre de personnes : </b>
+        <b>{"Combien de personnes compose cet acteur ?"}</b>
         <input
           type="range"
           ref={this.nombreActeur}
@@ -175,7 +188,7 @@ export default class ActeurCreator extends Component {
         {this.state.nombreIndividus}
       </Segment>
       <Segment>
-        <b>Pouvoirs</b>
+        <b>{"Quels sont les pouvoirs de cet acteur ?"}</b>
         <Divider />
         De base :
         <p>
@@ -197,7 +210,7 @@ export default class ActeurCreator extends Component {
         </p>
       </Segment>
       <Segment>
-        <b>Désignation : </b>
+        <b>{"Comment cet acteur est il désigné ?"}</b>
         <Divider />
         <label htmlFor="designation" className="required"> Designation : </label>
         <select id="designation" ref={this.typeDesignation} required="required">
@@ -213,17 +226,22 @@ export default class ActeurCreator extends Component {
         </select>
       </Segment>
       <Segment>
-        <b>Contrôle : </b>
-        <Divider />
-        <label htmlFor="controle" className="required"> Pouvoirs controllées : </label>
+        <b>{"Cet acteur contrôle t'il des pouvoirs de la partie ?"}</b>
+        <Table>
+        <Table.Body>
           {pouvoirsPartie.map(pouvoir => {
             return (
-              <p key={pouvoir.id}>
-                <input type="checkbox" name={pouvoir.id} value={pouvoir.id}/>
-                {pouvoir.nom}
-              </p>
+              <Table.Row
+                key={pouvoir.id}
+                onClick={()=> onControleRowClick(pouvoir.id)}
+                className = {pouvoirsControleSelection.includes(pouvoir.id) ? "positive" : "" }
+               >
+                <Table.Cell>{pouvoir.nom}</Table.Cell>
+              </Table.Row>
             )
            })}
+        </Table.Body>
+        </Table>
       </Segment>
       <Divider />
 
@@ -242,8 +260,10 @@ ActeurCreator.propTypes = {
   acteurReference : PropTypes.object.isRequired,
   onClickPouvoirAdd : PropTypes.func.isRequired,
   onClickPouvoir : PropTypes.func.isRequired,
+  onControleRowClick : PropTypes.func.isRequired,
   pouvoirsSelection: PropTypes.array.isRequired,
   pouvoirsPartie: PropTypes.array.isRequired,
+  pouvoirsControleSelection: PropTypes.array.isRequired,
   designationOptions: PropTypes.array.isRequired,
   acteursPartiesOptions: PropTypes.array.isRequired,
 };

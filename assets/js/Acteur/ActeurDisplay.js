@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { Header, Image, Container, Divider, Segment, Flag, Icon, Button } from 'semantic-ui-react'
+import { Header, Image, Container, Divider, Segment, Flag, Icon, Button, Table } from 'semantic-ui-react'
 
 export default class ActeurDisplay extends Component {
 
@@ -13,6 +13,7 @@ export default class ActeurDisplay extends Component {
         onClickPouvoirAdd,
         acteurPartieDisplay,
         onUpdateActeur,
+        onControleRowClick,
     } = this.props;
 
     this.individusMin = 0;
@@ -40,6 +41,13 @@ export default class ActeurDisplay extends Component {
     {
       acteurPartieDisplay.pouvoirs.map(pouvoirPartie =>{
         onClickPouvoirAdd(pouvoirPartie.pouvoir);
+      })
+    }
+
+    if(acteurPartieDisplay.pouvoirsControles != null)
+    {
+      acteurPartieDisplay.pouvoirsControles.map(pouvoirPartie =>{
+        onControleRowClick(pouvoirPartie.id);
       })
     }
 
@@ -129,12 +137,16 @@ export default class ActeurDisplay extends Component {
 
     const {
         onClickPouvoir,
+        onControleRowClick,
         acteurPartieDisplay,
         pouvoirsSelection,
         designationOptions,
-        acteursPartiesOptions
-    } = this.props;
+        acteursPartiesOptions,
+        pouvoirsControleSelection,
+        pouvoirsPartie,
 
+    } = this.props;
+    console.log(acteurPartieDisplay);
     const handleNomPouvoir = function(acteurPartieDisplay){
       if(acteurPartieDisplay.pouvoirs !== null){
         {acteurPartieDisplay.pouvoirs.map((pouvoir) => {
@@ -217,6 +229,26 @@ export default class ActeurDisplay extends Component {
         </Header.Content>
       </Segment>
       )}
+      {pouvoirsPartie != undefined && (
+      <Segment>
+        <b>{"Cet acteur contrôle t'il des pouvoirs de la partie ?"}</b>
+        <Table>
+        <Table.Body>
+          {pouvoirsPartie.map(pouvoir => {
+            return (
+              <Table.Row
+                key={pouvoir.id}
+                onClick={()=> onControleRowClick(pouvoir.id)}
+                className = {pouvoirsControleSelection.includes(pouvoir.id) ? "positive" : "" }
+               >
+                <Table.Cell>{pouvoir.nom}</Table.Cell>
+              </Table.Row>
+            )
+           })}
+        </Table.Body>
+        </Table>
+      </Segment>
+      )}
       <Divider />
         <Button onClick={() => this.handleUpdate()}>Sauvegarder</Button>
     </Container>
@@ -232,6 +264,9 @@ ActeurDisplay.propTypes = {
   onClickPouvoir : PropTypes.func.isRequired,
   onClickPouvoirAdd : PropTypes.func.isRequired,
   acteurPartieDisplay: PropTypes.object.isRequired,
+  pouvoirsPartie: PropTypes.array.isRequired,
+  pouvoirsControleSelection: PropTypes.array.isRequired,
+  onControleRowClick : PropTypes.func.isRequired,
   pouvoirsSelection: PropTypes.array.isRequired,
   designationOptions: PropTypes.array.isRequired,
   acteursPartiesOptions: PropTypes.array.isRequired,

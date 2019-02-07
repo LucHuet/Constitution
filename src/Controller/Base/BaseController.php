@@ -155,6 +155,10 @@ class BaseController extends Controller
           $model->pouvoirs[] = $this->createPouvoirPartieApiModel($pouvoir);
         }
 
+        foreach ($acteurPartie->getControlesParties() as $controlePartie) {
+          $model->pouvoirsControles[] = $this->createPouvoirPartieApiModel($controlePartie->getPouvoirPartie());
+        }
+
         $selfUrl = $this->generateUrl(
             'acteur_partie_get',
             ['id' => $acteurPartie->getId()]

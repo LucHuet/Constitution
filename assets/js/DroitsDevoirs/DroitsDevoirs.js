@@ -24,7 +24,6 @@ export default function DroitsDevoirs(props) {
         <React.Fragment>
           <h3 className="ui header"> Droits et devoirs de la partie</h3>
           <table>
-
             <DroitsDevoirsListe
               droitsDevoirs={droitsDevoirs}
               onRowClick={onRowClick}/>
