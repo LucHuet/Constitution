@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ActeurPartie;
 use App\Entity\DesignationPartie;
 use App\Entity\PouvoirPartie;
+use App\Entity\ControlePartie;
 use App\Entity\Pouvoir;
 use App\Form\ActeurPartieCompletType;
 use App\Repository\ActeurPartieRepository;
@@ -83,20 +84,18 @@ class ActeurPartieController extends BaseController
         }
 
         $data=$form->getData();
-        /** @var Acteur $acteur */
 
         $em = $this->getDoctrine()->getManager();
         $partieCourante = $em->merge($partieCourante);
 
-        $acteur = $data['acteurPartie'];
-        $acteur->setPartie($partieCourante);
+        $acteurPartie = $data['acteurPartie'];
+        $acteurPartie->setPartie($partieCourante);
 
         $designation = $data['designation'];
-        $designation->setActeurDesigne($acteur);
+        $designation->setActeurDesigne($acteurPartie);
         $designation->setPartie($partieCourante);
 
         $pouvoirsId = $data['pouvoirs'];
-
         foreach($pouvoirsId as $pouvoirId){
           $pouvoirRef = $pouvoirRepository->find($pouvoirId);
           $pouvoirPartie = $pouvoirPartieRepository->findOneBy(['pouvoir' => $pouvoirRef]);
@@ -107,23 +106,31 @@ class ActeurPartieController extends BaseController
             $pouvoirPartie->setPartie($partieCourante);
             $pouvoirPartie->setPouvoir($pouvoirRef);
           }
-          $pouvoirPartie->addActeurPossedant($acteur);
+          $pouvoirPartie->addActeurPossedant($acteurPartie);
           $em->persist($pouvoirPartie);
         }
 
+        $pouvoirsControlesId = $data['pouvoirsControles'];
+        foreach($pouvoirsControlesId as $pouvoirControleId){
+          $newControlePartie = new ControlePartie(); //dump($pouvoirsControlesId); die();
+          $newControlePartie->setPouvoirPartie($pouvoirPartieRepository->find($pouvoirControleId));
+          $acteurPartie->addControlesParty($newControlePartie);
+          $em->persist($newControlePartie);
+        }
+
         $em->persist($designation);
-        $em->persist($acteur);
+        $em->persist($acteurPartie);
 
         $em->flush();
 
-        $apiModel = $this->createActeurPartieApiModel($acteur);
+        $apiModel = $this->createActeurPartieApiModel($acteurPartie);
 
         $response = $this->createApiResponse($apiModel);
         //$response = new Response(null, 204);
         // setting the Location header... it's a best-practice
         $response->headers->set(
             'Location',
-            $this->generateUrl('acteur_partie_get', ['id' => $acteur->getId()])
+            $this->generateUrl('acteur_partie_get', ['id' => $acteurPartie->getId()])
         );
 
         return $response;
@@ -132,7 +139,7 @@ class ActeurPartieController extends BaseController
     /**
      * @Route("/{id<\d+>}", name="acteur_partie_edit", methods="PUT")
      */
-    public function editActeurPartie(Request $request, ActeurPartie $acteurPartie): Response
+    public function editActeurPartie(Request $request, ActeurPartie $acteurPartie, PouvoirPartieRepository $pouvoirPartieRepository): Response
     {
       $session = new Session();
       $partieCourante = $session->get('partieCourante');
@@ -195,6 +202,23 @@ class ActeurPartieController extends BaseController
           $em->persist($pouvoirPartieToAdd);
           $acteurPartie->addPouvoirParty($pouvoirPartieToAdd);
         }
+      }
+
+      //on supprime tous les controles qui ne sont pas dans la liste envoyé
+      foreach ($acteurPartie->getControlesParties() as $controlePartie) {
+        if(in_array($controlePartie->getPouvoirPartie()->getId(), $data['pouvoirsControles']))
+        {
+          unset($data['pouvoirsControles'][array_search($controlePartie->getPouvoirPartie()->getId(), $data['pouvoirsControles'])]);
+        }else {
+          $acteurPartie->removeControlesParty($controlePartie);
+        }
+      }
+      //on ajoute tous les nouveaux controles
+      foreach($data['pouvoirsControles'] as $pouvoirControleId){
+        $newControlePartie = new ControlePartie();
+        $newControlePartie->setPouvoirPartie($pouvoirPartieRepository->find($pouvoirControleId));
+        $acteurPartie->addControlesParty($newControlePartie);
+        $em->persist($newControlePartie);
       }
 
       $em->flush();

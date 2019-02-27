@@ -78,7 +78,6 @@ export default class PouvoirCreator extends Component{
 }
 
 PouvoirCreator.propTypes = {
-  onAddPouvoir: PropTypes.func.isRequired,
   onClickPouvoir : PropTypes.func.isRequired,
   onShowModal : PropTypes.func.isRequired,
   onCloseModal : PropTypes.func.isRequired,

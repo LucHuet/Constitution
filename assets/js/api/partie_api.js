@@ -26,7 +26,7 @@ function checkStatus(response) {
 }
 
 /**
----------- Methodes API pour les acteurs --------
+---------- Methodes API pour les acteurs Partie --------
 */
 
 /**
@@ -61,27 +61,35 @@ export function deleteActeurPartie(id) {
   });
 }
 
+/**
+---------- Methodes API pour les acteurs Reference --------
+*/
+
 export function getActeursReference(){
   return fetchJson('/acteurReference/').
     then(data => data.items);
 }
+
+/**
+---------- Methodes API pour les pouvoirs Reference --------
+*/
 
 export function getPouvoirsReference(){
   return fetchJson('/pouvoirReference/').
     then(data => data.items);
 }
 
+/**
+---------- Methodes API pour les pouvoirs Partie --------
+*/
 
-
-export function createPouvoirPartie(pouvoir){
-  return fetchJson('http://localhost:8000/pouvoir/', {
-    method: 'POST',
-    body: JSON.stringify(pouvoir),
-  })
+export function getPouvoirsPartie(){
+  return fetchJson('/pouvoirPartie/').
+    then(data => data.items);
 }
 
 /**
----------- Methodes API pour les dé --------
+---------- Methodes API pour les désignation --------
 */
 
 export function createDesignation(designation){

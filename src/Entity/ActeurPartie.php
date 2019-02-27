@@ -38,7 +38,7 @@ class ActeurPartie
     private $partie;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\PouvoirPartie", mappedBy="acteurPossedant")
+     * @ORM\ManyToMany(targetEntity="App\Entity\PouvoirPartie", mappedBy="acteurPossedant", orphanRemoval=true)
      */
     private $pouvoirParties;
 
@@ -58,6 +58,11 @@ class ActeurPartie
      */
     private $typeActeur;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\ControlePartie", mappedBy="ActeursParties", orphanRemoval=true)
+     */
+    private $controlesParties;
+
     public function __construct()
     {
         $this->pouvoirParties = new ArrayCollection();
@@ -65,6 +70,7 @@ class ActeurPartie
         $this->designationParties = new ArrayCollection();
         $this->acteursDesignes = new ArrayCollection();
         $this->acteursDesignants = new ArrayCollection();
+        $this->controlesParties = new ArrayCollection();
     }
 
     public function __toString()
@@ -246,6 +252,34 @@ class ActeurPartie
     public function setTypeActeur(?Acteur $typeActeur): self
     {
         $this->typeActeur = $typeActeur;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ControlePartie[]
+     */
+    public function getControlesParties(): Collection
+    {
+        return $this->controlesParties;
+    }
+
+    public function addControlesParty(ControlePartie $controlesParty): self
+    {
+        if (!$this->controlesParties->contains($controlesParty)) {
+            $this->controlesParties[] = $controlesParty;
+            $controlesParty->addActeursParty($this);
+        }
+
+        return $this;
+    }
+
+    public function removeControlesParty(ControlePartie $controlesParty): self
+    {
+        if ($this->controlesParties->contains($controlesParty)) {
+            $this->controlesParties->removeElement($controlesParty);
+            $controlesParty->removeActeursParty($this);
+        }
 
         return $this;
     }

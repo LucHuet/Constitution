@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 import interact from 'interactjs';
 import {
     getActeursPartie, deleteActeurPartie, createActeurPartie, updateActeurPartie,
-    getActeursReference,
-    createPouvoirPartie, createDesignation
+    getActeursReference, getPouvoirsPartie, createDesignation
    } from '../api/partie_api.js';
 import Sortable from './Sortable.js';
 
@@ -21,9 +20,11 @@ export default class CardBoardApp extends Component {
     //permet  d'initialiser les states donc les
     //variables qui peuvent être modifiées.
     this.state = {
-      acteursPartie: [],
-      acteursReference: [],
-      pouvoirsSelection: [],
+      acteursPartie: [], //ensemble des acteurs de la partie
+      acteursReference: [], //ensemble des acteurs de reference du jeu
+      pouvoirsSelection: [], //pouvoirs d'un acteur
+      pouvoirsControleSelection: [], //pouvoirs qu'un acteur contrôle
+      pouvoirsPartie: [], //ensemble des pouvoirs de la partie
       isLoaded: false,
       isSavingNewActeur: false,
       successMessage: '',
@@ -43,14 +44,13 @@ export default class CardBoardApp extends Component {
     //et pas à la méthode.
     this.handleAddActeur = this.handleAddActeur.bind(this);
     this.handleDeleteActeur = this.handleDeleteActeur.bind(this);
-    this.handleAddPouvoir = this.handleAddPouvoir.bind(this);
     this.handleUpdateActeur = this.handleUpdateActeur.bind(this);
-    this.handleAddDesignation = this.handleAddDesignation.bind(this);
     this.handleShowModal = this.handleShowModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handlePouvoirClick = this.handlePouvoirClick.bind(this);
     this.handlePouvoirClickAdd = this.handlePouvoirClickAdd.bind(this);
     this.handlePouvoirClickRemove = this.handlePouvoirClickRemove.bind(this);
+    this.handleControleRowClick = this.handleControleRowClick.bind(this);
   }
 
   //componentDidMount est une methode magique qui est automatiquement
@@ -75,6 +75,15 @@ export default class CardBoardApp extends Component {
           //méthode qui permet de redonner une valeur à un state.
           this.setState({
             acteursReference: data,
+          });
+        });
+
+      getPouvoirsPartie()
+      //then signifie qu'il n'y a pas d'erreur.
+        .then((data)=>{
+          //méthode qui permet de redonner une valeur à un state.
+          this.setState({
+            pouvoirsPartie: data,
           });
         });
 
@@ -122,6 +131,8 @@ export default class CardBoardApp extends Component {
       };
 
       const newPouvoirs = this.state.pouvoirsSelection;
+    console.log("selection des pouvoirs controlés",this.state.pouvoirsControleSelection)
+      const newPouvoirsControles = this.state.pouvoirsControleSelection;
 
       const newActeurPartie = {
         nom: nom,
@@ -132,7 +143,8 @@ export default class CardBoardApp extends Component {
       const newActeurPartieComplet = {
         acteurPartie : newActeurPartie,
         pouvoirs: newPouvoirs,
-        designation: newDesignation
+        designation: newDesignation,
+        pouvoirsControles: newPouvoirsControles
       }
 
       this.setState({
@@ -196,6 +208,8 @@ export default class CardBoardApp extends Component {
     };
 
     const updatedPouvoirs = this.state.pouvoirsSelection;
+    console.log("selection des pouvoirs controlés",this.state.pouvoirsControleSelection)
+    const updatedPouvoirsControles = this.state.pouvoirsControleSelection;
 
     const updatedActeurPartie = {
       nom: nom,
@@ -206,7 +220,8 @@ export default class CardBoardApp extends Component {
     const newActeurPartieComplet = {
       acteurPartie : updatedActeurPartie,
       pouvoirs: updatedPouvoirs,
-      designation: updatedDesignation
+      designation: updatedDesignation,
+      pouvoirsControles: updatedPouvoirsControles
     }
 
     this.setState({
@@ -290,40 +305,31 @@ export default class CardBoardApp extends Component {
 
   }
 
-  handleAddPouvoir(nom, typePouvoir, acteurSelect){
-
-      const newPouvoir = {
-        nom: nom,
-        pouvoir : typePouvoir,
-        acteurPossedant: acteurSelect
-      };
-
-      createPouvoirPartie(newPouvoir)
-      //l'ajout n'as pas d'erreur
-        .then(pouvoir => {
-          this.setSuccessMessage('Pouvoir enregistré !');
-          this.setState({showModal: false});
-        })
-  }
-
-  handleAddDesignation(nom, typeDesignation, acteurDesignant, acteurSelect){
-
-      const newDesignation = {
-        nom: nom,
-        designation : typeDesignation,
-        acteurDesigne : acteurSelect,
-        acteurDesignant: acteurDesignant
-      };
-
-      createDesignation(newDesignation)
-      //l'ajout n'as pas d'erreur
-        .then(pouvoir => {
-          this.setSuccessMessage('Désignation enregistréé !');
-          this.setState({showModal: false});
-        })
-  }
-
   handleShowModal(modalType, acteurId=0, previousModal=""){
+
+    getActeursPartie()
+    //then signifie qu'il n'y a pas d'erreur.
+      .then((data)=>{
+        //méthode qui permet de redonner une valeur à un state.
+        this.setState({
+          acteursPartie: data,
+          isLoaded: true,
+        });
+        this.setState({
+          sortable : new Sortable(document.querySelector('#sort1'), null)
+        });
+      });
+
+    //on met à jour les pouvoirs de la partie
+    getPouvoirsPartie()
+    //then signifie qu'il n'y a pas d'erreur.
+      .then((data)=>{
+        //méthode qui permet de redonner une valeur à un state.
+        this.setState({
+          pouvoirsPartie: data,
+        });
+      });
+
     this.setState({
       showModal: true,
       modalType:modalType,
@@ -337,7 +343,8 @@ export default class CardBoardApp extends Component {
       showModal: false,
       modalType:"",
       acteurSelect:0,
-      pouvoirsSelection: []
+      pouvoirsSelection: [],
+      pouvoirsControleSelection: []
     });
   }
 
@@ -395,6 +402,26 @@ export default class CardBoardApp extends Component {
       }
   }
 
+  handleControleRowClick(droitDevoirId) {
+    console.log("on ajoute/retire ce pouvoir "+droitDevoirId+" à la liste des pouvoirs controlés ")
+    if(this.state.pouvoirsControleSelection.includes(droitDevoirId))
+    {
+      this.setState((prevState) => {
+        return {
+          pouvoirsControleSelectionTest : droitDevoirId,
+          pouvoirsControleSelection: prevState.pouvoirsControleSelection.filter(id => id != droitDevoirId)
+        }
+      });
+    }else {
+      this.setState((prevState) => {
+        return {
+          pouvoirsControleSelectionTest : droitDevoirId,
+          pouvoirsControleSelection: [...prevState.pouvoirsControleSelection, droitDevoirId],
+        };
+      });
+    }
+  }
+
   render(){
     return (
       <CardBoard
@@ -402,11 +429,10 @@ export default class CardBoardApp extends Component {
         {...this.state}
         onAddActeur={this.handleAddActeur}
         onUpdateActeur={this.handleUpdateActeur}
-        onAddPouvoir={this.handleAddPouvoir}
         onClickPouvoir={this.handlePouvoirClick}
         onClickPouvoirAdd={this.handlePouvoirClickAdd}
         onClickPouvoirRemove={this.handlePouvoirClickRemove}
-        onAddDesignation={this.handleAddDesignation}
+        onControleRowClick={this.handleControleRowClick}
         onShowModal={this.handleShowModal}
         onCloseModal={this.handleCloseModal}
         onDeleteActeur = {this.handleDeleteActeur}

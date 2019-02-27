@@ -14,16 +14,16 @@ export default function CardBoard(props){
   const {
     acteursPartie,
     acteursReference,
+    pouvoirsPartie,
     onAddActeur,
     onUpdateActeur,
-    onAddPouvoir,
-    onAddDesignation,
     onShowModal,
     onCloseModal,
     onDeleteActeur,
     onClickPouvoir,
     onClickPouvoirAdd,
     onClickPouvoirRemove,
+    onControleRowClick,
     isLoaded,
     isSavingNewActeur,
     successMessage,
@@ -37,6 +37,7 @@ export default function CardBoard(props){
     previousModal,
     acteurSelect,
     pouvoirsSelection,
+    pouvoirsControleSelection,
   } = props;
 
 
@@ -80,8 +81,12 @@ export default function CardBoard(props){
                       acteurPartieDisplay={acteurPartieDisplay}
                       onShowModal={onShowModal}
                       onUpdateActeur={onUpdateActeur}
+                      onClickPouvoir = {onClickPouvoir}
                       onClickPouvoirAdd = {onClickPouvoirAdd}
+                      onControleRowClick = {onControleRowClick}
                       pouvoirsSelection={pouvoirsSelection}
+                      pouvoirsControleSelection= {pouvoirsControleSelection}
+                      pouvoirsPartie={pouvoirsPartie}
                       acteursPartiesOptions={acteursPartiesOptions}
                       designationOptions={designationOptions}
                     /> ;
@@ -89,7 +94,6 @@ export default function CardBoard(props){
     case 'pouvoirSelection':
       modalContent = <PouvoirCreator
                       pouvoirsSelection={pouvoirsSelection}
-                      onAddPouvoir={onAddPouvoir}
                       onClickPouvoir = {onClickPouvoir}
                       onShowModal={onShowModal}
                       onCloseModal={onCloseModal}
@@ -116,8 +120,11 @@ export default function CardBoard(props){
                       onAddActeur={onAddActeur}
                       onClickPouvoir = {onClickPouvoir}
                       onClickPouvoirAdd = {onClickPouvoirAdd}
+                      onControleRowClick={onControleRowClick}
                       acteurReference={acteurRefForActeurCreator}
                       pouvoirsSelection={pouvoirsSelection}
+                      pouvoirsControleSelection= {pouvoirsControleSelection}
+                      pouvoirsPartie={pouvoirsPartie}
                       acteursPartiesOptions={acteursPartiesOptions}
                       designationOptions={designationOptions}
                      /> ;
@@ -178,17 +185,18 @@ export default function CardBoard(props){
 CardBoard.propTypes = {
   onAddActeur: PropTypes.func.isRequired,
   onUpdateActeur: PropTypes.func.isRequired,
-  onAddPouvoir: PropTypes.func.isRequired,
   onClickPouvoir: PropTypes.func.isRequired,
   onClickPouvoirAdd: PropTypes.func.isRequired,
   onClickPouvoirRemove: PropTypes.func.isRequired,
-  onAddDesignation: PropTypes.func.isRequired,
+  onControleRowClick: PropTypes.func.isRequired,
   onShowModal: PropTypes.func.isRequired,
   onCloseModal: PropTypes.func.isRequired,
   onDeleteActeur: PropTypes.func.isRequired,
   acteursPartie: PropTypes.array.isRequired,
   acteursReference: PropTypes.array.isRequired,
   pouvoirsSelection: PropTypes.array.isRequired,
+  pouvoirsControleSelection: PropTypes.array.isRequired,
+  pouvoirsPartie: PropTypes.array.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   isSavingNewActeur: PropTypes.bool.isRequired,
   showModal: PropTypes.bool.isRequired,

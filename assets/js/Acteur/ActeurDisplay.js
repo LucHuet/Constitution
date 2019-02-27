@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { Header, Image, Container, Divider, Segment, Flag, Icon, Button } from 'semantic-ui-react'
+import { Header, Image, Container, Divider, Segment, Flag, Icon, Button, Table } from 'semantic-ui-react'
 
 export default class ActeurDisplay extends Component {
 
@@ -13,6 +13,7 @@ export default class ActeurDisplay extends Component {
         onClickPouvoirAdd,
         acteurPartieDisplay,
         onUpdateActeur,
+        onControleRowClick,
     } = this.props;
 
     this.individusMin = 0;
@@ -43,6 +44,13 @@ export default class ActeurDisplay extends Component {
       })
     }
 
+    if(acteurPartieDisplay.pouvoirsControles != null)
+    {
+      acteurPartieDisplay.pouvoirsControles.map(pouvoirPartie =>{
+        onControleRowClick(pouvoirPartie.id);
+      })
+    }
+
     this.state = {
       nombreActeurError: '',
       nombreIndividus: acteurPartieDisplay.nombreIndividus,
@@ -66,12 +74,6 @@ export default class ActeurDisplay extends Component {
 
   }
 
-/*  componentDidMount(){
-    const {onClickPouvoir, acteurReference} = this.props;
-    acteurReference.pouvoirsBase.map((pouvoirBase) => {
-      onClickPouvoir(pouvoirBase.id);
-    });
-  }*/
 
   handleUpdate(){
     //fait appel au props de l'objet
@@ -135,12 +137,16 @@ export default class ActeurDisplay extends Component {
 
     const {
         onClickPouvoir,
+        onControleRowClick,
         acteurPartieDisplay,
         pouvoirsSelection,
         designationOptions,
-        acteursPartiesOptions
-    } = this.props;
+        acteursPartiesOptions,
+        pouvoirsControleSelection,
+        pouvoirsPartie,
 
+    } = this.props;
+    console.log(acteurPartieDisplay);
     const handleNomPouvoir = function(acteurPartieDisplay){
       if(acteurPartieDisplay.pouvoirs !== null){
         {acteurPartieDisplay.pouvoirs.map((pouvoir) => {
@@ -200,7 +206,7 @@ export default class ActeurDisplay extends Component {
         </p>
         Modifier les pouvoirs :
         <p>
-        <Icon name='plus square outline' onClick={() => this.handleAjoutPouvoir(event, "pouvoirSelection", acteurPartieDisplay.id)} size='small' /> Ajouter des pouvoirs à l acteur <br/>
+        <Icon name='plus square outline' onClick={() => this.handleAjoutPouvoir("pouvoirSelection", acteurPartieDisplay.id)} size='small' /> Ajouter des pouvoirs à l acteur <br/>
         </p>
       </Segment>
       {acteurPartieDisplay.designations.designants != undefined && (
@@ -223,6 +229,26 @@ export default class ActeurDisplay extends Component {
         </Header.Content>
       </Segment>
       )}
+      {pouvoirsPartie != undefined && (
+      <Segment>
+        <b>{"Cet acteur contrôle t'il des pouvoirs de la partie ?"}</b>
+        <Table>
+        <Table.Body>
+          {pouvoirsPartie.map(pouvoir => {
+            return (
+              <Table.Row
+                key={pouvoir.id}
+                onClick={()=> onControleRowClick(pouvoir.id)}
+                className = {pouvoirsControleSelection.includes(pouvoir.id) ? "positive" : "" }
+               >
+                <Table.Cell>{pouvoir.nom}</Table.Cell>
+              </Table.Row>
+            )
+           })}
+        </Table.Body>
+        </Table>
+      </Segment>
+      )}
       <Divider />
         <Button onClick={() => this.handleUpdate()}>Sauvegarder</Button>
     </Container>
@@ -238,6 +264,9 @@ ActeurDisplay.propTypes = {
   onClickPouvoir : PropTypes.func.isRequired,
   onClickPouvoirAdd : PropTypes.func.isRequired,
   acteurPartieDisplay: PropTypes.object.isRequired,
+  pouvoirsPartie: PropTypes.array.isRequired,
+  pouvoirsControleSelection: PropTypes.array.isRequired,
+  onControleRowClick : PropTypes.func.isRequired,
   pouvoirsSelection: PropTypes.array.isRequired,
   designationOptions: PropTypes.array.isRequired,
   acteursPartiesOptions: PropTypes.array.isRequired,

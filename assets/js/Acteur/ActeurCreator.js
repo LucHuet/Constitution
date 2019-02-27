@@ -1,6 +1,17 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { Header, Image, Container, Divider, Segment, Flag, Icon, Button } from 'semantic-ui-react'
+import {
+  Header,
+  Image,
+  Container,
+  Divider,
+  Segment,
+  Flag,
+  Icon,
+  Button,
+  Table,
+  Accordion
+} from 'semantic-ui-react'
 
 export default class ActeurCreator extends Component {
 
@@ -43,6 +54,7 @@ export default class ActeurCreator extends Component {
     this.typeActeur = React.createRef();
     this.typeDesignation = React.createRef();
     this.acteurDesignant = React.createRef();
+    this.controlePouvoir = React.createRef();
 
 
     this.handleAjoutPouvoir = this.handleAjoutPouvoir.bind(this);
@@ -50,8 +62,6 @@ export default class ActeurCreator extends Component {
     this.handleCountryDescriptionClick = this.handleCountryDescriptionClick.bind(this);
     this.handleBack = this.handleBack.bind(this);
     this.handleSave = this.handleSave.bind(this);
-
-
   }
 
   componentDidMount(){
@@ -128,8 +138,11 @@ export default class ActeurCreator extends Component {
         onClickPouvoir,
         acteurReference,
         pouvoirsSelection,
+        pouvoirsPartie,
+        pouvoirsControleSelection,
         designationOptions,
-        acteursPartiesOptions
+        acteursPartiesOptions,
+        onControleRowClick
     } = this.props;
 
     return (
@@ -162,7 +175,7 @@ export default class ActeurCreator extends Component {
         <div>{this.state.displayCountryDescription}</div>
       </Segment>
       <Segment>
-        <b>Nombre de personnes : </b>
+        <b>{"Combien de personnes compose cet acteur ?"}</b>
         <input
           type="range"
           ref={this.nombreActeur}
@@ -175,7 +188,7 @@ export default class ActeurCreator extends Component {
         {this.state.nombreIndividus}
       </Segment>
       <Segment>
-        <b>Pouvoirs</b>
+        <b>{"Quels sont les pouvoirs de cet acteur ?"}</b>
         <Divider />
         De base :
         <p>
@@ -197,7 +210,7 @@ export default class ActeurCreator extends Component {
         </p>
       </Segment>
       <Segment>
-        <b>Désignation : </b>
+        <b>{"Comment cet acteur est il désigné ?"}</b>
         <Divider />
         <label htmlFor="designation" className="required"> Designation : </label>
         <select id="designation" ref={this.typeDesignation} required="required">
@@ -211,6 +224,24 @@ export default class ActeurCreator extends Component {
             return <option value={acteurDesignant.id} key={acteurDesignant.id}>{acteurDesignant.text}</option>
           } )}
         </select>
+      </Segment>
+      <Segment>
+        <b>{"Cet acteur contrôle t'il des pouvoirs de la partie ?"}</b>
+        <Table>
+        <Table.Body>
+          {pouvoirsPartie.map(pouvoir => {
+            return (
+              <Table.Row
+                key={pouvoir.id}
+                onClick={()=> onControleRowClick(pouvoir.id)}
+                className = {pouvoirsControleSelection.includes(pouvoir.id) ? "positive" : "" }
+               >
+                <Table.Cell>{pouvoir.nom}</Table.Cell>
+              </Table.Row>
+            )
+           })}
+        </Table.Body>
+        </Table>
       </Segment>
       <Divider />
 
@@ -229,7 +260,10 @@ ActeurCreator.propTypes = {
   acteurReference : PropTypes.object.isRequired,
   onClickPouvoirAdd : PropTypes.func.isRequired,
   onClickPouvoir : PropTypes.func.isRequired,
+  onControleRowClick : PropTypes.func.isRequired,
   pouvoirsSelection: PropTypes.array.isRequired,
+  pouvoirsPartie: PropTypes.array.isRequired,
+  pouvoirsControleSelection: PropTypes.array.isRequired,
   designationOptions: PropTypes.array.isRequired,
   acteursPartiesOptions: PropTypes.array.isRequired,
 };

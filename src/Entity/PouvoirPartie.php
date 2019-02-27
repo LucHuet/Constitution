@@ -41,11 +41,17 @@ class PouvoirPartie
      */
     private $acteurPossedant;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ControlePartie", mappedBy="PouvoirPartie", orphanRemoval=true)
+     */
+    private $controlesParties;
+
 
     public function __construct()
     {
         $this->acteurPossedant = new ArrayCollection();
         $this->conditionsPouvoirs = new ArrayCollection();
+        $this->controlesParties = new ArrayCollection();
     }
 
     public function __toString()
@@ -116,6 +122,37 @@ class PouvoirPartie
     {
         if ($this->acteurPossedant->contains($acteurPossedant)) {
             $this->acteurPossedant->removeElement($acteurPossedant);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ControlePartie[]
+     */
+    public function getControlesParties(): Collection
+    {
+        return $this->controlesParties;
+    }
+
+    public function addControlesParty(ControlePartie $controlesParty): self
+    {
+        if (!$this->controlesParties->contains($controlesParty)) {
+            $this->controlesParties[] = $controlesParty;
+            $controlesParty->setPouvoirPartie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeControlesParty(ControlePartie $controlesParty): self
+    {
+        if ($this->controlesParties->contains($controlesParty)) {
+            $this->controlesParties->removeElement($controlesParty);
+            // set the owning side to null (unless already changed)
+            if ($controlesParty->getPouvoirPartie() === $this) {
+                $controlesParty->setPouvoirPartie(null);
+            }
         }
 
         return $this;

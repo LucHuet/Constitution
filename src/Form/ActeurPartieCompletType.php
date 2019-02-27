@@ -32,6 +32,10 @@ class ActeurPartieCompletType extends AbstractType
             'entry_type' => TextType::class,
             'allow_add' => true,
             ))
+            ->add('pouvoirsControles', CollectionType::class, array(
+            'entry_type' => TextType::class,
+            'allow_add' => true,
+            ))
         ;
     }
 
