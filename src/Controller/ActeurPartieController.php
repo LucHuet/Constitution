@@ -112,7 +112,7 @@ class ActeurPartieController extends BaseController
 
         $pouvoirsControlesId = $data['pouvoirsControles'];
         foreach($pouvoirsControlesId as $pouvoirControleId){
-          $newControlePartie = new ControlePartie();
+          $newControlePartie = new ControlePartie(); //dump($pouvoirsControlesId); die();
           $newControlePartie->setPouvoirPartie($pouvoirPartieRepository->find($pouvoirControleId));
           $acteurPartie->addControlesParty($newControlePartie);
           $em->persist($newControlePartie);

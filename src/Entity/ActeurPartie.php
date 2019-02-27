@@ -38,7 +38,7 @@ class ActeurPartie
     private $partie;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\PouvoirPartie", mappedBy="acteurPossedant")
+     * @ORM\ManyToMany(targetEntity="App\Entity\PouvoirPartie", mappedBy="acteurPossedant", orphanRemoval=true)
      */
     private $pouvoirParties;
 
@@ -59,7 +59,7 @@ class ActeurPartie
     private $typeActeur;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ControlePartie", mappedBy="ActeursParties")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ControlePartie", mappedBy="ActeursParties", orphanRemoval=true)
      */
     private $controlesParties;
 

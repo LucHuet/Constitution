@@ -48,6 +48,7 @@ export default function ActeurCard(props) {
         </React.Fragment>)
     }
     else{
+      //TODO : changer le message l'acteur est désigné par tirage au sort ou concour
       return(  <span>Non désigné</span>)
     }
   }

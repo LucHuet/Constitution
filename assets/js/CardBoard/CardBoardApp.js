@@ -131,7 +131,7 @@ export default class CardBoardApp extends Component {
       };
 
       const newPouvoirs = this.state.pouvoirsSelection;
-
+    console.log("selection des pouvoirs controlés",this.state.pouvoirsControleSelection)
       const newPouvoirsControles = this.state.pouvoirsControleSelection;
 
       const newActeurPartie = {
@@ -208,7 +208,7 @@ export default class CardBoardApp extends Component {
     };
 
     const updatedPouvoirs = this.state.pouvoirsSelection;
-
+    console.log("selection des pouvoirs controlés",this.state.pouvoirsControleSelection)
     const updatedPouvoirsControles = this.state.pouvoirsControleSelection;
 
     const updatedActeurPartie = {
@@ -306,6 +306,30 @@ export default class CardBoardApp extends Component {
   }
 
   handleShowModal(modalType, acteurId=0, previousModal=""){
+
+    getActeursPartie()
+    //then signifie qu'il n'y a pas d'erreur.
+      .then((data)=>{
+        //méthode qui permet de redonner une valeur à un state.
+        this.setState({
+          acteursPartie: data,
+          isLoaded: true,
+        });
+        this.setState({
+          sortable : new Sortable(document.querySelector('#sort1'), null)
+        });
+      });
+
+    //on met à jour les pouvoirs de la partie
+    getPouvoirsPartie()
+    //then signifie qu'il n'y a pas d'erreur.
+      .then((data)=>{
+        //méthode qui permet de redonner une valeur à un state.
+        this.setState({
+          pouvoirsPartie: data,
+        });
+      });
+
     this.setState({
       showModal: true,
       modalType:modalType,
@@ -319,7 +343,8 @@ export default class CardBoardApp extends Component {
       showModal: false,
       modalType:"",
       acteurSelect:0,
-      pouvoirsSelection: []
+      pouvoirsSelection: [],
+      pouvoirsControleSelection: []
     });
   }
 
