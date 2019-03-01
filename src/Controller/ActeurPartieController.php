@@ -2,16 +2,22 @@
 
 namespace App\Controller;
 
+/* Entities */
 use App\Entity\ActeurPartie;
-use App\Entity\DesignationPartie;
 use App\Entity\PouvoirPartie;
 use App\Entity\ControlePartie;
 use App\Entity\Pouvoir;
-use App\Form\ActeurPartieCompletType;
-use App\Repository\ActeurPartieRepository;
+use App\Entity\Partie;
+/* Repositories */
 use App\Repository\PouvoirRepository;
 use App\Repository\PouvoirPartieRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+/* Forms */
+use App\Form\ActeurPartieCompletType;
+/* Service */
+use App\Service\CheckStepService;
+/* Controller */
+use App\Controller\Base\BaseController;
+/* Configuration */
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -19,11 +25,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
-use App\Entity\Partie;
-use App\Service\CheckStepService;
-use App\Controller\Base\BaseController;
+
 
 /**
+ * ActeurPartieController is the controller linked to ActeurPartie Entity
+ *
+ * This class is giving the methods to CRUD the ActeurPartie Entity via
+ * a REST API
+ *
  * @Route("/acteurPartie")
  */
 class ActeurPartieController extends BaseController
