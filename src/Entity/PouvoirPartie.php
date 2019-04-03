@@ -56,7 +56,7 @@ class PouvoirPartie
 
     public function __toString()
     {
-      return $this->getNom();
+        return $this->getNom();
     }
 
     public function getId(): ?int
@@ -104,13 +104,11 @@ class PouvoirPartie
      */
     public function getActeurPossedant(): Collection
     {
-
         return $this->acteurPossedant;
     }
 
     public function addActeurPossedant(ActeurPartie $acteurPossedant): self
     {
-
         if (!$this->acteurPossedant->contains($acteurPossedant)) {
             $this->acteurPossedant[] = $acteurPossedant;
         }

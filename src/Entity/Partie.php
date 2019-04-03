@@ -65,7 +65,7 @@ class Partie
 
     public function __toString()
     {
-      return $this->nom;
+        return $this->nom;
     }
 
     public function getId(): ?int

@@ -14,7 +14,7 @@ class EventPartieApiModel
 
     public $resultatEventPartie;
 
-    public $explicationResultatEventPartie;     
+    public $explicationResultatEventPartie;
 
     public function addLink($ref, $url)
     {

@@ -32,8 +32,9 @@ class Designation
         $this->description = $description;
     }
 
-    public function __toString(){
-      return $this->nom;
+    public function __toString()
+    {
+        return $this->nom;
     }
 
     public function getId(): ?int

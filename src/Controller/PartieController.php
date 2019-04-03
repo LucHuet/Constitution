@@ -31,7 +31,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class PartieController extends BaseController
 {
-
     private $checkStep;
 
     public function __construct(CheckStepService $checkStep)
@@ -130,7 +129,4 @@ class PartieController extends BaseController
         $em->flush();
         return new Response(null, 204);
     }
-
-
-
 }

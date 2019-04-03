@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-
 /**
  * @Route("/droitDevoir")
  */
@@ -20,13 +19,11 @@ class DroitDevoirController extends BaseController
   /**
    * @Route("/", name="droits_devoirs_liste", methods="GET")
    */
-  public function getDroitsDevoirs()
-  {
-    $models = $this->findAllDroitsDevoirsReferenceModels();
-    return $this->createApiResponse([
+    public function getDroitsDevoirs()
+    {
+        $models = $this->findAllDroitsDevoirsReferenceModels();
+        return $this->createApiResponse([
         'items' => $models
     ]);
-  }
-
-
+    }
 }

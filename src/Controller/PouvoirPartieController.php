@@ -16,23 +16,21 @@ class PouvoirPartieController extends BaseController
   /**
    * @Route("/{id<\d+>}", name="pouvoir_partie_get" , methods="GET")
    */
-  public function getPouvoirPartie(PouvoirPartie $pouvoirPartie)
-  {
-      $apiModel = $this->createPouvoirPartieApiModel($pouvoirPartie);
+    public function getPouvoirPartie(PouvoirPartie $pouvoirPartie)
+    {
+        $apiModel = $this->createPouvoirPartieApiModel($pouvoirPartie);
 
-      return $this->createApiResponse($apiModel);
-  }
+        return $this->createApiResponse($apiModel);
+    }
 
-  /**
-   * @Route("/", name="pouvoir_partie_list", methods="GET")
-   */
-  public function getPouvoirsPartie()
-  {
-      $models = $this->findAllPouvoirsPartieModels();
-      return $this->createApiResponse([
+    /**
+     * @Route("/", name="pouvoir_partie_list", methods="GET")
+     */
+    public function getPouvoirsPartie()
+    {
+        $models = $this->findAllPouvoirsPartieModels();
+        return $this->createApiResponse([
           'items' => $models
       ]);
-  }
-
-
+    }
 }

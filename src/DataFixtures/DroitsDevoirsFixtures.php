@@ -11,7 +11,6 @@ class DroitsDevoirsFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-
         $droitsDevoirs = [];
         $droitsDevoirs[]= new DroitDevoir("Droit d'asile");
         $droitsDevoirs[]= new DroitDevoir("Droit au travail");
@@ -26,8 +25,8 @@ class DroitsDevoirsFixtures extends Fixture
         $droitsDevoirs[]= new DroitDevoir("Nul ne peut être détenu arbitrairement");
         $droitsDevoirs[]= new DroitDevoir("Nul ne peut être condamné à mort");
 
-        foreach ($droitsDevoirs as $droitDevoir){
-          $manager->persist($droitDevoir);
+        foreach ($droitsDevoirs as $droitDevoir) {
+            $manager->persist($droitDevoir);
         }
         $manager->flush();
     }

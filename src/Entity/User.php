@@ -48,7 +48,7 @@ class User implements UserInterface, \Serializable
      */
     private $email;
 
-      /**
+    /**
      * @ORM\OneToOne(targetEntity="Image", mappedBy="user", orphanRemoval=true, cascade={"persist"})
      * @Assert\Valid
      *
@@ -106,7 +106,7 @@ class User implements UserInterface, \Serializable
     /** @see \Serializable::unserialize() */
     public function unserialize($serialized)
     {
-        list (
+        list(
             $this->id,
             $this->username,
             $this->password,
@@ -235,7 +235,7 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-      /**
+    /**
      * @return Image
      */
     public function getImage()
