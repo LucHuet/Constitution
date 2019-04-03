@@ -50,15 +50,14 @@ class Acteur
         $this->image = $image;
         $this->countryDescriptions = new ArrayCollection();
         $this->pouvoirsBase = new ArrayCollection();
-        foreach($pouvoirsBase as $pouvoirBase)
-        {
-          $this->addPouvoirsBase($pouvoirBase);
+        foreach ($pouvoirsBase as $pouvoirBase) {
+            $this->addPouvoirsBase($pouvoirBase);
         }
     }
 
     public function __toString()
     {
-      return $this->type;
+        return $this->type;
     }
 
     public function getId(): ?int
@@ -157,5 +156,4 @@ class Acteur
 
         return $this;
     }
-
 }

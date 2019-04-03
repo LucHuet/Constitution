@@ -40,31 +40,29 @@ class Pouvoir
 
 
     public function __construct(
-      $id,
-      $nom,
-      $description,
-      $type,
-      $pouvoirParent = null
-      )
-    {
-      $this
+        $id,
+        $nom,
+        $description,
+        $type,
+        $pouvoirParent = null
+      ) {
+        $this
       ->setId($id)
       ->setNom($nom)
       ->setDescription($description)
       ->setType($type)
       ;
-      if($pouvoirParent != null)
-      {
-        $this->setPouvoirParent($pouvoirParent);
-      }
-      $this->pouvoirsSup = new ArrayCollection();
-      $this->pouvoirsBase = new ArrayCollection();
-      $this->pouvoirSupp = new ArrayCollection();
+        if ($pouvoirParent != null) {
+            $this->setPouvoirParent($pouvoirParent);
+        }
+        $this->pouvoirsSup = new ArrayCollection();
+        $this->pouvoirsBase = new ArrayCollection();
+        $this->pouvoirSupp = new ArrayCollection();
     }
 
     public function __toString()
     {
-      return $this->getNom();
+        return $this->getNom();
     }
 
     public function getId(): ?int
@@ -126,5 +124,4 @@ class Pouvoir
 
         return $this;
     }
-
 }

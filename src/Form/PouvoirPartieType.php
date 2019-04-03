@@ -49,6 +49,6 @@ class PouvoirPartieType extends AbstractType
 
     public function getBlockPrefix()
     {
-      return '';
+        return '';
     }
 }

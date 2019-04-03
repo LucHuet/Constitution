@@ -46,7 +46,6 @@ class DesignationPartieType extends AbstractType
             ->addModelTransformer($this->transformer);*/
         $builder->get('acteurDesignant')
             ->addModelTransformer($this->transformer);
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -58,6 +57,6 @@ class DesignationPartieType extends AbstractType
 
     public function getBlockPrefix()
     {
-      return '';
+        return '';
     }
 }

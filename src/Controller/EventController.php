@@ -20,10 +20,10 @@ class EventController extends BaseController
      */
     public function launch(CheckEvents $checkEvents)
     {
-              $eventPartie = $checkEvents->checkEvent1();
-              $eventPartie->setId(hexdec( uniqid() ));
-              $eventApiModel = $this->createEventApiModel($eventPartie);
-              return $this->createApiResponse($eventApiModel);
+        $eventPartie = $checkEvents->checkEvent1();
+        $eventPartie->setId(hexdec(uniqid()));
+        $eventApiModel = $this->createEventApiModel($eventPartie);
+        return $this->createApiResponse($eventApiModel);
     }
 
     /**
@@ -38,8 +38,7 @@ class EventController extends BaseController
      */
     public function getEvent(EventPartie $eventPartie)
     {
-      $eventApiModel = $this->createEventApiModel($eventPartie);
-      return $this->createApiResponse($eventApiModel);
+        $eventApiModel = $this->createEventApiModel($eventPartie);
+        return $this->createApiResponse($eventApiModel);
     }
-
 }

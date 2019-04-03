@@ -36,5 +36,4 @@ class ActeurReferenceController extends BaseController
             'items' => $models
         ]);
     }
-
 }

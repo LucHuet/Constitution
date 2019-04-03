@@ -21,10 +21,10 @@ class ActeurPartieType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'class'  => 'App:Acteur',
-                'query_builder' => function(ActeurRepository $acteurRepository) {
-                  return $acteurRepository->createQueryBuilder('q')->where('q.type != :identifier')
+                'query_builder' => function (ActeurRepository $acteurRepository) {
+                    return $acteurRepository->createQueryBuilder('q')->where('q.type != :identifier')
                      ->setParameter('identifier', 'Peuple');
-                 },
+                },
                  'invalid_message' => 'Choisissez un type d\'acteur valide'
              ))
         ;
@@ -39,6 +39,6 @@ class ActeurPartieType extends AbstractType
 
     public function getBlockPrefix()
     {
-      return '';
+        return '';
     }
 }

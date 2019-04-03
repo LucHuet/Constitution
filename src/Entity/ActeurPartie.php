@@ -75,7 +75,7 @@ class ActeurPartie
 
     public function __toString()
     {
-      return $this->getNom();
+        return $this->getNom();
     }
 
     public function getId(): ?int
@@ -149,11 +149,10 @@ class ActeurPartie
 
     public function emptyPouvoirParty(): self
     {
-      foreach($this->getPouvoirParties() as $pouvoirPartie)
-      {
-        $this->removePouvoirParty($pouvoirPartie);
-      }
-      return $this;
+        foreach ($this->getPouvoirParties() as $pouvoirPartie) {
+            $this->removePouvoirParty($pouvoirPartie);
+        }
+        return $this;
     }
 
     /**
@@ -164,11 +163,11 @@ class ActeurPartie
         return $this->acteursDesignes;
     }
 
-    public function getActeursDesignesId(): Array
-    {   $acteursDesignesId = [];
-        foreach($this->acteursDesignes as $acteurDesigne)
-        {
-          $acteursDesignesId[] = $acteurDesigne->getId();
+    public function getActeursDesignesId(): array
+    {
+        $acteursDesignesId = [];
+        foreach ($this->acteursDesignes as $acteurDesigne) {
+            $acteursDesignesId[] = $acteurDesigne->getId();
         }
         return $acteursDesignesId;
     }
@@ -205,11 +204,11 @@ class ActeurPartie
         return $this->acteursDesignants;
     }
 
-    public function getActeursDesignantsId(): Array
-    {   $acteursDesignantsId = [];
-        foreach($this->acteursDesignants as $acteurDesignant)
-        {
-          $acteursDesignantsId[] = $acteurDesignant->getId();
+    public function getActeursDesignantsId(): array
+    {
+        $acteursDesignantsId = [];
+        foreach ($this->acteursDesignants as $acteurDesignant) {
+            $acteursDesignantsId[] = $acteurDesignant->getId();
         }
         return $acteursDesignantsId;
     }
@@ -283,5 +282,4 @@ class ActeurPartie
 
         return $this;
     }
-
 }

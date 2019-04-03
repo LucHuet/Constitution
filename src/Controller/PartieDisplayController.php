@@ -27,7 +27,6 @@ use App\Controller\Base\BaseController;
  */
 class PartieDisplayController extends BaseController
 {
-
     private $checkStep;
 
     public function __construct(CheckStepService $checkStep)
@@ -41,36 +40,32 @@ class PartieDisplayController extends BaseController
     public function liste(PartieRepository $partieRepository): Response
     {
         // verification qu'un utilisateur est loggé
-        if($this->checkStep->checkLogin() != null){
-          return $this->redirectToRoute($this->checkStep->checkLogin());
+        if ($this->checkStep->checkLogin() != null) {
+            return $this->redirectToRoute($this->checkStep->checkLogin());
         }
 
         return $this->render('partie/index.html.twig', [
           'parties' => $partieRepository->findAll()
         ]);
-
     }
 
     /**
      * @Route("/{id<\d+>}", name="partie_show", methods="GET")
      */
     public function show(
-      Partie $partieCourante,
-      PouvoirPartieRepository $pouvoirPartieRepository,
-      ActeurRepository $acteurRepository,
-      DesignationRepository $designationRepository,
-      PouvoirRepository $pouvoirRepository,
-      CheckEvents $checkEvents
-    ): Response
-    {
-
-
+        Partie $partieCourante,
+        PouvoirPartieRepository $pouvoirPartieRepository,
+        ActeurRepository $acteurRepository,
+        DesignationRepository $designationRepository,
+        PouvoirRepository $pouvoirRepository,
+        CheckEvents $checkEvents
+    ): Response {
         $session = new Session();
         $session->set('partieCourante', $partieCourante);
 
         // verification de la partie courante
-        if($this->checkStep->checkPartie($partieCourante) != null){
-          return $this->redirectToRoute($this->checkStep->checkPartie($partieCourante));
+        if ($this->checkStep->checkPartie($partieCourante) != null) {
+            return $this->redirectToRoute($this->checkStep->checkPartie($partieCourante));
         }
 
         $partieAppProps = [
@@ -125,8 +120,8 @@ class PartieDisplayController extends BaseController
     public function new(Request $request, ActeurRepository $acteurRepository): Response
     {
         // verification qu'un utilisateur est loggé
-        if($this->checkStep->checkLogin() != null){
-          return $this->redirectToRoute($this->checkStep->checkLogin());
+        if ($this->checkStep->checkLogin() != null) {
+            return $this->redirectToRoute($this->checkStep->checkLogin());
         }
 
         $partieCourante = new Partie();
@@ -157,5 +152,4 @@ class PartieDisplayController extends BaseController
             'form' => $form->createView(),
         ]);
     }
-
 }

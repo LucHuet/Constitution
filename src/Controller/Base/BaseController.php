@@ -96,9 +96,8 @@ class BaseController extends Controller
         $model->nom = $pouvoirReference->getNom();
         $model->description = $pouvoirReference->getDescription();
         $model->type = $pouvoirReference->getType();
-        if($pouvoirReference->getPouvoirParent() != null)
-        {
-        $model->pouvoirParent = $pouvoirReference->getPouvoirParent()->getId();
+        if ($pouvoirReference->getPouvoirParent() != null) {
+            $model->pouvoirParent = $pouvoirReference->getPouvoirParent()->getId();
         }
 
 
@@ -124,39 +123,37 @@ class BaseController extends Controller
         $listeDesignationActeurPartieDesignes = $acteurPartie->getActeursDesignes();
         $acteurDesigneSimple = [];
         $designation = [];
-        foreach($listeDesignationActeurPartieDesignes as $designationActeurDesigne)
-        {
-          $acteurDesigneSimple = [];
-          $acteurDesigne = $designationActeurDesigne->getActeurDesignant();
-          $acteurDesigneSimple['id'] = $acteurDesigne->getId();
-          $acteurDesigneSimple['nom'] = $acteurDesigne->getNom();
-          $acteurDesigneSimple['type'] = $acteurDesigne->getTypeActeur()->getType();
-          $acteurDesigneSimple['typeDesignation'] = $designationActeurDesigne->getDesignation()->getNom();
+        foreach ($listeDesignationActeurPartieDesignes as $designationActeurDesigne) {
+            $acteurDesigneSimple = [];
+            $acteurDesigne = $designationActeurDesigne->getActeurDesignant();
+            $acteurDesigneSimple['id'] = $acteurDesigne->getId();
+            $acteurDesigneSimple['nom'] = $acteurDesigne->getNom();
+            $acteurDesigneSimple['type'] = $acteurDesigne->getTypeActeur()->getType();
+            $acteurDesigneSimple['typeDesignation'] = $designationActeurDesigne->getDesignation()->getNom();
 
-          $acteurDesigneSimple['image'] = $acteurDesigne->getTypeActeur()->getImage();
-          $designation['designants'][] = $acteurDesigneSimple;
+            $acteurDesigneSimple['image'] = $acteurDesigne->getTypeActeur()->getImage();
+            $designation['designants'][] = $acteurDesigneSimple;
         }
 
-        foreach($listeDesignationActeurPartieDesignants as $designationActeurDesigne)
-        {
-          $acteurDesigneSimple = [];
-          $acteurDesigne = $designationActeurDesigne->getActeurDesigne();
-          $acteurDesigneSimple['id'] = $acteurDesigne->getId();
-          $acteurDesigneSimple['nom'] = $acteurDesigne->getNom();
-          $acteurDesigneSimple['type'] = $acteurDesigne->getTypeActeur()->getType();
-          $acteurDesigneSimple['typeDesignation'] = $designationActeurDesigne->getDesignation()->getNom();
-          $acteurDesigneSimple['image'] = $acteurDesigne->getTypeActeur()->getImage();
-          $designation['designes'][] = $acteurDesigneSimple;
+        foreach ($listeDesignationActeurPartieDesignants as $designationActeurDesigne) {
+            $acteurDesigneSimple = [];
+            $acteurDesigne = $designationActeurDesigne->getActeurDesigne();
+            $acteurDesigneSimple['id'] = $acteurDesigne->getId();
+            $acteurDesigneSimple['nom'] = $acteurDesigne->getNom();
+            $acteurDesigneSimple['type'] = $acteurDesigne->getTypeActeur()->getType();
+            $acteurDesigneSimple['typeDesignation'] = $designationActeurDesigne->getDesignation()->getNom();
+            $acteurDesigneSimple['image'] = $acteurDesigne->getTypeActeur()->getImage();
+            $designation['designes'][] = $acteurDesigneSimple;
         }
 
         $model->designations = $designation;
 
         foreach ($acteurPartie->getPouvoirParties() as $pouvoir) {
-          $model->pouvoirs[] = $this->createPouvoirPartieApiModel($pouvoir);
+            $model->pouvoirs[] = $this->createPouvoirPartieApiModel($pouvoir);
         }
 
         foreach ($acteurPartie->getControlesParties() as $controlePartie) {
-          $model->pouvoirsControles[] = $this->createPouvoirPartieApiModel($controlePartie->getPouvoirPartie());
+            $model->pouvoirsControles[] = $this->createPouvoirPartieApiModel($controlePartie->getPouvoirPartie());
         }
 
         $selfUrl = $this->generateUrl(
@@ -170,28 +167,28 @@ class BaseController extends Controller
 
     protected function createActeurRefApiModel(Acteur $acteur)
     {
-      $model = new ActeurRefApiModel();
-      $model->id = $acteur->getId();
-      $model->type = $acteur->getType();
-      $model->description = $acteur->getDescription();
-      $model->image = $acteur->getImage();
-      foreach ($acteur->getCountryDescriptions() as $countryDescription) {
-        $country ['country'] = $countryDescription->getCountry();
-        $country ['description'] = $countryDescription->getDescription();
-        $country ['code'] = $countryDescription->getCountryCode();
-        $model->countryDescriptions[$countryDescription->getCountryCode()] = $country;
-      }
-      foreach ($acteur->getPouvoirsBase() as $pouvoirBase) {
-        $model->pouvoirsBase[] = $this->createPouvoirRefApiModel($pouvoirBase);
-      }
+        $model = new ActeurRefApiModel();
+        $model->id = $acteur->getId();
+        $model->type = $acteur->getType();
+        $model->description = $acteur->getDescription();
+        $model->image = $acteur->getImage();
+        foreach ($acteur->getCountryDescriptions() as $countryDescription) {
+            $country ['country'] = $countryDescription->getCountry();
+            $country ['description'] = $countryDescription->getDescription();
+            $country ['code'] = $countryDescription->getCountryCode();
+            $model->countryDescriptions[$countryDescription->getCountryCode()] = $country;
+        }
+        foreach ($acteur->getPouvoirsBase() as $pouvoirBase) {
+            $model->pouvoirsBase[] = $this->createPouvoirRefApiModel($pouvoirBase);
+        }
 
-      $selfUrl = $this->generateUrl(
+        $selfUrl = $this->generateUrl(
           'acteur_ref_get',
           ['id' => $acteur->getId()]
       );
-      $model->addLink('_self', $selfUrl);
+        $model->addLink('_self', $selfUrl);
 
-      return $model;
+        return $model;
     }
 
     protected function createPouvoirPartieApiModel(PouvoirPartie $pouvoirPartie)
@@ -292,7 +289,6 @@ class BaseController extends Controller
      */
     protected function findAllUserPartiesModels()
     {
-
         $utilisateurCourant = $this->getUser();
 
         $parties = $this->getDoctrine()->getRepository(Partie::class)
@@ -312,7 +308,6 @@ class BaseController extends Controller
      */
     protected function findAllPouvoirsRefModels()
     {
-
         $pouvoirs = $this->getDoctrine()->getRepository(Pouvoir::class)
             ->findAll();
 
@@ -327,23 +322,23 @@ class BaseController extends Controller
     /**
      * @return PouvoirPartieApiModel[]
      */
-     protected function findAllPouvoirsPartieModels()
-     {
-         //on récupere la partie courante afin de n'afficher que les acteurs de la partie courante
-         $session = new Session();
-         $partiCourante = $session->get('partieCourante');
+    protected function findAllPouvoirsPartieModels()
+    {
+        //on récupere la partie courante afin de n'afficher que les acteurs de la partie courante
+        $session = new Session();
+        $partiCourante = $session->get('partieCourante');
 
-         $pouvoirsPartie = $this->getDoctrine()->getRepository(PouvoirPartie::class)
+        $pouvoirsPartie = $this->getDoctrine()->getRepository(PouvoirPartie::class)
              ->findBy(['partie' => $partiCourante])
          ;
 
-         $models = [];
-         foreach ($pouvoirsPartie as $pouvoirPartie) {
-             $models[] = $this->createPouvoirPartieApiModel($pouvoirPartie);
-         }
+        $models = [];
+        foreach ($pouvoirsPartie as $pouvoirPartie) {
+            $models[] = $this->createPouvoirPartieApiModel($pouvoirPartie);
+        }
 
-         return $models;
-     }
+        return $models;
+    }
     /**
      * Methode permettant de récupérer la liste des droits et devoirs de réference
      * @return DroitDevoirApiModel[]
@@ -389,10 +384,10 @@ class BaseController extends Controller
         $model->nom = $droitDevoir->getNom();
 
         $selfUrl = $this->generateUrl(
-            'droits_devoirs_liste');
+            'droits_devoirs_liste'
+        );
         $model->addLink('_self', $selfUrl);
 
         return $model;
     }
-
 }

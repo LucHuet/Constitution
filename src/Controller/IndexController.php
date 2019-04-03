@@ -8,15 +8,15 @@ use App\Entity\Partie;
 
 class IndexController extends AbstractController
 {
-      /**
+    /**
      * @Route("/", name="index")
      */
-     public function index()
-     {
-       $parties = $this->getDoctrine()
+    public function index()
+    {
+        $parties = $this->getDoctrine()
            ->getRepository(Partie::class)
            ->findBy(['user' => $this->getUser()]);
-       $this->getUser();
-         return $this->render('index/index.html.twig', ['parties'=>$parties]);
-     }
+        $this->getUser();
+        return $this->render('index/index.html.twig', ['parties'=>$parties]);
+    }
 }

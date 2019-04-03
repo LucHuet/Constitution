@@ -48,5 +48,4 @@ class PouvoirPartieRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
 }

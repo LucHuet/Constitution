@@ -4,19 +4,19 @@ namespace App\Api;
 
 class DroitDevoirApiModel
 {
-  public $id;
+    public $id;
 
-  public $nom;
+    public $nom;
 
-  private $links = [];
+    private $links = [];
 
-  public function addLink($ref, $url)
-  {
-      $this->links[$ref] = $url;
-  }
+    public function addLink($ref, $url)
+    {
+        $this->links[$ref] = $url;
+    }
 
-  public function getLinks()
-  {
-      return $this->links;
-  }
+    public function getLinks()
+    {
+        return $this->links;
+    }
 }
