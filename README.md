@@ -12,7 +12,8 @@ Symfony 4
 React JS
 Semantic UI
 Webpack Encore
-
+(for more informations about the packages used in this project, please check
+  the composer.json file and the package.json file)
 
 ## Getting Started
 
@@ -52,6 +53,16 @@ php bin/console doctrine:fixtures:load
 If you get an error that the database exists, that should
 be ok. But if you have problems, completely drop the
 database (`doctrine:database:drop --force`) and try again.
+
+**Build your Assets**
+
+To build your assets, install the dependencies with yarn and then
+run encore:
+
+```
+yarn install
+yarn run encore dev --watch
+```
 
 **Start the built-in web server**
 
